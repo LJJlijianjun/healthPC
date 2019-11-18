@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/iCheck/skins/square/blue.css" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body>
+    <div class="reportInfo-listView">
+        <div class="btn-toolbar" id="toolbar">
+            <div class="btn-group" id="listOptGroup">
+            </div>
+        </div>
+        <div style="margin-top: 3px;">
+            <div id="itemList">
+            </div>
+        </div>
+    </div>
+    <!--[if lt IE 9]>
+        <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+        <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/jquery-tools-min.js" type="text/javascript"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../../assets/js/workFlow.min.js?v=1.0.2"></script>
+    <script src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+    <script src="../../assets/vendors/iCheck/icheck.min.js"></script>
+    <script src="../../assets/vendors/lightbox2/dist/js/lightbox.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootbox.js/bootbox.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var ReportInfoID = $.url().param('ReportInfoID');
+        var FolderName = $.url().param('FolderName');
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                initToolBarBtns();
+                initDataList();
+            });
+        });
+
+        function initDataList() {
+            $('#itemList').css('height', $('.reportInfo-listView').height() - 6);
+            var scModel = new Object();
+            scModel.ReportInfoID = ReportInfoID;
+
+            $('#itemList').GWDataTable({
+                dataUrl: dataServiceBaseUrl + 'api/ReportInfo/ReportInfo/GetReportInfoItemFavoriteListBySC?sid=' + sid,
+                tableTitle: FolderName,
+                tableIcon: true,
+                pagination: true,
+                multiCheck: true,
+                checkbox: true,
+                queryParams: function (pageNumber, pageSize, sortCondition) {
+                    scModel.PageNum = pageNumber;
+                    scModel.PageSize = pageSize;
+                    return { scModel: scModel };
+                },
+                toolbar: { 'btn': [], 'selector': '#toolbar' },
+                dataType: 'json',
+                columns:
+                [
+                    {
+                        title: '项目名称',
+                        field: 'ProjectName',
+                        align: 'left',
+                        formatter: function (value, row, index) {
+                            return '<a href="../ReportInfo/ItemRead.html#reportInfoID=' + row.ReportInfoID + '&itemID=' + row.ID + '" title="' + value + '" target="_blank" onclick="javascript: void(0);">' + value + '</a>';
+                        }
+                    },
+                    { title: '名称', field: 'CollaborateOrgName', align: 'center', width: '200' },
+                    { title: '类型', field: 'CollaborateType', align: 'center', width: '100' },
+                    {
+                        title: '收藏时间', field: 'FavCreateTime', align: 'center', width: '200', formatter: function (value, row, index) {
+                            return getDateDiff(row.CurrentDateTime, value);
+                        }
+                    }
+                ]
+            });
+        }
+
+        function initToolBarBtns() {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/ReportInfo/ReportInfo/GetItemListMyFavoriteToolBarBtns?sid=' + sid,
+                type: 'get',
+                async: false,
+                data: { reportInfoID: 4 },
+                success: function (data) {
+                    if (data && data.Success === true && data.Data) {
+                        var btnList = data.Data;
+                        for (var i = btnList.length - 1; i > -1; i--) {
+                            $('#listOptGroup').prepend($('<button class="btn btn-default" '
+                                + (btnList[i].disabled == 0 ? '' : ' disabled="disabled" ')
+                                + 'type="button" id="' + btnList[i].id
+                                + '" onclick="' + btnList[i].onclick + ';">'
+                                + '<span class="fa fa-' + btnList[i].faClass
+                                + '"></span>&nbsp;' + btnList[i].text + '</button>'));
+                        }
+                    }
+                }
+            });
+        }
+
+        function cancelCollection() {
+            var objToCancelList = $('#itemList').GWDataTable("getChecked");
+            var arrToCancelList = new Array();
+            if (objToCancelList.length > 0) {
+                for (var i = 0; i < objToCancelList.length; i++) {
+                    arrToCancelList.push(objToCancelList[i].FavoriteID);
+                }
+                bootbox.confirm({
+                    size: 'small',
+                    message: "确定要取消收藏吗？",
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: dataServiceBaseUrl + 'api/Common/Common/DeleteFavorite?favoriteIDs=' + arrToCancelList.toString() + '&sid=' + sid,
+                                type: 'delete',
+                                success: function (data) {
+                                    if (data && data.Success === true && data.Data === 0) {
+                                        searchData();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            } else {
+                bootbox.alert({ size: 'small', message: "请至少选择一项再取消！" });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1547 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>项目供需信息</title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet" />
+    <link href="../../assets/vendors/blueimp-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+    <link href="../../assets/vendors/blueimp-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/lightbox2/dist/css/lightbox.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-recommendedUserSelector/dist/gw-recommendedUserSelector.min.css?v=1.0.0" rel="stylesheet" />
+    <link href="../../assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body>
+    <div class="projectInfo-publishView">
+        <div class="container-fluid">
+            <div class="row processInfo">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl10 textLeft">
+                    <span>当前操作：</span>
+                    <span class="process-currentTask"></span>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr10 textRight">
+                    <a class="process-detail" href="#">流转明细及回退意见</a>&nbsp;&nbsp;
+                    <!--<a href="#" class="process-picture" data-lightbox="processPic" data-title="流程图示">流程图示</a>-->
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pl10 textLeft">
+                    <span class="process-backReasonDesc"></span>
+                    <span class="process-backReason"></span>
+                </div>
+            </div>
+
+            <div class="row processToolBar">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 textLeft">
+                    <div class="alert alert-danger formTip">
+                        <span class="fa fa-info-circle"></span>
+                        <span>红色标识字段为必填项！</span>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 textRight">
+                    <div class="btn-group processButtonGroup">
+                    </div>
+                </div>
+            </div>
+
+            <form id="form1" novalidate="novalidate">
+                <div class="row mt10">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 pr15">
+                        <div class="input-group">
+                            <span class="input-group-addon required">项目名称</span>
+                            <input class="form-control" id="txtTitle" name="txtTitle" data-popover-placement="bottom" type="text" maxlength="500" placeholder="项目名称" />
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" id="divProjectPeriod">
+                        <div class="input-group">
+                            <span class="input-group-addon required">预计项目周期</span>
+                            <select class="form-control" id="selProjectPeriodYear" name="selProjectPeriodYear">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                            <span class="input-group-addon projectPeriodYearAddOn">年</span>
+                            <select class="form-control" id="selProjectPeriodMonth" name="selProjectPeriodMonth">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                            </select>
+                            <span class="input-group-addon">个月</span>
+                        </div>
+                        <input class="checkProjectPeriod" id="txtProjectPeriod" name="txtProjectPeriod" data-popover-placement="bottom" />
+                    </div>
+                </div>
+            </form>
+
+            <div class="row mt10">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <form id="formMainDocUploader" method="POST" enctype="multipart/form-data" class="fileupload">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title required">项目方案</div>
+                                <div class="fileupload-buttonbar btn-group btn-group-sm">
+                                    <span class="btn btn-success fileinput-button">
+                                        <input type="file" name="files[]" />
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                        <span>添加文件</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <table role="presentation" class="table table-condensed table-bordered fileTable">
+                                    <thead>
+                                        <tr>
+                                            <td>名称</td>
+                                            <td class="w150">大小/上传状态</td>
+                                            <td class="w135">操作</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="files"></tbody>
+                                </table>
+                                <div class="noRecordTip"></div>
+                            </div>
+                        </div>
+                        <input class="checkMainDoc" id="txtCheckMainDoc" name="txtCheckMainDoc" data-popover-placement="bottom" />
+                    </form>
+                </div>
+            </div>
+
+            <div class="row mt10">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <form id="formGuideDocUploader" method="POST" enctype="multipart/form-data" class="fileupload">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">相关指导文件</div>
+                                <div class="fileupload-buttonbar btn-group btn-group-sm">
+                                    <span class="btn btn-success fileinput-button">
+                                        <input type="file" name="files[]" multiple />
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                        <span>添加文件</span>
+                                    </span>
+                                    <button type="submit" class="btn btn-primary start">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span>上传全部</span>
+                                    </button>
+                                    <button type="reset" class="btn btn-warning cancel">
+                                        <i class="glyphicon glyphicon-ban-circle"></i>
+                                        <span>取消全部</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <table role="presentation" class="table table-condensed table-bordered fileTable">
+                                    <thead>
+                                        <tr>
+                                            <td>名称</td>
+                                            <td class="w150">大小/上传状态</td>
+                                            <td class="w135">操作</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="files"></tbody>
+                                </table>
+                                <div class="noRecordTip"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row mt10">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <form id="formAttachmentUploader" method="POST" enctype="multipart/form-data" class="fileupload">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">相关附件</div>
+                                <div class="fileupload-buttonbar btn-group btn-group-sm">
+                                    <span class="btn btn-success fileinput-button">
+                                        <input type="file" name="files[]" multiple />
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                        <span>添加文件</span>
+                                    </span>
+                                    <button type="submit" class="btn btn-primary start">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span>上传全部</span>
+                                    </button>
+                                    <button type="reset" class="btn btn-warning cancel">
+                                        <i class="glyphicon glyphicon-ban-circle"></i>
+                                        <span>取消全部</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <table role="presentation" class="table table-condensed table-bordered fileTable">
+                                    <thead>
+                                        <tr>
+                                            <td>名称</td>
+                                            <td class="w150">大小/上传状态</td>
+                                            <td class="w135">操作</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="files"></tbody>
+                                </table>
+                                <div class="noRecordTip"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <form id="form2" novalidate="novalidate">
+                <div class="row mt10">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">联系方式</div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pr0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon required">联系人</span>
+                                            <input class="form-control" id="txtContactsName" name="txtContactsName" data-popover-placement="top" type="text" maxlength="20" placeholder="联系人" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pr0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon required">电话</span>
+                                            <input class="form-control w65" id="txtAreaFixedTel" name="txtAreaFixedTel" data-popover-placement="top" type="text" maxlength="4" placeholder="区号" />
+                                            <span class="input-group-addon required">-</span>
+                                            <input class="form-control" id="txtContactsFixedTel" name="txtContactsFixedTel" data-popover-placement="top" type="text" maxlength="20" placeholder="电话" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pr0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon minWidth64 required">手机</span>
+                                            <input class="form-control" id="txtContactsMobileTel" name="txtContactsMobileTel" data-popover-placement="top" type="text" maxlength="11" placeholder="手机" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                        <div class="input-group">
+                                            <span class="input-group-addon minWidth64 required">邮箱</span>
+                                            <input class="form-control" id="txtContactsEmail" name="txtContactsEmail" data-popover-placement="top" type="text" maxlength="100" placeholder="邮箱" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt10">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="divCooperativeOrg">
+                        <div class="input-group">
+                            <span class="input-group-addon required minWidth103">拟合作单位</span>
+                            <input class="form-control cp" id="txtCooperativeOrg" name="txtCooperativeOrg" data-popover-placement="top" type="text" readonly="readonly" placeholder="拟合作单位" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" id="btnSelectCooperativeOrg"><i class="fa fa-plus"></i>&nbsp;选择</button>
+                            </span>
+                        </div>
+                        <div class="panel panel-default cooperativeOrgListEdit none">
+                        </div>
+                    </div>
+                    <div class="modal fade" id="cooperativeOrgSelectModal" aria-labelledby="cooperativeOrgSelectModalLabel" aria-hidden="true" tabindex="-1" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button class="close" id="btnCloseCooperativeOrgSelectModal" data-dismiss="modal" aria-hidden="true" type="button" title="关闭">&times;</button>
+                                    <h5 class="modal-title bold" id="cooperativeOrgSelectModalLabel">选择拟合作单位</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <iframe id="frameOrgSelector" frameborder="0"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt10">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="divProjectInfoRelProductInfo">
+                        <div class="input-group">
+                            <span class="input-group-addon minWidth103 mt10">产品归属</span>
+                            <input class="form-control cp" id="txtProjectInfoRelProductInfo" name="txtProjectInfoRelProductInfo" type="text" readonly="readonly" placeholder="产品归属" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" id="btnSelectProductInfo"><i class="fa fa-plus"></i>&nbsp;选择</button>
+                            </span>
+                        </div>
+                        <div class="panel panel-default projectInfoRelProductInfoList none">
+                            <table class="table table-bordered table-hover table-condensed">
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="productInfoSelectModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <button type="button" class="close none" id="btnCloseProductInfoSelectModal" data-dismiss="modal" aria-hidden="true" title="关闭">&times;</button>
+                                    <iframe id="frameProductInfoSelector" frameborder="0"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt10">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="divSendEmail">
+                        <div class="panel panel-default mb0">
+                            <div class="panel-heading">
+                                <div class="panel-title">群发邮件推介</div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon required">收件人</span>
+                                            <input class="form-control" id="txtMailReceiverName" name="txtMailReceiverName" data-popover-placement="top" type="text" readonly="readonly" placeholder="收件人" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt10">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon minWidth64 required">主题</span>
+                                            <input class="form-control" id="txtEmailSubject" name="txtEmailSubject" data-popover-placement="bottom" type="text" maxlength="50" placeholder="主题" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt10">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <textarea class="form-control h100" id="txtEmailContent" name="txtEmailContent" data-popover-placement="bottom" maxlength="500" placeholder="邮件内容"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row processToolBar">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 textRight">
+                        <div class="btn-group processButtonGroup">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <script id="common-template-upload" type="text/x-tmpl">
+            {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-upload fade">
+                <td style="text-align: left;">
+                    <div class="name" title="{%=file.name%}">
+                        <i class="{%=getAttachIcon(file.name)%}"></i>
+                        <span>{%=file.name%}</span>
+                    </div>
+                    <div class="error text-danger ml20"></div>
+                </td>
+                <td>
+                    <p class="size">Processing...</p>
+                    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                    </div>
+                </td>
+                <td style="text-align: right;">
+                    <div class="btn-group btn-group-sm">
+                        {% if (!i && !o.options.autoUpload) { %}
+                        <button class="btn btn-primary start">
+                            <i class="glyphicon glyphicon-upload"></i>
+                            <span>上传</span>
+                        </button>
+                        {% } %}
+                        {% if (!i) { %}
+                        <button class="btn btn-warning cancel">
+                            <i class="glyphicon glyphicon-ban-circle"></i>
+                            <span>取消</span>
+                        </button>
+                        {% } %}
+                    </div>
+                </td>
+            </tr>
+            {% } %}
+        </script>
+        <script id="common-template-download" type="text/x-tmpl">
+            {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-download fade">
+                <td style="text-align: left;">
+                    <div class="name" style="display:inline-block">
+                        <i class="{%=getAttachIcon(file.Name)%}"></i>
+                        {% if (file.Url) { %}
+                        <a href="#" title="{%=decodeURI(file.Name)%}" data-downloadurl="{%=file.Url%}" onclick="return downLoadFile(this);">{%=decodeURI(file.Name)%}</a>
+                        {% } else { %}
+                        <span>{%=decodeURI(file.Name)%}</span>
+                        {% } %}
+                    </div>
+                    {% if (file.Error) { %}
+                    <div>
+                        <span class="label label-danger">Error</span> {%=file.Error%}
+                    </div>
+                    {% } %}
+                </td>
+                <td>
+                    <span class="size">{%= o.formatFileSize(file.Size)%}</span>
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        {% if (file.Url) { %}
+                        <button class="btn btn-primary download" data-type="GET" data-url="{%=file.Url%}">
+                            <i class="glyphicon glyphicon-download"></i>
+                            <span>下载</span>
+                        </button>
+                        {% } %}
+                        {% if (file.DeleteUrl) { %}
+                        <button class="btn btn-danger delete" data-type="DELETE" data-url="{%=file.DeleteUrl%}">
+                            <i class="glyphicon glyphicon-trash"></i>
+                            <span>删除</span>
+                        </button>
+                        {% } else { %}
+                        <button class="btn btn-warning cancel">
+                            <i class="glyphicon glyphicon-ban-circle"></i>
+                            <span>取消</span>
+                        </button>
+                        {% } %}
+                    </div>
+                </td>
+            </tr>
+            {% } %}
+        </script>
+        <script id="common-template-show" type="text/x-tmpl">
+            {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-show">
+                <td style="text-align: left;">
+                    <div class="name">
+                        <i class="{%=getAttachIcon(file.Name)%}"></i>
+                        {% if (file.Url) { %}
+                        <a href="#" title="{%=decodeURI(file.Name)%}" data-downloadurl="{%=file.Url%}" onclick="return downLoadFile(this);">{%=decodeURI(file.Name)%}</a>
+                        {% } else { %}
+                        <span>{%=decodeURI(file.Name)%}</span>
+                        {% } %}
+                    </div>
+                    {% if (file.Error) { %}
+                    <div>
+                        <span class="label label-danger">Error</span> {%=file.Error%}
+                    </div>
+                    {% } %}
+                </td>
+                <td>
+                    <span class="size">{%= formatFileSize(file.Size)%}</span>
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        {% if (file.Url) { %}
+                        <button class="btn btn-primary download" data-downloadurl="{%=file.Url%}">
+                            <i class="glyphicon glyphicon-download"></i>
+                            <span>下载</span>
+                        </button>
+                        {% } %}
+                        {% if (file.DeleteUrl) { %}
+                        <button class="btn btn-danger delete" data-deleteurl="{%=file.DeleteUrl%}">
+                            <i class="glyphicon glyphicon-trash"></i>
+                            <span>删除</span>
+                        </button>
+                        {% } %}
+                    </div>
+                </td>
+            </tr>
+            {% } %}
+        </script>
+        <a id="totop" href="#" title="回到顶部"><i class="fa fa-angle-up"></i></a>
+        <input type="hidden" id="hidProjectInfoId" />
+        <input type="hidden" id="hidPublishOrgID" />
+        <input type="hidden" id="hidProjectInfoStatus" />
+        <a class="w1 h1 none" id="hidPreviewLink" href="" target="_blank"></a>
+        <iframe class="w1 h1 none" id="hidFileFrame"></iframe>
+        <!--批量设置拟合作单位模态框 begin-->
+        <div class="modal fade" id="batchSetCooperativeOrgModel" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" id="btnCloseBatchSetCooperativeOrgModel" data-dismiss="modal" type="button" aria-hidden="true" title="关闭">&times;</button>
+                        <h5 class="modal-title bold"></h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <span class="input-group-addon">预期拟合作单位回报获取周期</span>
+                            <select class="form-control" id="selBatchCooperativeOrgReturnPeriod"></select>
+                        </div>
+                        <div class="input-group mt10">
+                            <span class="input-group-addon w207">预期拟合作单位年化收益率&nbsp;&nbsp;&nbsp;</span>
+                            <input class="form-control" id="batchCooperativeOrgAnnualReturn" type="text" maxlength="10">
+                            <span class="input-group-addon">%</span>
+                        </div>
+                        <div class="input-group mt10 floatRight">
+                            <button type="button" class="btn btn-primary w80" onclick="batchSetCooperativeOrg();">确定</button>
+                            <button type="button" class="btn btn-default ml10 w80" onclick="$('#btnCloseBatchSetCooperativeOrgModel').click();">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--批量设置拟合作单位模态框 end-->
+        <!--邮件预览模态框 begin-->
+        <div class="modal fade" id="emailPreviewModel" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" id="btnCloseEmailPreviewModel" data-dismiss="modal" type="button" aria-hidden="true" title="关闭">&times;</button>
+                        <h5 class="modal-title bold">推介邮件预览</h5>
+                    </div>
+                    <div class="modal-body">
+                        <iframe id="emailPreviewFrame"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--邮件预览模态框 end-->
+    </div>
+    <!--[if lt IE 9]>
+        <script src="../../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+        <script src="../../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/jquery-tools-min.js" type="text/javascript"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../../assets/js/workFlow.min.js?v=1.0.2" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/jquery-validation/dist/jquery.validate.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/jquery-validation/src/localization/messages_zh.js"></script>
+    <script src="../../assets/vendors/blueimp-file-upload/js/vendor/jquery.ui.widget.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-tmpl/js/tmpl.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-load-image/js/load-image.all.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-file-upload/js/jquery.iframe-transport.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-file-upload/js/jquery.fileupload.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-file-upload/js/jquery.fileupload-process.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-file-upload/js/jquery.fileupload-validate.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-file-upload/js/jquery.fileupload-ui.js?v=1.0.1" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-file-upload/js/jquery.fileupload-image.js" type="text/javascript"></script>
+    <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->
+    <!--[if (gte IE 8)&(lt IE 10)]>
+        <script src="../../../assets/vendors/blueimp-file-upload/js/cors/jquery.xdr-transport.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/underscore/underscore-min.js"></script>
+    <script src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script src="../../assets/vendors/gw-recommendedUserSelector/dist/gw-recommendedUserSelector.min.js?v=1.0.0"></script>
+    <script src="../../assets/vendors/select2/dist/js/select2.full.min.js"></script>
+    <script src="../../assets/vendors/platform.js/platform.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/xss/dist/xss.min.js"></script>
+    <script src="../../assets/vendors/lightbox2/dist/js/lightbox.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootbox.js/bootbox.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $('#selProjectPeriodYear').select2({ width: '100%', minimumResultsForSearch: Infinity }).change(function () {
+            var projectPeriodPopoverId = $('#txtProjectPeriod').attr('aria-describedby');
+            if (projectPeriodPopoverId) {
+                $('#' + projectPeriodPopoverId).remove();
+                $('#txtProjectPeriod').attr('aria-describedby', '');
+            }
+        });
+        $('#selProjectPeriodMonth').select2({ width: '100%', minimumResultsForSearch: Infinity }).change(function () {
+            var projectPeriodPopoverId = $('#txtProjectPeriod').attr('aria-describedby');
+            if (projectPeriodPopoverId) {
+                $('#' + projectPeriodPopoverId).remove();
+                $('#txtProjectPeriod').attr('aria-describedby', '');
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        var cooperativeOrgReturnPeriodDic;
+        var bModifiedFlag = false;
+        var bDeleteFlag = false;
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                initWorkFlow();
+                initValidator();
+                loadForm();
+                bindEvent();
+                initLightBox();
+            });
+        });
+
+        // 初始化工作流
+        function initWorkFlow() {
+            $(document).Workflow('ProcessInfo', {
+                Btn: {
+                    // 点击保存按钮
+                    Save: function () {
+                        saveForm('save', function () {
+                            WorkflowAction.Save();
+                        });
+                    },
+                    // 点击预览
+                    Preview: function () {
+                        saveForm('preview', function () {
+                            document.getElementById('hidPreviewLink').click();
+                        });
+                    },
+                    // 点击邮件预览
+                    EmailPreview: function () {
+                        saveForm('emailPreview', function () {
+                            var emailPreviewUrl = 'EmailPreview.html?projectInfoId=' + $('#hidProjectInfoId').val();
+                            $('#emailPreviewFrame').attr('src', emailPreviewUrl);
+                            $('#emailPreviewModel').modal({ backdrop: 'static', keyboard: false });
+                        });
+                    },
+                    // 点击下一步按钮
+                    Next: function () {
+                        saveForm('next', function () {
+                            WorkflowAction.Next();
+                        });
+                    },
+                    // 点击删除按钮
+                    Delete: function () {
+                        bootbox.confirm({
+                            size: 'small',
+                            message: "确定要删除吗？",
+                            callback: function (result) {
+                                if (result === true) {
+                                    deleteForm(function (data) {
+                                        if (data && data.Success === true && data.Data === 0) {
+                                            bModifiedFlag = false;
+                                            bDeleteFlag = true;
+                                            bootbox.alert({
+                                                message: '删除成功！',
+                                                callback: function () {
+                                                    WorkflowEngine.RedirectToDoListPage();
+                                                }
+                                            });
+                                        } else {
+                                            bootbox.alert({ message: '删除失败！' });
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        // 初始化表单验证控件
+        function initValidator() {
+            $.validator.addMethod("antiSqlInject", function (value, element, params) {
+                if (value) {
+                    return !AntiSqlInject($(element).val());
+                } else {
+                    return value;
+                }
+            }, "输入内容中包含非法字符！");
+
+            $.validator.addMethod("checkProjectPeriod", function (value, element) {
+                var projectPeriodYear = $('#selProjectPeriodYear').val();
+                var projectPeriodMonth = $('#selProjectPeriodMonth').val();
+                if (projectPeriodYear == '0' && projectPeriodMonth == '0') {
+                    return false;
+                } else {
+                    return true;
+                }
+            }, "预计项目周期不能为0！");
+
+            $.validator.addMethod("checkAreaFixedTel", function (value, element) {
+                var fixedTel = /^(0[0-9]{2,3})?$/;
+                return this.optional(element) || fixedTel.test(value);
+            }, "请填写正确的电话区号！");
+
+            $.validator.addMethod("checkFixedTel", function (value, element) {
+                var fixedTel = /^([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/;
+                return this.optional(element) || fixedTel.test(value);
+            }, "请填写正确的电话号码！");
+
+            $.validator.addMethod("checkMobileTel", function (value, element) {
+                var mobileTel = /^1[3|4|5|7|8]\d{9}$/;
+                return this.optional(element) || mobileTel.test(value);
+            }, "请填写正确的手机号码！");
+
+            $.validator.addMethod("checkEmail", function (value, element) {
+                var email = /^[0-9a-z][_.0-9a-z-]{0,31}@([0-9a-z][0-9a-z-]{0,30}[0-9a-z]\.){1,4}[a-z]{2,4}$/;
+                return this.optional(element) || email.test(value);
+            }, "邮箱格式不正确！");
+
+            $.validator.addMethod("checkMainDoc", function (value, element) {
+                var mainDoc = $('#formMainDocUploader').find('tbody.files tr');
+                if (mainDoc && (mainDoc.hasClass('template-download') || mainDoc.hasClass('template-show'))) {
+                    return true;
+                }
+                return false;
+            }, "必须上传项目方案！");
+
+            $('#form1').validate({
+                rules: {
+                    txtTitle: { required: true, antiSqlInject: true },
+                    txtProjectPeriod: { checkProjectPeriod: true }
+                },
+                messages: {
+                    txtTitle: { required: '项目名称不能为空！' }
+                },
+                showErrors: jqValidationShowErrors
+            });
+
+            $('#formMainDocUploader').validate({
+                rules: {
+                    txtCheckMainDoc: { checkMainDoc: true }
+                },
+                showErrors: jqValidationShowErrors
+            });
+
+            $('#form2').validate({
+                rules: {
+                    txtContactsName: { required: true, antiSqlInject: true },
+                    txtAreaFixedTel: { required: false, checkAreaFixedTel: true },
+                    txtContactsFixedTel: { required: true, checkFixedTel: true },
+                    txtContactsMobileTel: { required: true, checkMobileTel: true },
+                    txtContactsEmail: { required: true, checkEmail: true },
+                    txtCooperativeOrg: { required: true },
+                    txtMailReceiverName: { required: true },
+                    txtEmailSubject: { required: true },
+                    txtEmailContent: { required: true }
+                },
+                messages: {
+                    txtContactsName: { required: "联系人不能为空！" },
+                    txtContactsFixedTel: { required: "联系人电话不能为空！" },
+                    txtContactsMobileTel: { required: "联系人手机不能为空！" },
+                    txtContactsEmail: { required: "联系人邮箱不能为空！" },
+                    txtCooperativeOrg: { required: '请选择拟合作单位！' },
+                    txtMailReceiverName: { required: '请选择收件人！' },
+                    txtEmailSubject: { required: '邮件主题不能为空！' },
+                    txtEmailContent: { required: '邮件内容不能为空！' }
+                },
+                showErrors: jqValidationShowErrors
+            });
+        }
+
+        // 加载表单
+        var loadStatus = 0;
+        function loadForm() {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/ProjectInfo/ProjectInfo/GetProjectInfoByProcessId?sid=' + sid,
+                type: 'get',
+                data: {
+                    processId: $.url().param("processId").trim()
+                },
+                beforeSend: function () {
+                    $('body').loadingUI({ text: '加载中...' });
+                },
+                async: true,
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (data && data.Success === true && data.Data) {
+                        // 保存项目供需信息ID
+                        $('#hidProjectInfoId').val(data.Data.ProjectInfo.ID);
+                        // 保存发布单位ID
+                        $('#hidPublishOrgID').val(data.Data.ProjectInfo.PublishOrgID);
+                        // 设置预览a标签链接
+                        $('#hidPreviewLink').attr('href', 'Preview.html#id=' + data.Data.ProjectInfo.ID);
+                        // 保存项目状态字段
+                        $('#hidProjectInfoStatus').val(data.Data.ProjectInfo.Status);
+                        // 项目名称
+                        $('#txtTitle').val(data.Data.ProjectInfo.Title);
+                        // 文件
+                        initFileUploader('formMainDocUploader', 1, data.Data.Documents);
+                        initFileUploader('formGuideDocUploader', 2, data.Data.Documents);
+                        initFileUploader('formAttachmentUploader', 3, data.Data.Documents);
+                        // 联系方式
+                        $('#txtContactsName').val(data.Data.ProjectInfo.ContactsName);
+                        var tel = data.Data.ProjectInfo.ContactsFixedTel.split('-');
+                        if (tel.length === 1) {
+                            $('#txtContactsFixedTel').val(data.Data.ProjectInfo.ContactsFixedTel);
+                        } else if (tel.length === 2) {
+                            if (tel[0].length > 4) {
+                                $('#txtContactsFixedTel').val(data.Data.ProjectInfo.ContactsFixedTel);
+                            } else {
+                                $('#txtAreaFixedTel').val(tel[0]);
+                                $('#txtContactsFixedTel').val(tel[1]);
+                            }
+                        } else if (tel.length === 3) {
+                            $('#txtAreaFixedTel').val(tel[0]);
+                            $('#txtContactsFixedTel').val(tel[1] + '-' + tel[2]);
+                        }
+                        $('#txtContactsMobileTel').val(data.Data.ProjectInfo.ContactsMobileTel);
+                        $('#txtContactsEmail').val(data.Data.ProjectInfo.ContactsEmail);
+                        // 拟合作单位
+                        initCooperativeOrgTagsInput(data.Data.CooperativeOrgInfo);
+                        // 项目周期
+                        $('#selProjectPeriodYear').val(data.Data.ProjectInfo.ProjectPeriodYear);
+                        $('#selProjectPeriodYear').trigger('change.select2');
+                        $('#selProjectPeriodMonth').val(data.Data.ProjectInfo.ProjectPeriodMonth);
+                        $('#selProjectPeriodMonth').trigger('change.select2');
+                        // 产品归属
+                        initProjectInfoRelProductInfoTagsInput(data.Data.ProjectInfoRelProductInfo);
+                        // 群发邮件推介
+                        initMailReceiverTagsInput();
+                        if (data.Data.ProjectInfoSendEmailInfo && data.Data.ProjectInfoSendEmailInfo.length > 0) {
+                            loadStatus = 1;
+                            for (var i = 0; i < data.Data.ProjectInfoSendEmailInfo.length; i++) {
+                                data.Data.ProjectInfoSendEmailInfo[i].UserName = data.Data.ProjectInfoSendEmailInfo[i].ReceiveUserName;
+                                data.Data.ProjectInfoSendEmailInfo[i].OrgEmpId = data.Data.ProjectInfoSendEmailInfo[i].ReceiveUserOrgEmpID;
+                                data.Data.ProjectInfoSendEmailInfo[i].UserAccountID = data.Data.ProjectInfoSendEmailInfo[i].ReceiveUserAccountID;
+                            }
+                            addEmailReceiver(data.Data.ProjectInfoSendEmailInfo);
+                            $('#txtEmailSubject').val(data.Data.ProjectInfo.EmailSubject);
+                            $('#txtEmailContent').val(data.Data.ProjectInfo.EmailContent);
+                        }
+                        // 重置修改状态
+                        bModifiedFlag = false;
+                    }
+                    else {
+                        bootbox.alert({ message: '加载失败！' });
+                    }
+                    if (loadStatus === 0) {
+                        $('body').loadingUI('hide');
+                    }
+                },
+                error: function () {
+                    bootbox.alert({ message: '加载失败！' });
+                    $('body').loadingUI('hide');
+                }
+            });
+        }
+
+        // 初始化，添加收件人
+        var currentReceiver = 0;
+        function addEmailReceiver(data) {
+            if (currentReceiver < data.length) {
+                $('#divSendEmail .bootstrap-tagsinput input').focus();
+                $('#txtMailReceiverName').tagsinput('add', data[currentReceiver]);
+                bModifiedFlag = false;
+                setTimeout(function () {
+                    if (currentReceiver >= data.length - 1) {
+                        $('#divSendEmail .bootstrap-tagsinput input').blur();
+                        loadStatus = 0;
+                        $('body').loadingUI('hide');
+                        $('html,body').animate({ scrollTop: 0 }, 1000);
+                    } else {
+                        currentReceiver = currentReceiver + 1;
+                        addEmailReceiver(data);
+                    }
+                }, 20);
+            }
+        }
+
+        // 检查表单状态，如果有未保存的修改，返回true，否则返回false
+        function checkFormModified() {
+            return bModifiedFlag;
+        }
+
+        // 绑定事件
+        function bindEvent() {
+            //表单改动监听事件
+            $('#txtTitle,#selProjectPeriodYear,#selProjectPeriodMonth,#txtContactsName,#txtAreaFixedTel,#txtContactsFixedTel,#txtContactsMobileTel,#txtContactsEmail,#txtCooperativeOrg,#txtProjectInfoRelProductInfo,#txtMailReceiverName,#txtMailSubject,#txtMailContent').change(function () {
+                bModifiedFlag = true;
+            });
+
+            //window.onbeforeunload = function (e) {
+            //    e = e || window.event;
+            //    if ($('#hidProjectInfoStatus').val() == '0' && bDeleteFlag === false && e) {
+            //        deleteForm();
+            //    }
+            //};
+
+            // 回到顶部功能
+            $(window).scroll(function () {
+                if ($(this).scrollTop() < 100) {
+                    $('#totop').fadeOut();
+                } else {
+                    $('#totop').fadeIn();
+                }
+            });
+            $('#totop').on('click', function () {
+                $('html,body').animate({ scrollTop: 0 }, 'fast');
+                return false;
+            });
+
+            // 拟合作单位选择
+            $('#btnSelectCooperativeOrg').on('click', function () {
+                openOrgSelector();
+                return false;
+            });
+
+            // 产品选择
+            $('#btnSelectProductInfo').on('click', function () {
+                openProductSelector();
+                return false;
+            });
+        }
+
+        // 初始化上传控件
+        function initFileUploader(uploaderId, documentType, data) {
+            var $uploader = $('#' + uploaderId);
+
+            var uploaderOption = {
+                url: dataServiceBaseUrl + 'api/Common/FileManage?moduleTypeKV=3&itemId=' + $('#hidProjectInfoId').val() + '&documentType=' + documentType + '&sid=' + sid,
+                dataType: 'json',
+                autoUpload: false,
+                uploadTemplateId: 'common-template-upload',
+                downloadTemplateId: 'common-template-download',
+                maxFileSize: 50000000,
+                minFileSize: 1
+            };
+
+            // 正文uploader特殊设置
+            if (uploaderId === 'formMainDocUploader') {
+                uploaderOption.acceptFileTypes = /(\.|\/)(pdf)$/i;
+                uploaderOption.maxNumberOfFiles = 1;
+                uploaderOption.limitMultiFileUploads = 1;
+                uploaderOption.singleFileUploads = false;
+            }
+
+            // 初始化
+            $uploader.fileupload(uploaderOption);
+
+            // 绑定数据
+            if (data && data.files.length > 0) {
+                var tempData = _.where(data.files, { DocumentType: documentType });
+                if (uploaderId === 'formMainDocUploader' && tempData && tempData.length > 0) {
+                    tempData = _.where(tempData, { Type: 'pdf' });
+                }
+                if (tempData && tempData.length > 0) {
+                    var docData = { files: tempData };
+
+                    $uploader.find('tbody.files').html(tmpl(document.getElementById('common-template-show').innerHTML.trim(), docData));
+
+                    $uploader.on('click', 'tbody.files button.download', function () {
+                        return downLoadFile(this);
+                    });
+
+                    $uploader.on('click', 'tbody.files button.delete', function () {
+                        var $row = $(this);
+                        $.ajax({
+                            url: $row.data('deleteurl'),
+                            type: 'delete',
+                            async: false,
+                            cache: false,
+                            success: function (data) {
+                                if (data && data.Success === true && data.Data === 0) {
+                                    $row.parent().parent().parent().remove();
+                                    if ($uploader.find('tbody.files tr').length === 0) {
+                                        $uploader.find('table').hide();
+                                        $uploader.find('div.noRecordTip').show();
+                                        if (uploaderId === 'formMainDocUploader') {
+                                            $uploader.find('span.fileinput-button').removeAttr('disabled');
+                                            $uploader.find('span.fileinput-button input').prop('disabled', false);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    });
+
+                    $uploader.find('table').show();
+
+                    // 正文禁用上传按钮
+                    if (uploaderId === 'formMainDocUploader') {
+                        $uploader.find('span.fileinput-button').attr('disabled', 'disabled');
+                        $uploader.find('span.fileinput-button input').prop('disabled', true);
+                    }
+                } else {
+                    $uploader.find('div.noRecordTip').show();
+                }
+            } else {
+                $uploader.find('div.noRecordTip').show();
+            }
+        }
+
+        // 保存表单
+        function saveForm(action, callback) {
+            if ($('#form1').valid() && $('#formMainDocUploader').valid() && $('#form2').valid() && checkFileUploadState()) {
+                var formData = {};
+
+                formData.ProjectInfo = {};
+                formData.ProjectInfo.ID = $('#hidProjectInfoId').val();
+                formData.ProjectInfo.ProcessID = $.url().param("processId").trim();
+                formData.ProjectInfo.Title = filterXSS($('#txtTitle').val().trim());
+                formData.ProjectInfo.ProjectPeriodYear = $('#selProjectPeriodYear').val();
+                formData.ProjectInfo.ProjectPeriodMonth = $('#selProjectPeriodMonth').val();
+                formData.ProjectInfo.ContactsName = filterXSS($('#txtContactsName').val().trim());
+                formData.ProjectInfo.ContactsFixedTel = ($('#txtAreaFixedTel').val().trim() === "" ? "" : $('#txtAreaFixedTel').val().trim() + '-') + $('#txtContactsFixedTel').val().trim();
+                formData.ProjectInfo.ContactsMobileTel = filterXSS($('#txtContactsMobileTel').val().trim());
+                formData.ProjectInfo.ContactsEmail = filterXSS($('#txtContactsEmail').val().trim());
+                formData.ProjectInfo.EmailSubject = filterXSS($('#txtEmailSubject').val().trim());
+                formData.ProjectInfo.EmailContent = filterXSS($('#txtEmailContent').val().trim());
+
+                // 准备拟合作单位数据
+                formData.ProjectInfoCooperativeOrg = [];
+                formData.ProjectInfoCooperativeOrgReturnPeriod = [];
+                formData.ProjectInfoCooperativeOrgAnnualReturn = [];
+                var cooperativeOrgListEdit = $('.cooperativeOrgListEdit .orgList table tbody tr');
+                if (cooperativeOrgListEdit && cooperativeOrgListEdit.length > 0) {
+                    for (var i = 0; i < cooperativeOrgListEdit.length; i++) {
+                        var $row = $(cooperativeOrgListEdit[i]);
+                        formData.ProjectInfoCooperativeOrg.push({
+                            ProjectInfoID: $('#hidProjectInfoId').val(),
+                            OrgID: $row.data('orgid'),
+                            OrgType: $row.parent().parent().parent().data('porgtype'),
+                            OrgName: $row.find('strong').text()
+                        });
+
+                        formData.ProjectInfoCooperativeOrgReturnPeriod.push({
+                            ProjectInfoID: $('#hidProjectInfoId').val(),
+                            ReturnPeriodKV: $row.find('select[name="selCooperativeOrgReturnPeriod"]').val()
+                        });
+
+                        formData.ProjectInfoCooperativeOrgAnnualReturn.push({
+                            ProjectInfoID: $('#hidProjectInfoId').val(),
+                            AnnualReturn: $row.find('input[name="txtAnnualReturn"]').val().trim()
+                        });
+                    }
+                }
+
+                // 准备产品归属数据
+                formData.ProjectInfoRelProductInfo = [];
+                var projectRelProductList = $('.projectInfoRelProductInfoList table tbody tr');
+                if (projectRelProductList && projectRelProductList.length > 0) {
+                    for (var j = 0; j < projectRelProductList.length; j++) {
+                        formData.ProjectInfoRelProductInfo.push({
+                            ProjectInfoID: $('#hidProjectInfoId').val(),
+                            ProductInfoID: $(projectRelProductList[j]).data('id')
+                        });
+                    }
+                }
+
+                // 准备群发邮件推介数据
+                formData.ProjectInfoSendEmail = [];
+                var mailReceiver = $('#txtMailReceiverName').tagsinput('items');
+                if (mailReceiver && mailReceiver.length > 0) {
+                    $(mailReceiver).each(function (i, item) {
+                        formData.ProjectInfoSendEmail.push({
+                            ProjectInfoID: $('#hidProjectInfoId').val(),
+                            ReceiveUserAccountID: item.UserAccountID,
+                            ReceiveUserName: item.UserName,
+                            ReceiveUserOrgEmpID: item.OrgEmpId,
+                            ReceiveUserOrgID: item.Org_ID,
+                            EmailSubject: filterXSS($('#txtEmailSubject').val().trim()),
+                            EmailContent: filterXSS($('#txtEmailContent').val().trim())
+                        });
+                    });
+                }
+
+                $.ajax({
+                    url: dataServiceBaseUrl + 'api/ProjectInfo/ProjectInfo?sid=' + sid + '&clientInfo=' + getClientInfo(),
+                    type: 'put',
+                    data: JSON.stringify(formData),
+                    beforeSend: function () {
+                        if (action === 'save') {
+                            $('body').loadingUI({ text: '保存中...' });
+                            $('button[name=btnWf_Save]').button('loading');
+                        }
+                    },
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    async: true,
+                    cache: false,
+                    success: function (data) {
+                        if (data && data.Success === true && data.Data === 0) {
+                            $('#hidProjectInfoStatus').val('1');
+                            bModifiedFlag = false;
+                            callback();
+                        } else {
+                            bootbox.alert({ message: '保存失败！' });
+                        }
+                        if (action === 'save') {
+                            $('body').loadingUI('hide');
+                            $('button[name=btnWf_Save]').button('reset');
+                        }
+                    },
+                    error: function () {
+                        bootbox.alert({ message: '保存失败！' });
+                        if (action === 'save') {
+                            $('body').loadingUI('hide');
+                            $('button[name=btnWf_Save]').button('reset');
+                        }
+                    }
+                });
+            }
+        }
+
+        // 删除表单
+        function deleteForm(callback) {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/ProjectInfo/ProjectInfo?projectInfoId=' + $('#hidProjectInfoId').val() + '&sid=' + sid + '&clientInfo=' + getClientInfo(),
+                type: 'delete',
+                async: false,
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (callback) callback(data);
+                }
+            });
+        }
+
+        /******************************** 拟合作单位 begin ********************************/
+
+        // 打开拟合作单位选择框
+        function openOrgSelector() {
+            $('#frameOrgSelector').attr('src', '../Common/Selector/OrgSelector.html?selectedOrgStr=' + $('#txtCooperativeOrg').val() + '&unSelectOrgStr=' + $('#hidPublishOrgID').val() + '&isShowHQBusinessDept=1');
+            $('#cooperativeOrgSelectModal').modal({ backdrop: 'static', keyboard: false });
+        }
+
+        // 初始化时拟合作单位框
+        function initCooperativeOrgTagsInput(data) {
+            $('#txtCooperativeOrg').tagsinput({
+                itemValue: 'OrgID',
+                itemText: 'OrgName',
+                tagClass: function () {
+                    return 'label label-info';
+                }
+            });
+
+            $('#txtCooperativeOrg').on('itemRemoved', function (event) {
+                var orgtr = $('.cooperativeOrgListEdit table tbody').find('tr[data-orgid=' + event.item.OrgID + ']');
+                var orgtbody = orgtr.parent();
+                if (orgtr.siblings().length === 0) {
+                    orgtr.parent().parent().parent().prev().remove();
+                    orgtr.parent().parent().parent().remove();
+                } else {
+                    orgtr.remove();
+                    var rows = orgtbody.find('tr');
+                    for (var i = 0; i < rows.length; i++) {
+                        $(rows[i]).find('td[name="serialNum"]').text(i + 1);
+                    }
+                }
+
+                if ($('.cooperativeOrgListEdit table tbody tr').length === 0) {
+                    $('.cooperativeOrgListEdit').hide();
+                }
+
+                if (event && event.stopPropagation)
+                    event.stopPropagation();
+                else
+                    window.event.cancelBubble = true;
+            });
+
+            $('#txtCooperativeOrg').prev().find('input').prop('readonly', true).css('width', 85);
+
+            // 选择拟合作单位按钮大小变化
+            $('#txtCooperativeOrg').on('change', function () {
+                $('#btnSelectCooperativeOrg').css('height', $('#divCooperativeOrg .bootstrap-tagsinput').outerHeight(true));
+            });
+
+            // 获取拟合作单位回报获取周期字典数据，绑定数据
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/SysMaintain/Dictionary?sid=' + sid,
+                type: 'get',
+                data: {
+                    searchModel: {
+                        TypeId: 5,
+                        PageNum: 1,
+                        PageSize: 0,
+                        IsActive: 1
+                    }
+                },
+                dataType: 'json',
+                success: function (result) {
+                    if (result && result.Success === true && result.Data && result.Data.rows) {
+                        cooperativeOrgReturnPeriodDic = result.Data.rows;
+                        // 初始化拟合作单位批量设值窗口的下拉列表
+                        for (var i = 0; i < cooperativeOrgReturnPeriodDic.length; i++) {
+                            $('#selBatchCooperativeOrgReturnPeriod').append('<option value="' + cooperativeOrgReturnPeriodDic[i].Dkey + '">' + cooperativeOrgReturnPeriodDic[i].DValue + '</option>');
+                        }
+                        $('#selBatchCooperativeOrgReturnPeriod').select2({
+                            placeholder: '',
+                            selectOnClose: true,
+                            allowClear: false,
+                            minimumResultsForSearch: Infinity,
+                            width: '100%'
+                        }).change(function () {
+                            var txtBatchCooperativeOrgAnnualReturn = $('#batchCooperativeOrgAnnualReturn');
+                            if ($(this).val() == 7) {  // 不涉及
+                                txtBatchCooperativeOrgAnnualReturn.val(0).prop('readonly', true);
+                            } else {
+                                txtBatchCooperativeOrgAnnualReturn.prop('readonly', false);
+                            }
+                        });
+
+                        // 绑定已有数据
+                        if (data && data.length > 0) {
+                            for (var j = 0; j < data.length; j++) {
+                                $('#txtCooperativeOrg').tagsinput('add', data[j]);
+                            }
+                            renderCooperativeOrgInfo(data);
+                            $('.cooperativeOrgListEdit').show();
+                            bModifiedFlag = false;
+                        }
+                    }
+                }
+            });
+
+            // 拟合作单位验证
+            $('#txtCooperativeOrg').addClass('cooperativeOrg').removeAttr('placeholder');
+            $('#txtCooperativeOrg').change(function () {
+                if (this.value) {
+                    var popoverId = $('#txtCooperativeOrg').attr('aria-describedby');
+                    if (popoverId) {
+                        $('#' + popoverId).remove();
+                        $('#txtCooperativeOrg').attr('aria-describedby', '');
+                    }
+                }
+            });
+        }
+
+        // 拟合作单位选择页面回调函数
+        function addOrgToList() {
+            var selectedOrgArr = document.getElementById('frameOrgSelector').contentWindow.getSelectedOrgs();
+            $('#btnCloseCooperativeOrgSelectModal').click();
+            $('#txtCooperativeOrg').tagsinput('removeAll');
+            if (selectedOrgArr && selectedOrgArr.length > 0) {
+                for (var i = 0; i < selectedOrgArr.length; i++) {
+                    $('#txtCooperativeOrg').tagsinput('add', selectedOrgArr[i]);
+                }
+                renderCooperativeOrgInfo(selectedOrgArr);
+                $('.cooperativeOrgListEdit').show();
+            } else {
+                $('.cooperativeOrgListEdit').empty().hide();
+            }
+        }
+
+        // 生成拟合作单位信息
+        function renderCooperativeOrgInfo(data) {
+            if (!cooperativeOrgReturnPeriodDic) return false;
+
+            var hq = _.where(data, { OrgType: 1 });
+            var branch = _.where(data, { OrgType: 2 });
+            var subCompany = _.where(data, { OrgType: 3 });
+
+            if (hq && hq.length > 0) {
+                if ($('.cooperativeOrgListEdit .orgFolder[data-orgtype="1"]').length === 0) {
+                    var hqOrgFolder = '';
+                    hqOrgFolder += '<div class="orgFolder" data-orgtype="1">';
+                    hqOrgFolder += '<span class="collapse-icon fa fa-minus-square-o" style="cursor: default;">&nbsp;公司总部</span>';
+                    hqOrgFolder += '</div>';
+                    $('.cooperativeOrgListEdit').prepend(hqOrgFolder);
+                }
+                renderCooperativeOrgList(1, hq);
+            } else {
+                $('.cooperativeOrgListEdit .orgFolder[data-orgtype="1"]').remove();
+                $('.cooperativeOrgListEdit .orgList[data-porgtype="1"]').remove();
+            }
+
+            if (branch && branch.length > 0) {
+                if ($('.cooperativeOrgListEdit .orgFolder[data-orgtype="2"]').length === 0) {
+                    var branchOrgFolder = '';
+                    branchOrgFolder += '<div class="orgFolder" data-orgtype="2">';
+                    branchOrgFolder += '<span class="collapse-icon fa fa-minus-square-o" style="cursor: default;">&nbsp;分公司</span><span class="batchSetCooperativeOrg" title="批量设值" onclick="openBatchSetCooperativeOrgModel(2);">批量设值</span>';
+                    branchOrgFolder += '</div>';
+                    if ($('.cooperativeOrgListEdit .orgList[data-porgtype="1"]').length === 1) {
+                        $('.cooperativeOrgListEdit .orgList[data-porgtype="1"]').after(branchOrgFolder);
+                    } else {
+                        $('.cooperativeOrgListEdit').prepend(branchOrgFolder);
+                    }
+                }
+                renderCooperativeOrgList(2, branch);
+            } else {
+                $('.cooperativeOrgListEdit .orgFolder[data-orgtype="2"]').remove();
+                $('.cooperativeOrgListEdit .orgList[data-porgtype="2"]').remove();
+            }
+
+            if (subCompany && subCompany.length > 0) {
+                if ($('.cooperativeOrgListEdit .orgFolder[data-orgtype="3"]').length === 0) {
+                    var subCompanyOrgOrgFolder = '';
+                    subCompanyOrgOrgFolder += '<div class="orgFolder" data-orgtype="3">';
+                    subCompanyOrgOrgFolder += '<span class="collapse-icon fa fa-minus-square-o" style="cursor: default;">&nbsp;平台公司</span>';
+                    subCompanyOrgOrgFolder += '</div>';
+                    if ($('.cooperativeOrgListEdit .orgList[data-porgtype="2"]').length === 1) {
+                        $('.cooperativeOrgListEdit .orgList[data-porgtype="2"]').after(subCompanyOrgOrgFolder);
+                    } else if ($('.cooperativeOrgListEdit .orgList[data-porgtype="1"]').length === 1) {
+                        $('.cooperativeOrgListEdit .orgList[data-porgtype="1"]').after(subCompanyOrgOrgFolder);
+                    } else {
+                        $('.cooperativeOrgListEdit').prepend(subCompanyOrgOrgFolder);
+                    }
+                }
+                renderCooperativeOrgList(3, subCompany);
+            } else {
+                $('.cooperativeOrgListEdit .orgFolder[data-orgtype="3"]').remove();
+                $('.cooperativeOrgListEdit .orgList[data-porgtype="3"]').remove();
+            }
+
+            $('[name=selCooperativeOrgReturnPeriod]').select2({
+                placeholder: '',
+                selectOnClose: true,
+                allowClear: false,
+                minimumResultsForSearch: Infinity,
+                width: '100%'
+            }).change(function () {
+                var txtAnnualReturn = $(this).parent().parent().next().find('input[name=txtAnnualReturn]');
+                if ($(this).val() == 7) {  // 不涉及
+                    txtAnnualReturn.val(0).prop('readonly', true);
+                } else {
+                    txtAnnualReturn.prop('readonly', false);
+                }
+            });
+
+            $('[name=txtAnnualReturn]').each(function () {
+                $(this).rules('add', {
+                    required: true,
+                    number: true,
+                    messages: {
+                        required: '预期拟合作单位年化收益率不能为空！',
+                        number: '请输入正确的数值！'
+                    }
+                });
+            });
+
+            return false;
+        }
+
+        // 生成拟合作单位列表
+        function renderCooperativeOrgList(orgtype, data) {
+            var orgList;
+            if ($('.cooperativeOrgListEdit .orgList[data-porgtype="' + orgtype + '"]').length === 0) {
+                $('.cooperativeOrgListEdit .orgFolder[data-orgtype="' + orgtype + '"]').after('<div class="orgList collapse in" data-porgtype="' + orgtype + '">' +
+                    '<table class="table table-bordered table-hover table-condensed">' +
+                    '<tbody></tbody>' +
+                    '</table>' +
+                    '</div>');
+                for (var i = 0; i < data.length; i++) {
+                    $('.cooperativeOrgListEdit .orgList[data-porgtype="' + orgtype + '"] table tbody').append(bulidOrgHtml(data[i]));
+                }
+            } else {
+                orgList = $('.cooperativeOrgListEdit .orgList[data-porgtype="' + orgtype + '"] table tbody tr');
+                if (orgList && orgList.length > 0) {
+                    orgList.each(function () {
+                        if (_.where(data, { OrgID: $(this).data('orgid') }).length === 0) {
+                            $(this).remove();
+                        }
+                    });
+                }
+                for (var j = 0; j < data.length; j++) {
+                    if ($('.cooperativeOrgListEdit .orgList[data-porgtype="' + orgtype + '"] table tbody tr[data-orgid="' + data[j].OrgID + '"]').length === 0) {
+                        if (j === 0) {
+                            $('.cooperativeOrgListEdit .orgList[data-porgtype="' + orgtype + '"] table tbody').prepend(bulidOrgHtml(data[j]));
+                        } else {
+                            $('.cooperativeOrgListEdit .orgList[data-porgtype="' + orgtype + '"] table tbody tr[data-orgid="' + data[j - 1].OrgID + '"]').after(bulidOrgHtml(data[j]));
+                        }
+                    }
+                }
+            }
+
+            orgList = $('.cooperativeOrgListEdit .orgList[data-porgtype="' + orgtype + '"] table tbody tr');
+            for (var k = 0; k < orgList.length; k++) {
+                $(orgList[k]).find('td[name="serialNum"]').text(k + 1);
+            }
+        }
+
+        // 生成拟合作单位的html
+        function bulidOrgHtml(data) {
+            var html = '';
+            html += '<tr data-orgid="' + data.OrgID + '">';
+            html += '<td style="width: 50px; padding-left: 10px; text-align: center;" name="serialNum"></td>';
+            html += '<td><strong>' + data.OrgName + '</strong></td>';
+            html += '<td style="width: 30%;">';
+            html += '<div class="input-group">';
+            html += '<span class="input-group-addon required">预期拟合作单位回报获取周期</span>';
+            html += '<select class="form-control" name="selCooperativeOrgReturnPeriod">';
+            for (var j = 0; j < cooperativeOrgReturnPeriodDic.length; j++) {
+                html += '<option value="' + cooperativeOrgReturnPeriodDic[j].Dkey + '"' + (data.ReturnPeriodKV == cooperativeOrgReturnPeriodDic[j].Dkey ? ' selected="selected"' : '') + '>' + cooperativeOrgReturnPeriodDic[j].DValue + '</option>';
+            }
+            html += '</select>';
+            html += '</div>';
+            html += '</td>';
+            html += '<td style="width: 40%;">';
+            html += '<div class="input-group">';
+            html += '<span class="input-group-addon required">预期拟合作单位年化收益率</span>';
+            html += '<input class="form-control annualReturn" id="txtAnnualReturn_' + data.OrgID + '" name="txtAnnualReturn" data-popover-placement="left"' + (data.ReturnPeriodKV === 7 ? ' readonly="readonly"' : '') + ' type="text" maxlength="10" value="' + (data.AnnualReturn != undefined ? data.AnnualReturn : '') + '" aria-required="true">';
+            html += '<span class="input-group-addon">%</span>';
+            html += '</div>';
+            html += '</td>';
+            html += '</tr>';
+            return html;
+        }
+
+        // 打开拟合作单位批量设值窗口
+        function openBatchSetCooperativeOrgModel(orgType) {
+            if ($('#batchSetCooperativeOrgModel').data('orgtype') != orgType) {
+                var modalTitle = '批量设值';
+                if (orgType === 1) {
+                    modalTitle += '（公司总部）';
+                } else if (orgType === 2) {
+                    modalTitle += '（分公司）';
+                } else if (orgType === 3) {
+                    modalTitle += '（平台公司）';
+                }
+                $('#batchSetCooperativeOrgModel .modal-title').text(modalTitle);
+                $('#selBatchCooperativeOrgReturnPeriod').val($('#selBatchCooperativeOrgReturnPeriod')[0][0].value);
+                $('#selBatchCooperativeOrgReturnPeriod').trigger('change.select2');
+                $('#batchCooperativeOrgAnnualReturn').val('');
+            }
+
+            $('#batchSetCooperativeOrgModel').data('orgtype', orgType).modal({ backdrop: 'static', keyboard: false });
+        }
+
+        // 拟合作单位批量赋值
+        function batchSetCooperativeOrg() {
+            var returnPeriod = $('#selBatchCooperativeOrgReturnPeriod').val();
+            var annualReturn = $('#batchCooperativeOrgAnnualReturn').val().trim();
+            var cooperativeOrgListEdit = $('.cooperativeOrgListEdit .orgList[data-porgtype="' + $('#batchSetCooperativeOrgModel').data('orgtype') + '"] table tbody tr');
+            cooperativeOrgListEdit.find('[name="selCooperativeOrgReturnPeriod"]').val(returnPeriod);
+            cooperativeOrgListEdit.find('[name="selCooperativeOrgReturnPeriod"]').trigger('change.select2');
+            cooperativeOrgListEdit.find('[name="txtAnnualReturn"]').each(function () {
+                $(this).val(annualReturn);
+                if (returnPeriod == 7) {  // 不涉及
+                    $(this).prop('readonly', true);
+                } else {
+                    $(this).prop('readonly', false);
+                }
+                var popoverId = $(this).attr('aria-describedby');
+                if (popoverId && parseFloat(annualReturn)) {
+                    $('#' + popoverId).remove();
+                    $(this).attr('aria-describedby', '');
+                }
+            });
+            $('#btnCloseBatchSetCooperativeOrgModel').click();
+        }
+
+        /******************************** 拟合作单位 end ********************************/
+
+        /******************************** 产品归属 begin ********************************/
+
+        // 打开归属产品选择框
+        function openProductSelector() {
+            $('#frameProductInfoSelector').attr('src', '../Common/Selector/ProductSelector.html?multiCheck=0&selectedProductStr=' + $('#txtProjectInfoRelProductInfo').val());
+            $('#productInfoSelectModal').modal({ backdrop: 'static', keyboard: false });
+        }
+
+        // 初始化归属产品选择框
+        function initProjectInfoRelProductInfoTagsInput(data) {
+            $('#txtProjectInfoRelProductInfo').tagsinput({
+                itemValue: 'ProductInfoID',
+                itemText: 'ProductInfoTitle',
+                itemTitle: function (e) { return e.ProductInfoTitle },
+                tagClass: function () {
+                    return 'label label-info';
+                }
+            });
+
+            $('#txtProjectInfoRelProductInfo').on('itemAdded', function (event) {
+                renderProjectInfoRelProductInfo(event.item.ProductInfoID, event.item.ProductInfoTitle);
+            });
+
+            $('#txtProjectInfoRelProductInfo').on('itemRemoved', function (event) {
+                $('.projectInfoRelProductInfoList table tbody').find('tr[data-id=' + event.item.ProductInfoID + ']').remove();
+                var $rows = $('.projectInfoRelProductInfoList table tbody tr');
+                if (!$rows || $rows.length === 0) {
+                    $('.projectInfoRelProductInfoList').hide();
+                } else {
+                    for (var i = 0; i < $rows.length; i++) {
+                        $($rows[i]).find('td[name="serialNum"]').text(i + 1);
+                    }
+                }
+
+                if (event && event.stopPropagation)
+                    event.stopPropagation();
+                else
+                    window.event.cancelBubble = true;
+            });
+
+            $('#txtProjectInfoRelProductInfo').prev().find('input').prop('readonly', true).css('width', 70);
+
+            // 选择产品按钮大小变化
+            $('#txtProjectInfoRelProductInfo').on('change', function () {
+                $('#btnSelectProductInfo').css('height', $('#divProjectInfoRelProductInfo .bootstrap-tagsinput').outerHeight(true));
+            });
+
+            if (data && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    $('#txtProjectInfoRelProductInfo').tagsinput('add', data[i]);
+                }
+                $('.projectInfoRelProductInfoList').show();
+            }
+
+            bModifiedFlag = false;
+        }
+
+        // 归属产品选择页面回调函数
+        function addProductToList() {
+            var selectedProductArr = document.getElementById('frameProductInfoSelector').contentWindow.getSelectedProductArr();
+            $('#btnCloseProductInfoSelectModal').click();
+            $('.projectInfoRelProductInfoList table tbody').empty();
+            $('#txtProjectInfoRelProductInfo').tagsinput('removeAll');
+            if (selectedProductArr && selectedProductArr.length > 0) {
+                $('.projectInfoRelProductInfoList').show();
+                for (var i = 0; i < selectedProductArr.length; i++) {
+                    $('#txtProjectInfoRelProductInfo').tagsinput('add', selectedProductArr[i]);
+                }
+            } else {
+                $('.projectInfoRelProductInfoList').hide();
+            }
+        }
+
+        // 生成产品归属信息
+        function renderProjectInfoRelProductInfo(id, title) {
+            var serialNum = 1;
+            var $rows = $('.projectInfoRelProductInfoList table tbody tr');
+            if ($rows && $rows.length > 0) {
+                serialNum = parseInt($($rows[$rows.length - 1]).find('td[name="serialNum"]').text()) + 1;
+            }
+            var row = '<tr class="h35" data-id="' + id + '">' +
+                '<td style="width: 50px; padding-left: 10px;" name="serialNum">' + serialNum + '</td>' +
+                '<td><a title="' + title + '" target="_blank" href="../ProductInfo/Read.html#id=' + id + '">' + title + '</a></td>' +
+                '</tr>';
+
+            $('.projectInfoRelProductInfoList table tbody').append(row);
+        }
+
+        /******************************** 产品归属 end ********************************/
+
+        // 初始化收件人选择框
+        function initMailReceiverTagsInput() {
+            $('#txtMailReceiverName').GWRecommendedUserSelector({
+                selectOrgOrUser: 1, // 选择部门还是人员 1：人员，2：部门。
+                isMultiSelect: true,
+                selectorPath: '../../../assets/vendors/gw-recommendedUserSelector/src/RecommendedUserSelector.html',
+                orgRootId: 0
+            });
+
+            // 收件人验证
+            $('#txtMailReceiverName').addClass('mailReceiverName');
+            $('#txtMailReceiverName').css('width', '90%');
+
+            $('#txtMailReceiverName').change(function () {
+                if (this.value) {
+                    var popoverId = $('#txtMailReceiverName').attr('aria-describedby');
+                    if (popoverId) {
+                        $('#' + popoverId).remove();
+                        $('#txtMailReceiverName').attr('aria-describedby', '');
+                    }
+                }
+            });
+
+            // 选择收件人按钮大小变化
+            $('#txtMailReceiverName').on('change', function () {
+                $('#divSendEmail .btnToSelect').css('height', $('#divSendEmail .bootstrap-tagsinput').outerHeight(true));
+            });
+        }
+
+        // 初始化图片查看控件
+        function initLightBox() {
+            lightbox.option({
+                showImageNumberLabel: true,
+                albumLabel: '第%1张，共%2张。',
+                disableScrolling: false,
+                alwaysShowNavOnTouchDevices: true,
+                wrapAround: true
+            });
+        }
+    </script>
+</body>
+</html>

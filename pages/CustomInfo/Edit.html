@@ -1,0 +1,738 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>文件信息</title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/blueimp-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+    <link href="../../assets/vendors/blueimp-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/lightbox2/dist/css/lightbox.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body>
+    <div class="fileInfo-publishView">
+        <div class="container-fluid">
+            <div class="row processInfo">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl10 textLeft">
+                    <span>当前操作：</span>
+                    <span class="process-currentTask"></span>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr10 textRight">
+                    <a class="process-detail" href="#">流转明细及回退意见</a>&nbsp;&nbsp;
+                    <!--<a class="process-picture" href="#" data-lightbox="processPic" data-title="流程图示">流程图示</a>-->
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pl10 textLeft">
+                    <span class="process-backReasonDesc"></span>
+                    <span class="process-backReason"></span>
+                </div>
+            </div>
+
+            <div class="row processToolBar">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 textLeft">
+                    <div class="alert alert-danger formTip">
+                        <span class="fa fa-info-circle"></span>
+                        <span>红色标识字段为必填项！</span>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 textRight">
+                    <div class="btn-group processButtonGroup">
+                    </div>
+                </div>
+            </div>
+
+            <form id="form1" novalidate="novalidate">
+                <div class="row mt10">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon required">文件名称</span>
+                            <input class="form-control" id="txtTitle" name="txtTitle" data-popover-placement="bottom" type="text" maxlength="500" placeholder="文件名称" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row mt10">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <form class="fileupload" id="formMainDocUploader" method="POST" enctype="multipart/form-data">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title required">文件正文</div>
+                                <div class="fileupload-buttonbar btn-group btn-group-sm">
+                                    <span class="btn btn-success fileinput-button">
+                                        <input name="files[]" type="file" />
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                        <span>添加文件</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-condensed table-bordered fileTable" role="presentation">
+                                    <thead>
+                                        <tr>
+                                            <td>名称</td>
+                                            <td class="w150">大小/上传状态</td>
+                                            <td class="w135">操作</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="files"></tbody>
+                                </table>
+                                <div class="noRecordTip">
+                                </div>
+                            </div>
+                        </div>
+                        <input class="checkMainDoc" id="txtCheckMainDoc" name="txtCheckMainDoc" data-popover-placement="bottom" />
+                    </form>
+                </div>
+            </div>
+
+            <div class="row mt10">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <form class="fileupload" id="formAttachmentUploader" method="POST" enctype="multipart/form-data">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">相关附件</div>
+                                <div class="fileupload-buttonbar btn-group btn-group-sm">
+                                    <span class="btn btn-success fileinput-button">
+                                        <input type="file" name="files[]" multiple />
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                        <span>添加文件</span>
+                                    </span>
+                                    <button class="btn btn-primary start" type="submit">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span>上传全部</span>
+                                    </button>
+                                    <button class="btn btn-warning cancel" type="reset">
+                                        <i class="glyphicon glyphicon-ban-circle"></i>
+                                        <span>取消全部</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-condensed table-bordered fileTable" role="presentation">
+                                    <thead>
+                                        <tr>
+                                            <td>名称</td>
+                                            <td class="w150">大小/上传状态</td>
+                                            <td class="w135">操作</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="files"></tbody>
+                                </table>
+                                <div class="noRecordTip">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <form id="form2" novalidate="novalidate">
+                <div class="row mt10">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">联系方式</div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pr0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon required">联系人</span>
+                                            <input class="form-control" id="txtContactsName" name="txtContactsName" data-popover-placement="top" type="text" maxlength="20" placeholder="联系人" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pr0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon required">电话</span>
+                                            <input class="form-control w65" id="txtAreaFixedTel" name="txtAreaFixedTel" data-popover-placement="top" type="text" maxlength="4" placeholder="区号" />
+                                            <span class="input-group-addon required">-</span>
+                                            <input class="form-control" id="txtContactsFixedTel" name="txtContactsFixedTel" data-popover-placement="top" type="text" maxlength="20" placeholder="电话" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pr0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon minWidth64 required">手机</span>
+                                            <input class="form-control" id="txtContactsMobileTel" name="txtContactsMobileTel" data-popover-placement="top" type="text" maxlength="11" placeholder="手机" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                        <div class="input-group">
+                                            <span class="input-group-addon minWidth64 required">邮箱</span>
+                                            <input class="form-control" id="txtContactsEmail" name="txtContactsEmail" data-popover-placement="top" type="text" maxlength="100" placeholder="邮箱" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <script id="common-template-upload" type="text/x-tmpl">
+            {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-upload fade">
+                <td style="text-align: left;">
+                    <div class="name" title="{%=file.name%}">
+                        <i class="{%=getAttachIcon(file.name)%}"></i>
+                        <span>{%=file.name%}</span>
+                    </div>
+                    <div class="error text-danger ml20"></div>
+                </td>
+                <td>
+                    <p class="size">Processing...</p>
+                    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+                </td>
+                <td style="text-align: right;">
+                    <div class="btn-group btn-group-sm">
+                        {% if (!i && !o.options.autoUpload) { %}
+                        <button class="btn btn-primary start">
+                            <i class="glyphicon glyphicon-upload"></i>
+                            <span>上传</span>
+                        </button>
+                        {% } %}
+                        {% if (!i) { %}
+                        <button class="btn btn-warning cancel">
+                            <i class="glyphicon glyphicon-ban-circle"></i>
+                            <span>取消</span>
+                        </button>
+                        {% } %}
+                    </div>
+                </td>
+            </tr>
+            {% } %}
+        </script>
+        <script id="common-template-download" type="text/x-tmpl">
+            {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-download fade">
+                <td style="text-align: left;">
+                    <div class="name" style="display:inline-block">
+                        <i class="{%=getAttachIcon(file.Name)%}"></i>
+                        {% if (file.Url) { %}
+                        <a href="#" title="{%=decodeURI(file.Name)%}" data-downloadurl="{%=file.Url%}" onclick="return downLoadFile(this);">{%=decodeURI(file.Name)%}</a>
+                        {% } else { %}
+                        <span>{%=decodeURI(file.Name)%}</span>
+                        {% } %}
+                    </div>
+                    {% if (file.Error) { %}
+                    <div><span class="label label-danger">Error</span> {%=file.Error%}</div>
+                    {% } %}
+                </td>
+                <td>
+                    <span class="size">{%= o.formatFileSize(file.Size)%}</span>
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        {% if (file.Url) { %}
+                        <button class="btn btn-primary download" data-type="GET" data-url="{%=file.Url%}">
+                            <i class="glyphicon glyphicon-download"></i>
+                            <span>下载</span>
+                        </button>
+                        {% } %}
+                        {% if (file.DeleteUrl) { %}
+                        <button class="btn btn-danger delete" data-type="DELETE" data-url="{%=file.DeleteUrl%}">
+                            <i class="glyphicon glyphicon-trash"></i>
+                            <span>删除</span>
+                        </button>
+                        {% } else { %}
+                        <button class="btn btn-warning cancel">
+                            <i class="glyphicon glyphicon-ban-circle"></i>
+                            <span>取消</span>
+                        </button>
+                        {% } %}
+                    </div>
+                </td>
+            </tr>
+            {% } %}
+        </script>
+        <script id="common-template-show" type="text/x-tmpl">
+            {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-show">
+                <td style="text-align: left;">
+                    <div class="name">
+                        <i class="{%=getAttachIcon(file.Name)%}"></i>
+                        {% if (file.Url) { %}
+                        <a href="#" title="{%=decodeURI(file.Name)%}" data-downloadurl="{%=file.Url%}" onclick="return downLoadFile(this);">{%=decodeURI(file.Name)%}</a>
+                        {% } else { %}
+                        <span>{%=decodeURI(file.Name)%}</span>
+                        {% } %}
+                    </div>
+                    {% if (file.Error) { %}
+                    <div><span class="label label-danger">Error</span> {%=file.Error%}</div>
+                    {% } %}
+                </td>
+                <td>
+                    <span class="size">{%= formatFileSize(file.Size)%}</span>
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        {% if (file.Url) { %}
+                        <button class="btn btn-primary download" data-downloadurl="{%=file.Url%}">
+                            <i class="glyphicon glyphicon-download"></i>
+                            <span>下载</span>
+                        </button>
+                        {% } %}
+                        {% if (file.DeleteUrl) { %}
+                        <button class="btn btn-danger delete" data-deleteurl="{%=file.DeleteUrl%}">
+                            <i class="glyphicon glyphicon-trash"></i>
+                            <span>删除</span>
+                        </button>
+                        {% } %}
+                    </div>
+                </td>
+            </tr>
+            {% } %}
+        </script>
+        <a id="totop" href="#" title="回到顶部"><i class="fa fa-angle-up"></i></a>
+        <input type="hidden" id="hidFileInfoId" />
+        <input type="hidden" id="hidFileInfoStatus" />
+        <!--是否机构部门，工作流使用字段-->
+        <input id="wfIsCollaborateDept" type="hidden" />
+        <a class="none" id="hidPreviewLink" href="" target="_blank"></a>
+        <iframe class="w1 h1 none" id="hidFileFrame"></iframe>
+    </div>
+    <!--[if lt IE 9]>
+    <script src="../../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/jquery-tools-min.js" type="text/javascript"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../../assets/js/workFlow.min.js?v=1.0.2" type="text/javascript"></script>
+    <script src="../../assets/vendors/jquery-validation/dist/jquery.validate.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/jquery-validation/src/localization/messages_zh.js"></script>
+    <script src="../../assets/vendors/blueimp-file-upload/js/vendor/jquery.ui.widget.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-tmpl/js/tmpl.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-load-image/js/load-image.all.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-file-upload/js/jquery.iframe-transport.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-file-upload/js/jquery.fileupload.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-file-upload/js/jquery.fileupload-process.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-file-upload/js/jquery.fileupload-validate.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-file-upload/js/jquery.fileupload-ui.js?v=1.0.1" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-file-upload/js/jquery.fileupload-image.js" type="text/javascript"></script>
+    <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->
+    <!--[if (gte IE 8)&(lt IE 10)]>
+    <script src="../../../assets/vendors/blueimp-file-upload/js/cors/jquery.xdr-transport.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/underscore/underscore-min.js"></script>
+    <script src="../../assets/vendors/xss/dist/xss.min.js"></script>
+    <script src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script src="../../assets/vendors/lightbox2/dist/js/lightbox.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/platform.js/platform.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootbox.js/bootbox.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var bModifiedFlag = false;
+        var bDeleteFlag = false;
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                initWorkFlow();
+                initValidator();
+                loadForm();
+                bindEvent();
+                initLightBox();
+            });
+        });
+
+        // 初始化工作流
+        function initWorkFlow() {
+            $(document).Workflow('ProcessInfo', {
+                Btn: {
+                    // 点击保存按钮
+                    Save: function () {
+                        saveForm('save', function () {
+                            WorkflowAction.Save();
+                        });
+                    },
+                    // 点击预览
+                    Preview: function () {
+                        saveForm('preview', function () {
+                            document.getElementById('hidPreviewLink').click();
+                        });
+                    },
+                    // 点击下一步按钮
+                    Next: function () {
+                        saveForm('next', function () {
+                            WorkflowAction.Next();
+                        });
+                    },
+                    // 点击删除按钮
+                    Delete: function () {
+                        bootbox.confirm({
+                            size: 'small',
+                            message: "确定要删除吗？",
+                            callback: function (result) {
+                                if (result === true) {
+                                    deleteForm(function (data) {
+                                        if (data && data.Success === true && data.Data === 0) {
+                                            bModifiedFlag = false;
+                                            bDeleteFlag = true;
+                                            bootbox.alert({
+                                                message: '删除成功！',
+                                                callback: function () {
+                                                    WorkflowEngine.RedirectToDoListPage();
+                                                }
+                                            });
+                                        } else {
+                                            bootbox.alert({ message: '删除失败！' });
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        };
+
+        // 初始化表单验证控件
+        function initValidator() {
+            $.validator.addMethod("antiSqlInject", function (value, element, params) {
+                if (value) {
+                    return !AntiSqlInject($(element).val());
+                } else {
+                    return value;
+                }
+            }, "输入内容中包含非法字符！");
+
+            $.validator.addMethod("checkAreaFixedTel", function (value, element) {
+                var fixedTel = /^(0[0-9]{2,3})?$/;
+                return this.optional(element) || fixedTel.test(value);
+            }, "请填写正确的电话区号！");
+
+            $.validator.addMethod("checkFixedTel", function (value, element) {
+                var fixedTel = /^([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/;
+                return this.optional(element) || fixedTel.test(value);
+            }, "请填写正确的电话号码！");
+
+            $.validator.addMethod("checkMobileTel", function (value, element) {
+                var mobileTel = /^1[3|4|5|7|8]\d{9}$/;
+                return this.optional(element) || mobileTel.test(value);
+            }, "请填写正确的手机号码！");
+
+            $.validator.addMethod("checkEmail", function (value, element) {
+                var email = /^[0-9a-z][_.0-9a-z-]{0,31}@([0-9a-z][0-9a-z-]{0,30}[0-9a-z]\.){1,4}[a-z]{2,4}$/;
+                return this.optional(element) || email.test(value);
+            }, "邮箱格式不正确！");
+
+            $.validator.addMethod("checkMainDoc", function (value, element) {
+                var mainDoc = $('#formMainDocUploader').find('tbody.files tr');
+                if (mainDoc && (mainDoc.hasClass('template-download') || mainDoc.hasClass('template-show'))) {
+                    return true;
+                }
+                return false;
+            }, "必须上传文件正文！");
+
+            $('#form1').validate({
+                rules: {
+                    txtTitle: { required: true, antiSqlInject: true }
+                },
+                messages: {
+                    txtTitle: { required: '文件名称不能为空！' }
+                },
+                showErrors: jqValidationShowErrors
+            });
+
+            $('#formMainDocUploader').validate({
+                rules: {
+                    txtCheckMainDoc: { checkMainDoc: true }
+                },
+                showErrors: jqValidationShowErrors
+            });
+
+            $('#form2').validate({
+                rules: {
+                    txtContactsName: { required: true, antiSqlInject: true },
+                    txtAreaFixedTel: { required: false, checkAreaFixedTel: true },
+                    txtContactsFixedTel: { required: true, checkFixedTel: true },
+                    txtContactsMobileTel: { required: true, checkMobileTel: true },
+                    txtContactsEmail: { required: true, checkEmail: true }
+                },
+                messages: {
+                    txtContactsName: { required: "联系人不能为空！" },
+                    txtContactsFixedTel: { required: "联系人电话不能为空！" },
+                    txtContactsMobileTel: { required: "联系人手机不能为空！" },
+                    txtContactsEmail: { required: "联系人邮箱不能为空！" }
+                },
+                showErrors: jqValidationShowErrors
+            });
+        }
+
+        // 检查表单状态，如果有未保存的修改，返回true，否则返回false
+        function checkFormModified() {
+            return bModifiedFlag;
+        }
+
+        // 绑定事件
+        function bindEvent() {
+            //表单改动监听事件
+            $('#txtTitle,#txtContactsName,#txtAreaFixedTel,#txtContactsFixedTel,#txtContactsMobileTel,#txtContactsEmail').change(function () {
+                bModifiedFlag = true;
+            });
+
+            //window.onbeforeunload = function (e) {
+            //    e = e || window.event;
+            //    if ($('#hidFileInfoStatus').val() == '0' && bDeleteFlag === false && e) {
+            //        deleteForm();
+            //    }
+            //};
+
+            // 回到顶部功能
+            $(window).scroll(function () {
+                if ($(this).scrollTop() < 100) {
+                    $('#totop').fadeOut();
+                } else {
+                    $('#totop').fadeIn();
+                }
+            });
+            $('#totop').on('click', function () {
+                $('html,body').animate({ scrollTop: 0 }, 'fast');
+                return false;
+            });
+        }
+
+        // 初始化上传控件
+        function initFileUploader(uploaderId, documentType, data) {
+            var $uploader = $('#' + uploaderId);
+
+            var uploaderOption = {
+                url: dataServiceBaseUrl + 'api/Common/FileManage?moduleTypeKV=5&itemId=' + $('#hidFileInfoId').val() + '&documentType=' + documentType + '&sid=' + sid,
+                dataType: 'json',
+                autoUpload: false,
+                uploadTemplateId: 'common-template-upload',
+                downloadTemplateId: 'common-template-download',
+                maxFileSize: 50000000,
+                minFileSize: 1
+            };
+
+            // 正文uploader特殊设置
+            if (uploaderId === 'formMainDocUploader') {
+                uploaderOption.acceptFileTypes = /(\.|\/)(pdf)$/i;
+                uploaderOption.maxNumberOfFiles = 1;
+                uploaderOption.limitMultiFileUploads = 1;
+                uploaderOption.singleFileUploads = false;
+            }
+
+            // 初始化
+            $uploader.fileupload(uploaderOption);
+
+            //绑定数据
+            if (data && data.files.length > 0) {
+                var tempData = _.where(data.files, { DocumentType: documentType });
+                if (uploaderId === 'formMainDocUploader' && tempData && tempData.length > 0) {
+                    tempData = _.where(tempData, { Type: 'pdf' });
+                }
+                if (tempData && tempData.length > 0) {
+                    var docData = { files: tempData };
+
+                    $uploader.find('tbody.files').html(tmpl(document.getElementById('common-template-show').innerHTML.trim(), docData));
+
+                    $uploader.on('click', 'tbody.files button.download', function () {
+                        return downLoadFile(this);
+                    });
+
+                    $uploader.on('click', 'tbody.files button.delete', function () {
+                        var $row = $(this);
+                        $.ajax({
+                            url: $row.data('deleteurl'),
+                            type: 'delete',
+                            async: false,
+                            cache: false,
+                            success: function (data) {
+                                if (data && data.Success === true && data.Data === 0) {
+                                    $row.parent().parent().parent().remove();
+                                    if ($uploader.find('tbody.files tr').length === 0) {
+                                        $uploader.find('table').hide();
+                                        $uploader.find('div.noRecordTip').show();
+                                        if (uploaderId === 'formMainDocUploader') {
+                                            $uploader.find('span.fileinput-button').removeAttr('disabled');
+                                            $uploader.find('span.fileinput-button input').prop('disabled', false);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    });
+
+                    $uploader.find('table').show();
+
+                    // 正文禁用上传按钮
+                    if (uploaderId === 'formMainDocUploader') {
+                        $uploader.find('span.fileinput-button').attr('disabled', 'disabled');
+                        $uploader.find('span.fileinput-button input').prop('disabled', true);
+                    }
+                } else {
+                    $uploader.find('div.noRecordTip').show();
+                }
+            } else {
+                $uploader.find('div.noRecordTip').show();
+            }
+        }
+
+        // 加载表单
+        function loadForm() {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/FileInfo/FileInfo/GetFileInfoByProcessId?sid=' + sid,
+                type: 'get',
+                data: {
+                    processId: $.url().param("processId").trim()
+                },
+                beforeSend: function () {
+                    $('body').loadingUI({ text: '加载中...' });
+                },
+                async: true,
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (data && data.Success === true && data.Data) {
+                        // 保存文件信息ID
+                        $('#hidFileInfoId').val(data.Data.FileInfo.ID);
+                        // 设置预览a标签链接
+                        $('#hidPreviewLink').attr('href', 'Preview.html#id=' + data.Data.FileInfo.ID);
+                        // 保存文件状态字段
+                        $('#hidFileInfoStatus').val(data.Data.FileInfo.Status);
+                        // 文件名称
+                        $('#txtTitle').val(data.Data.FileInfo.Title);
+                        // 文件
+                        initFileUploader('formMainDocUploader', 1, data.Data.Documents);
+                        initFileUploader('formAttachmentUploader', 2, data.Data.Documents);
+                        // 联系方式
+                        $('#txtContactsName').val(data.Data.FileInfo.ContactsName);
+                        var tel = data.Data.FileInfo.ContactsFixedTel.split('-');
+                        if (tel.length === 1) {
+                            $('#txtContactsFixedTel').val(data.Data.FileInfo.ContactsFixedTel);
+                        } else if (tel.length === 2) {
+                            if (tel[0].length > 4) {
+                                $('#txtContactsFixedTel').val(data.Data.FileInfo.ContactsFixedTel);
+                            } else {
+                                $('#txtAreaFixedTel').val(tel[0]);
+                                $('#txtContactsFixedTel').val(tel[1]);
+                            }
+                        } else if (tel.length === 3) {
+                            $('#txtAreaFixedTel').val(tel[0]);
+                            $('#txtContactsFixedTel').val(tel[1] + '-' + tel[2]);
+                        }
+                        $('#txtContactsMobileTel').val(data.Data.FileInfo.ContactsMobileTel);
+                        $('#txtContactsEmail').val(data.Data.FileInfo.ContactsEmail);
+                        // 判断用户是否是录入员
+                        checkUserIsCollaborateDeptUnitPublisher();
+                        // 重置修改状态
+                        bModifiedFlag = false;
+                    } else {
+                        bootbox.alert({ message: '加载失败！' });
+                    }
+                    $('body').loadingUI('hide');
+                },
+                error: function () {
+                    bootbox.alert({ message: '加载失败！' });
+                    $('body').loadingUI('hide');
+                }
+            });
+        }
+
+        // 判断用户是否录入员
+        function checkUserIsCollaborateDeptUnitPublisher() {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/Common/Common/CheckUserIsCollaborateDept?sid=' + sid,
+                type: 'get',
+                async: true,
+                cache: false,
+                success: function (data) {
+                    if (data && data.Success === true) {
+                        $('#wfIsCollaborateDept').val(data.Data);
+                    } else {
+                        bootbox.alert({ message: '获取身份失败！' });
+                    }
+                },
+                error: function () {
+                    bootbox.alert({ message: '获取身份失败！' });
+                }
+            });
+        }
+
+        // 保存表单
+        function saveForm(action, callback) {
+            if ($('#wfIsCollaborateDept').val().trim() !== "" && $('#form1').valid() && $('#formMainDocUploader').valid() && $('#form2').valid() && checkFileUploadState()) {
+                var formData = {};
+
+                formData.FileInfo = {};
+                formData.FileInfo.ID = $('#hidFileInfoId').val();
+                formData.FileInfo.ProcessID = $.url().param("processId").trim(),
+                formData.FileInfo.Title = filterXSS($('#txtTitle').val().trim());
+                formData.FileInfo.ContactsName = filterXSS($('#txtContactsName').val().trim());
+                formData.FileInfo.ContactsMobileTel = filterXSS($('#txtContactsMobileTel').val().trim());
+                formData.FileInfo.ContactsFixedTel = ($('#txtAreaFixedTel').val().trim() === "" ? "" : $('#txtAreaFixedTel').val().trim() + '-') + $('#txtContactsFixedTel').val().trim();
+                formData.FileInfo.ContactsEmail = filterXSS($('#txtContactsEmail').val().trim());
+
+                $.ajax({
+                    url: dataServiceBaseUrl + 'api/FileInfo/FileInfo?sid=' + sid + '&clientInfo=' + getClientInfo(),
+                    type: 'put',
+                    data: JSON.stringify(formData),
+                    beforeSend: function () {
+                        if (action === 'save') {
+                            $('body').loadingUI({ text: '保存中...' });
+                            $('button[name=btnWf_Save]').button('loading');
+                        }
+                    },
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        if (data && data.Success === true && data.Data === 0) {
+                            $('#hidFileInfoStatus').val('1');
+                            bModifiedFlag = false;
+                            callback();
+                        } else {
+                            bootbox.alert({ message: '保存失败！' });
+                        }
+                        if (action === 'save') {
+                            $('body').loadingUI('hide');
+                            $('button[name=btnWf_Save]').button('reset');
+                        }
+                    },
+                    error: function () {
+                        bootbox.alert({ message: '保存失败！' });
+                        if (action === 'save') {
+                            $('body').loadingUI('hide');
+                            $('button[name=btnWf_Save]').button('reset');
+                        }
+                    }
+                });
+            }
+        }
+
+        // 删除表单
+        function deleteForm(callback) {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/FileInfo/FileInfo?fileInfoId=' + $('#hidFileInfoId').val() + '&sid=' + sid + '&clientInfo=' + getClientInfo(),
+                type: 'delete',
+                async: false,
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (callback) callback(data);
+                }
+            });
+        }
+
+        // 初始化图片查看控件
+        function initLightBox() {
+            lightbox.option({
+                showImageNumberLabel: true,
+                albumLabel: '第%1张，共%2张。',
+                disableScrolling: false,
+                alwaysShowNavOnTouchDevices: true,
+                wrapAround: true
+            });
+        }
+    </script>
+</body>
+</html>

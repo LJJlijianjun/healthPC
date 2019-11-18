@@ -1,0 +1,489 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>产品</title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/lightbox2/dist/css/lightbox.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="productInfo-publishView">
+        <div class="container-fluid">
+            <div class="row processInfo">
+                <div class="col-xs-6 pl10 textLeft">
+                    <span>当前操作：</span>
+                    <span class="process-currentTask"></span>
+                </div>
+                <div class="col-xs-6 pr10 textRight">
+                    <a class="process-detail" href="#">流转明细及回退意见</a>&nbsp;&nbsp;
+                    <!--<a class="process-picture" data-lightbox="processPic" data-title="流程图示" href="#">流程图示</a>-->
+                </div>
+                <div class="col-xs-12 pl10 textLeft">
+                    <span class="process-backReasonDesc"></span>
+                    <span class="process-backReason"></span>
+                </div>
+            </div>
+
+            <div class="row processToolBar">
+                <div class="col-xs-6 textLeft">
+                    <div class="alert alert-danger formTip">
+                        <span class="fa fa-info-circle"></span>
+                        <span>红色标识字段为必填项！</span>
+                    </div>
+                </div>
+                <div class="col-xs-6 textRight">
+                    <div class="btn-group processButtonGroup">
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default mt10">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        产品信息
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <div class="input-group pr15">
+                                <span class="input-group-addon required">产品名称</span>
+                                <input class="form-control" id="txtTitle" name="txtTitle" data-popover-placement="bottom" type="text" maxlength="500" placeholder="产品名称" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="input-group pr15">
+                                <span class="input-group-addon required">产品类型</span>
+                                <input class="form-control" id="txtProductType" name="txtProductType" data-popover-placement="bottom" type="text" maxlength="500" placeholder="产品类型" readonly="readonly"/>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="input-group">
+                                <span class="input-group-addon required">产品周期</span>
+                                <input class="form-control" id="txtPeriod" name="txtPeriod" data-popover-placement="bottom" type="text" maxlength="500" placeholder="产品周期" readonly="readonly"/>
+                                <span class="input-group-addon">天</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt10">
+                        <div class="col-xs-4">
+                            <div class="input-group pr15">
+                                <span class="input-group-addon required">产品金额</span>
+                                <input class="form-control" id="txtWorth" name="txtWorth" data-popover-placement="bottom" type="text" maxlength="500" placeholder="产品金额" readonly="readonly"/>
+                                <span class="input-group-addon">元</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 ">
+                            <div class="input-group pr15">
+                                <span class="input-group-addon required">预期收益率</span>
+                                <input class="form-control" id="txtExpectIncome" name="txtExpectIncome" data-popover-placement="bottom" type="text" maxlength="500" placeholder="预期收益率" readonly="readonly"/>
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="input-group">
+                                <span class="input-group-addon required">产品阶段</span>
+                                <input class="form-control" id="txtStageType" name="txtStageType" data-popover-placement="bottom" type="text" maxlength="500" placeholder="" readonly="readonly"  value="未发布"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt10">
+                        <div class="col-xs-8">
+                            <div class="input-group pr15">
+                                <span class="input-group-addon required">产品链接</span>
+                                <input class="form-control" id="txtProductLink" name="txtProductLink" data-popover-placement="bottom" type="text" maxlength="500" placeholder="如无产品链接请输入经营单位网址" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">产品代码</span>
+                                <input class="form-control" id="txtProductCode" name="txtProductCode" data-popover-placement="bottom" type="text" maxlength="500" placeholder="产品代码" readonly="readonly" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title required">资金用途</div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="editPurpose" style="height:150px">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title required">退出方式</div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="editIncomeMode" style="height:150px">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title required">风控措施</div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="editRiskManage" style="height:150px">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title">联系方式</div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-3 pr10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon required">联系人</span>
+                                        <input class="form-control" id="txtContactsName" name="txtContactsName" data-popover-placement="top" type="text" maxlength="20" placeholder="联系人" readonly="readonly" />
+                                    </div>
+                                </div>
+                                <div class="col-xs-3 pr10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon required">电话</span>
+                                        <input style="min-width:100px" class="form-control" id="txtAreaFixedTel" name="txtAreaFixedTel" data-popover-placement="top" type="text" maxlength="4" placeholder="区号" readonly="readonly" />
+                                        <span class="input-group-addon required">-</span>
+                                        <input class="form-control" id="txtContactsFixedTel" name="txtContactsFixedTel" data-popover-placement="top" type="text" maxlength="20" placeholder="电话" readonly="readonly" />
+                                    </div>
+                                </div>
+                                <div class="col-xs-3 pr10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon minWidth64 required">手机</span>
+                                        <input class="form-control" id="txtContactsMobileTel" name="txtContactsMobileTel" data-popover-placement="top" type="text" maxlength="11" placeholder="手机" readonly="readonly" />
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon minWidth64 required">邮箱</span>
+                                        <input class="form-control" id="txtContactsEmail" name="txtContactsEmail" data-popover-placement="top" type="text" maxlength="100" placeholder="邮箱" readonly="readonly" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row processMessage mt10">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="panel panel-default mb0">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                审批意见
+                                <a id="btnSelectApproveWords" style="display:inline">常用词</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered table-condensed none">
+                                <thead>
+                                    <tr>
+                                        <th class="w200">步骤名称</th>
+                                        <th class="w150">审批人</th>
+                                        <th class="w150">审批时间</th>
+                                        <th>审批意见</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <form id="formWorkFlowMessage">
+                                <div class="input-group">
+                                    <span class="input-group-addon required">审批意见：</span>
+                                    <textarea class="form-control workFlowMessage" id="txtWorkFlowMessage" name="txtWorkFlowMessage" data-popover-placement="top" rows="3" maxlength="200" placeholder="输入您的审批意见"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:10px; margin-bottom: 15px " class="col-xs-12 textRight">
+                <div class="btn-group processButtonGroup">
+                </div>
+            </div>
+        </div>
+        <a id="totop" href="#" title="回到顶部"><i class="fa fa-angle-up"></i></a>
+        <input type="hidden" id="hidProductInfoId" />
+        <input type="hidden" id="hidPublishOrgID" />
+        <iframe class="w1 h1 none" id="hidFileFrame"></iframe>
+        <!--审批常用词模态框-->
+        <div class="modal fade" id="approveWordSelectModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" id="approveWordsDialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close none" id="btnCloseApproveWordSelectModal" data-dismiss="modal" aria-hidden="true" title="关闭">&times;</button>
+                        <iframe id="frameApproveWordSelector" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="w1 h1 none" id="hidPreviewLink" href="" target="_blank"></a>
+    </div>
+    <!--[if lt IE 9]>
+    <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/jquery-tools-min.js" type="text/javascript"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../../assets/js/workFlow.js?v=1.0.2" type="text/javascript"></script>
+    <script src="../../assets/vendors/underscore/underscore-min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-tmpl/js/tmpl.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/xss/dist/xss.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/jquery-validation/src/localization/messages_zh.js"></script>
+    <script src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script src="../../assets/vendors/lightbox2/dist/js/lightbox.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/platform.js/platform.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootbox.js/bootbox.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/ueditor/ueditor.config.js"></script>
+    <script src="../../assets/vendors/ueditor/ueditor.all.js"></script>
+    <script type="text/javascript">
+        var editorPurpose;
+        var editorIncomeMode;
+        var editorRiskManage;
+        $(function () {
+            AuthUtility.Auth(function () {
+                initWorkFlow();
+                editorPurpose = UE.getEditor('editPurpose');
+                editorIncomeMode = UE.getEditor('editIncomeMode');
+                editorRiskManage = UE.getEditor('editRiskManage');
+                
+                initValidator();
+                bindEvent();
+                loadForm();
+                //initLightBox();
+            });
+        });
+
+        // 初始化工作流
+        function initWorkFlow() {
+            $(document).Workflow('ProcessInfo', {
+                Btn: {
+                    // 点击预览
+                    Preview: function () {
+                        document.getElementById('hidPreviewLink').click();
+                    },
+                    Next: function () {
+                        checkForm(function () {
+                            WorkflowAction.Next();
+                        });
+                    },
+                    Complete: function () {
+                        checkForm(function () {
+                            publishProductInfo(function () {
+                                WorkflowAction.Complete();
+                            });
+                        });
+                    },
+                    Back: function () {
+                        WorkflowAction.Back();
+                    }
+                }
+            });
+        }
+
+        // 初始化表单验证控件
+        function initValidator() {
+            $.validator.addMethod("antiSqlInject", function (value, element, params) {
+                if (value) {
+                    return !AntiSqlInject($(element).val());
+                } else {
+                    return true;
+                }
+            }, "输入内容中包含非法字符！");
+
+            $('#formWorkFlowMessage').validate({
+                rules: {
+                    txtWorkFlowMessage: { required: true, antiSqlInject: true }
+                },
+                messages: {
+                    txtWorkFlowMessage: { required: '审批意见不能为空！' }
+                },
+                showErrors: jqValidationShowErrors
+            });
+        }
+
+        // 绑定事件
+        function bindEvent() {
+            // 回到顶部功能
+            $(window).scroll(function () {
+                if ($(this).scrollTop() < 100) {
+                    $('#totop').fadeOut();
+                } else {
+                    $('#totop').fadeIn();
+                }
+            });
+            $('#totop').on('click', function () {
+                $('html,body').animate({ scrollTop: 0 }, 'fast');
+                return false;
+            });
+            // 常用词选择
+            $('#btnSelectApproveWords').on('click', function () {
+                openApproveWordSelector();
+                return false;
+            });
+        }
+
+        // 打开审批意见选择框
+        function openApproveWordSelector() {
+            $('#frameApproveWordSelector').attr('src', '../Common/Selector/ApproveWordSelector.html');
+            $('#approveWordSelectModal').modal();
+        }
+
+        // 选择审批意见
+        function addApproveCommonWord() {
+            var selectedApproveCommonWords = document.getElementById('frameApproveWordSelector').contentWindow.getCommonWord();
+            $('#btnCloseApproveWordSelectModal').click();
+            $('#txtWorkFlowMessage').focus().val(selectedApproveCommonWords);
+        }
+
+        // 加载表单
+        function loadForm() {
+            // 获取表单信息，绑定数据
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/ProductInfo/ProductInfo/GetProductInfoByProcessId?sid=' + sid,
+                type: 'get',
+                data: {
+                    processId: $.url().param("processId").trim()
+                },
+                async: true,
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (data && data.Success === true && data.Data) {
+                        // 保存项目供需信息ID
+                        $('#hidProductInfoId').val(data.Data.ProductInfo.ID);
+                        // 保存发布单位ID
+                        $('#hidPublishOrgID').val(data.Data.ProductInfo.CreateUserOrgID);
+                        // 设置预览a标签链接
+                        $('#hidPreviewLink').attr('href', 'Preview.html#id=' + data.Data.ProductInfo.ID);
+                        // 保存产品状态字段
+                        $('#hidProductInfoStatus').val(data.Data.ProductInfo.Status);
+                        // 产品名称
+                        $('#txtTitle').val(data.Data.ProductInfo.Title);
+                        $('#txtProductCode').val(data.Data.ProductInfo.Code);
+                        $('#txtProductType').val(data.Data.ProductInfo.ProductType);
+                        $('#txtStageType').val(data.Data.ProductInfo.StageType);
+                        $('#txtPeriod').val(data.Data.ProductInfo.Period);
+                        $('#txtWorth').val(data.Data.ProductInfo.Worth);
+                        $('#txtExpectIncome').val(data.Data.ProductInfo.ExpectIncome);
+                        $('#txtProductLink').val(data.Data.ProductInfo.ProductLink);
+                        $('#txtContactsName').val(data.Data.ProductInfo.ContactsName);
+                        var tel = data.Data.ProductInfo.ContactsFixedTel.split('-');
+                        if (tel.length === 1) {
+                            $('#txtContactsFixedTel').val(data.Data.ProductInfo.ContactsFixedTel);
+                        } else if (tel.length === 2) {
+                            if (tel[0].length > 4) {
+                                $('#txtContactsFixedTel').val(data.Data.ProductInfo.ContactsFixedTel);
+                            } else {
+                                $('#txtAreaFixedTel').val(tel[0]);
+                                $('#txtContactsFixedTel').val(tel[1]);
+                            }
+                        } else if (tel.length === 3) {
+                            $('#txtAreaFixedTel').val(tel[0]);
+                            $('#txtContactsFixedTel').val(tel[1] + '-' + tel[2]);
+                        }
+                        $('#txtContactsMobileTel').val(data.Data.ProductInfo.ContactsMobileTel);
+                        $('#txtContactsEmail').val(data.Data.ProductInfo.ContactsEmail);
+                        // 产品详情
+                        editorPurpose.ready(function () {
+                            editorPurpose.setDisabled();
+                            editorPurpose.setContent(unescape(data.Data.ProductInfo.Purpose.replace(/\$/g, '%')));
+                        });
+                        editorIncomeMode.ready(function () {
+                            editorIncomeMode.setDisabled();
+                            editorIncomeMode.setContent(unescape(data.Data.ProductInfo.IncomeMode.replace(/\$/g, '%')));
+                        });
+                        editorRiskManage.ready(function () {
+                            editorRiskManage.setDisabled();
+                            editorRiskManage.setContent(unescape(data.Data.ProductInfo.RiskManage.replace(/\$/g, '%')));
+                        });
+                    }
+                }
+            });
+        }
+
+        // 检查表单
+        function checkForm(callback) {
+            if ($('#formWorkFlowMessage').valid()) {
+                callback();
+            }
+        }
+
+        // 发布产品
+        function publishProductInfo(callback) {
+            bootbox.confirm({
+                message: '将要发布该产品，是否继续？',
+                callback: function (result) {
+                    if (result === true) {
+                        $.ajax({
+                            url: dataServiceBaseUrl + 'api/ProductInfo/ProductInfo/PublishProductInfo?productInfoId=' + $('#hidProductInfoId').val() + '&sid=' + sid + '&clientInfo=' + getClientInfo(),
+                            type: 'patch',
+                            beforeSend: function () {
+                                $('body').loadingUI({ text: '正在发布，请稍候...' });
+                            },
+                            async: false,
+                            cache: false,
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data && data.Success === true && data.Data === 0) {
+                                    callback();
+                                } else {
+                                    bootbox.alert({ message: '发布失败！' });
+                                    $('body').loadingUI('hide');
+                                }
+                            },
+                            error: function () {
+                                bootbox.alert({ message: '发布失败！' });
+                                $('body').loadingUI('hide');
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+
+        // 初始化图片查看控件
+        function initLightBox() {
+            lightbox.option({
+                showImageNumberLabel: true,
+                albumLabel: '第%1张，共%2张。',
+                disableScrolling: false,
+                alwaysShowNavOnTouchDevices: true,
+                wrapAround: true
+            });
+        }
+    </script>
+</body>
+</html>

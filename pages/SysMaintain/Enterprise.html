@@ -1,0 +1,1042 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>企业名录维护</title>
+    <!--plugin styles-->
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/jquery-ui/themes/base/autocomplete.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/iCheck/skins/square/blue.css" rel="stylesheet" />
+    <!--mine plugin-->
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <!--mine style-->
+    <link href="../../assets/vendors/jquery-ui-1.11.4/themes/base/all.css" rel="stylesheet" />
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+    <style type="text/css">
+        #entDataModal {
+            z-index: 1050;
+        }
+
+        /*排序弹出框排序样式*/
+        .sortGroupModal {
+            color: black;
+        }
+
+            .sortGroupModal .modal-dialog {
+                width: 300px;
+                margin: 90px auto 0 auto;
+            }
+
+                .sortGroupModal .modal-dialog .modal-content .modal-header {
+                    padding: 10px;
+                }
+
+                .sortGroupModal .modal-dialog .modal-content .modal-body {
+                    height: 300px;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                }
+
+                    .sortGroupModal .modal-dialog .modal-content .modal-body #myGroupList {
+                        padding-left: 15px;
+                        padding-right: 15px;
+                    }
+
+                        .sortGroupModal .modal-dialog .modal-content .modal-body #myGroupList .group {
+                            display: block;
+                            width: 100%;
+                            height: 34px;
+                            padding: 6px 12px;
+                            font-size: 14px;
+                            line-height: 1.4285;
+                            color: #555555;
+                            background-color: white;
+                            background-image: none;
+                            border: 1px solid #cccccc;
+                            border-radius: 4px;
+                            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+                            box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075);
+                            -webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+                            -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+                            transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+                            cursor: pointer;
+                            margin-bottom: 10px;
+                            text-align: center;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            -o-text-overflow: ellipsis;
+                            text-overflow: ellipsis;
+                        }
+        /*排序弹出框排序样式*/
+    </style>
+</head>
+<body>
+    <div class="sysMaintain-dicMaintain">
+        <ul class="nav nav-tabs nav-tabs-dic" role="tablist">
+            <li class="active" role="presentation"><a data-toggle="tab" href="#EntType" role="tab">企业类型维护</a></li>
+            <li role="presentation"><a data-toggle="tab" href="#EntData" role="tab">企业名录维护</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="EntType" role="tabpanel">
+                <div class="searchArea">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <div class="input-group">
+                                <span class="input-group-addon">名称</span>
+                                <input class="form-control" id="txtSearchTypeName" name="txtSearchTypeName" type="text" placeholder="名称" />
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="input-group">
+                                <span class="input-group-addon">是否启用</span>
+                                <select class="form-control" id="selTypeIsActive" name="selTypeIsActive">
+                                    <option value="-1">全部</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="input-group">
+                                <div class="btn-group">
+                                    <button class="btn btn-default" id="btnSearchType" type="button">
+                                        <span class="fa fa-search"></span> 检索
+                                    </button>
+                                    <button class="btn btn-default" id="btnResetType" type="button">
+                                        <span class="fa fa-repeat"></span> 重置
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dataList" id="dataTypeList"></div>
+            </div>
+            <div class="tab-pane active" id="EntData" role="tabpanel">
+                <div class="searchArea">
+                    <div class="btn-toolbar">
+                        <div class="input-group w331">
+                            <span class="input-group-addon">企业类型</span>
+                            <select class="form-control w250" name="modelTypeSelector" id="selEntType">
+                                <option value="-1">全部</option>
+                            </select>
+                        </div>
+                        <div class="input-group w331">
+                            <span class="input-group-addon">企业名称</span>
+                            <input class="form-control w250" name="txtSearchDataName" id="txtSearchDataName" type="text" placeholder="企业名称" />
+                        </div>
+                        <div class="input-group w157">
+                            <span class="input-group-addon">是否启用</span>
+                            <select class="form-control w76" name="selDateIsActive" id="selDateIsActive">
+                                <option value="-1">全部</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <div class="btn-group">
+                                <button class="btn btn-default" id="btnSearchData" type="button">
+                                    <span class="fa fa-search"></span> 检索
+                                </button>
+                                <button class="btn btn-default" id="btnResetData" type="button">
+                                    <span class="fa fa-repeat"></span> 重置
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dataList" id="dataList"></div>
+            <a id="totop" href="#" title="回到顶部"><i class="fa fa-angle-up"></i></a>
+        </div>
+
+        <!-- Modal Begin-->
+        <form id="entDataForm">
+            <div class="modal fade" id="entDataModal" tabindex="-1" role="dialog" aria-labelledby="entDataModalLabel" aria-hidden="true">
+                <div class="modal-dialog w600">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" id="btnEntDataClose" data-dismiss="modal" type="button" aria-hidden="true" title="关闭">&times;</button>
+                            <h5 class="modal-title bold" id="entDataModalLabel">新建企业名录</h5>
+                        </div>
+                        <div class="modal-body container-fluid pl15 pr15">
+                            <div class="row mt8">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon w100">企业名称</span>
+                                        <input class="form-control w470" id="txtName" name="txtName" type="text" placeholder="企业名称" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon w100">企业类型</span>
+                                        <select class="form-control w170" id="selEnterpriseType"></select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <!--<div class="input-group floatRight">
+                                        <span class="input-group-addon w100">企业编号</span>
+                                        <input class="form-control w105" id="txtCode" name="txtCode" type="text" placeholder="字典编号" />
+                                    </div>-->
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon w97">排序号</span>
+                                        <input class="form-control" id="txtSort" name="txtSort" type="text" placeholder="排序号" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group floatRight">
+                                        <span class="input-group-addon w100">是否启用</span>
+                                        <input class="check-switch" id="txtIsActive" value="1" type="checkbox" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon w100">描述</span>
+                                        <textarea class="form-control w470" id="txtDetail" rows="5"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary btn-sm w90" id="btnSaveData" data-loading-text="保存中..." type="button">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- Modal End-->
+        <!--排序弹出框-->
+        <div class="sortGroupModal">
+            <form id="sortGroupModalForm">
+                <div class="modal fade" id="sortGroupModal" tabindex="-1" aria-labelledby="sortGroupModalLabel" aria-hidden="true" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" id="btnCloseSortGroupModal" data-dismiss="modal" type="button" aria-hidden="true" title="关闭">&times;</button>
+                                <h5 class="modal-title" id="sortGroupModalLabel bold">排序</h5>
+                            </div>
+                            <div class="modal-body container-fluid">
+                                <ul id="myGroupList"></ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary btn-sm w90" id="btnSaveGroup" data-loading-text="保存中..." type="button">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!--新建企业类型弹出框-->
+        <!-- Modal Begin字典类型编辑模态窗口-->
+        <form id="entTypeForm">
+            <div class="modal fade" id="entTypeModal" aria-labelledby="entTypeModalLabel" aria-hidden="true" role="dialog" tabindex="-1">
+                <div class="modal-dialog w600">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" id="btnEntTypeClose" data-dismiss="modal" type="button" title="关闭" aria-hidden="true">&times;</button>
+                            <h5 class="modal-title bold" id="entTypeModalLabel">新建企业类型</h5>
+                        </div>
+                        <div class="modal-body container-fluid pl15 pr15">
+                            <div class="row mt8">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon w100">企业类型名称</span>
+                                        <input class="form-control" id="txtTypeName" name="txtTypeName" type="text" placeholder="企业类型名称" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group floatRight">
+                                        <span class="input-group-addon w100">是否启用</span>
+                                        <input class="check-switch" data-size="normal" id="txtTypeIsActive" value="1" type="checkbox" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt8">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon w110">描述</span>
+                                        <textarea class="form-control w457" id="txtTypeDetail" rows="5"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary btn-sm w90" id="btnSaveType" type="button" data-loading-text="保存中...">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- Modal End-->
+        <div class="btn-group none" id="enterpriseTypeBtnList">
+            <button class="btn btn-default" type="button" id="btnCreateType" onclick="createEnterpriseType()"><span class="fa fa-plus"></span>&nbsp;新建</button>
+            <button class="btn btn-default" type="button" id="btnModifyType" disabled="disabled" onclick="modifyEnterpriseType()"><span class="fa fa-edit"></span>&nbsp;修改</button>
+            <button class="btn btn-default" type="button" id="btnDeleteType" disabled="disabled" onclick="deleteEnterpriseType()"><span class="fa fa-trash-o"></span>&nbsp;删除</button>
+        </div>
+
+        <div class="btn-group none" id="enterpriseBtnList">
+            <button class="btn btn-default" type="button" id="btnCreateData" onclick="createEnterprise()"><span class="fa fa-plus"></span>&nbsp;新建</button>
+            <button class="btn btn-default" type="button" id="btnModifyData" disabled="disabled" onclick="modifyEnterprise()"><span class="fa fa-edit"></span>&nbsp;修改</button>
+            <button class="btn btn-default" type="button" id="btnDeleteData" disabled="disabled" onclick="deleteEnterprise()"><span class="fa fa-trash-o"></span>&nbsp;删除</button>
+            <button class="btn btn-default" type="button" id="btnSortData" disabled="disabled" onclick="sortEnterpriseData()"><span class="fa fa-sort"></span>&nbsp;排序</button>
+        </div>
+    </div>
+    <!--[if lt IE 9]>
+    <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <!-- 应该先引用jQuery UI 再引用BootStrap -->
+    <!--base js-->
+    <script type="text/javascript" src="../../assets/vendors/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../../assets/js/jquery-tools-min.js"></script>
+    <script type="text/javascript" src="../../assets/js/config.min.js?v=1.0.0"></script>
+    <script type="text/javascript" src="../../assets/js/auth.min.js?v=1.0.0"></script>
+    <script type="text/javascript" src="../../assets/js/common.min.js?v=1.0.3"></script>
+    <!--plugin js-->
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/core.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/widget.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/menu.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/position.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/autocomplete.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/mouse.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/sortable.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/iCheck/icheck.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/select2/dist/js/select2.full.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+    <script type="text/javascript" src="../../assets/vendors/bootbox.js/bootbox.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/platform.js/platform.js"></script>
+    <script type="text/javascript">
+        //企业类型查询model
+        var EnterpriseTypeScModel = {
+            TypeName: '',
+            IsActive: -1
+        }
+        //企业名录查询model
+        var EnterpriseScModel = {
+            TypeId: -1,
+            EntName: '',
+            IsActive: -1,
+            PageNum: 1,
+            PageSize: 0
+        }
+
+        var bEntDataIsUpdate = false;
+        var bEntTypeIsUpdate = false;
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                bootbox.setLocale("zh_CN");
+                initCheckBox();
+                initDataList();
+                initDataTypeList();
+                initSelecter();
+                initValidator();
+                bindEvent();
+            });
+        });
+
+        //初始化企业类型表
+        function initDataTypeList() {
+            $('#dataTypeList').css('height', $('.sysMaintain-dicMaintain').height() - $('.searchArea').outerHeight(true) - $('.nav-tabs-dic').outerHeight(true));
+            var option = {
+                tableTitle: '企业类型',
+                tableIcon: true,
+                checkbox: true,
+                toolbar: { 'selector': '#enterpriseTypeBtnList' },
+                showLine: true,
+                columns: [
+                     {
+                         title: '企业类型名称', field: 'EnterpriseTypeName', align: 'left',
+                         formatter: function (value, rowData, index) {
+                             return "<div  data-ID=" + rowData.ID + ">" + value + "</div>";
+                         }
+                     },
+                    {
+                        title: '是否启用', field: 'IsActive', align: 'left', width: '100',
+                        formatter: function (value) {
+                            var str = '';
+                            if (value === 1) {
+                                str = '是';
+                            } else {
+                                str = '否';
+                            }
+                            return str;
+                        }
+                    },
+                     { title: '描述', field: 'Description', align: 'left', width: '600' }
+                ],
+                dataUrl: dataServiceBaseUrl + 'api/SysMaintain/EnterpriseType/GetEnterpriseTypeListBySC?sid=' + sid,
+                queryParams: function () {
+                    return { searchModel: EnterpriseTypeScModel };
+                },
+                pagination: false,
+                onLoadSuccess: function (table) {
+                    $(table).find('.table-content-container .table-body .TypeName').each(function () {
+                        var txtTitle = $('#txtSearchTypeName').val().trim();
+                        if (txtTitle != '' && txtTitle != '+') {
+                            var html = $(this).html().replace(new RegExp(txtTitle, 'gi'), '<label class="highlight">' + txtTitle + '</label>');
+                            $(this).html(html);
+                        }
+                    });
+                },
+                onRowCheck: function (rowIndex, rowData) {
+                    $('#dataTypeList #btnModifyType').prop('disabled', false);
+                    $('#dataTypeList #btnDeleteType').prop('disabled', false);
+                },
+                onRowUnCheck: function (rowIndex, rowData) {
+                    $('#dataTypeList #btnModifyType').prop('disabled', true);
+                    $('#dataTypeList #btnDeleteType').prop('disabled', true);
+                }
+            };
+
+            $('#dataTypeList').GWDataTable(option);
+        }
+
+        //企业类型搜索
+        $('#btnSearchType').on('click', function () {
+            EnterpriseTypeScModel.TypeName = $('#txtSearchTypeName').val();
+            EnterpriseTypeScModel.IsActive = $('#selTypeIsActive').val();
+            $('#dataTypeList').GWDataTable('load', EnterpriseTypeScModel);
+        });
+
+        //企业类型重置
+        $('#btnResetType').on('click', function () {
+            $('#txtSearchTypeName').val('');
+            $('#selTypeIsActive').val('-1').trigger('change.select2');
+            EnterpriseTypeScModel.TypeName = '';
+            EnterpriseTypeScModel.IsActive = -1;
+            $('#dataTypeList').GWDataTable('load', EnterpriseTypeScModel);
+        });
+
+        //企业类型检索
+        $('#txtSearchTypeName').on('keydown', function (e) {
+            if (e.keyCode === 13 && $(this).val().trim() != "") {
+                $("#btnSearchType").click();
+            }
+        });
+
+        //企业类型新建
+        function createEnterpriseType() {
+            bEntTypeIsUpdate = false;
+            $("#txtTypeIsActive").bootstrapSwitch('state', false);
+            $('#entTypeModalLabel').text('新建企业类型');
+            $('#entTypeForm')[0].reset();
+            $('#entTypeModal').modal({ backdrop: 'static', keyboard: false });
+        }
+
+        //企业类型修改
+        function modifyEnterpriseType() {
+            bEntTypeIsUpdate = true;
+            var rows = $('#dataTypeList').GWDataTable('getChecked');
+            if (rows.length === 0) {
+                bootbox.alert({ message: "请选择要修改的行！", size: 'small' });
+            } else {
+                $("#txtTypeName").val(rows[0].EnterpriseTypeName);
+                $("#txtTypeDetail").val(rows[0].Description);
+                if (rows[0].IsActive == 1) {
+                    $("#txtTypeIsActive").bootstrapSwitch('state', true);
+                }
+                $('#entTypeModalLabel').text('修改意见');
+                $('#entTypeModal').modal({ backdrop: 'static', keyboard: false });
+            }
+        }
+
+        //企业类型删除
+        function deleteEnterpriseType() {
+            var rows = $('#dataTypeList').GWDataTable('getChecked');
+            if (rows.length === 0) {
+                bootbox.alert({ message: "请选择要删除的行！", size: 'small' });
+            } else {
+                var ID = rows[0].ID;
+                bootbox.confirm({
+                    size: 'small',
+                    message: "确定要删除吗？",
+                    callback: function (result) {
+                        if (result === true) {
+                            $.ajax({
+                                url: dataServiceBaseUrl + 'api/SysMaintain/EnterpriseType?sid=' + sid + '&id=' + ID + '&clientInfo=' + getClientInfo(),
+                                type: "DELETE",
+                                dataType: "json",
+                                async: true,
+                                success: function (data, textStatus) {
+                                    if (data.Success == false) {
+                                        if (data.Message == "InvalidUser") {
+                                            window.location.replace = '../Common/NoRight.html';
+                                        } else {
+                                            bootbox.alert(data.Message);
+                                        }
+                                    }
+                                    if (data.Success === true) {
+                                        bootbox.alert("删除成功！");
+                                    }
+                                    //重新加载企业类型
+                                    $('#dataTypeList').GWDataTable('load', EnterpriseTypeScModel);
+                                },
+                                error: function () {
+                                    bootbox.alert("删除失败！");
+                                }
+                            })
+                        }
+                    }
+                });
+            }
+        }
+
+        //保存企业类型数据
+        $('#btnSaveType').on('click', function () {
+            $('#txtTypeName').removeAttr('aria-describedby');
+            if ($('#entTypeForm').valid()) {
+                var TypeName = $("#txtTypeName").val();
+                var Description = $("#txtTypeDetail").val();
+                var IsActive = $("#txtTypeIsActive").bootstrapSwitch('state') == true ? 1 : 0;
+                var ID = 0;
+                var relativeUrl = '';
+                $(this).button('loading');
+                //修改企业类型数据
+                if (bEntTypeIsUpdate) {
+                    var rows = $('#dataTypeList').GWDataTable('getChecked');
+                    if (rows.length !== 0) {
+                        ID = rows[0].ID;
+                    }
+                    relativeUrl = 'api/SysMaintain/EnterpriseType/UpdateEnterpriseType?sid=' + sid + '&clientInfo=' + getClientInfo();
+                } else {
+                    relativeUrl = 'api/SysMaintain/EnterpriseType/AddEnterpriseType?sid=' + sid + '&clientInfo=' + getClientInfo();
+                }
+                $.ajax({
+                    url: dataServiceBaseUrl + relativeUrl,
+                    type: "post",
+                    dataType: "json",
+                    async: true,
+                    data: {
+                        ID: ID,
+                        EnterpriseTypeName: TypeName,
+                        Description: Description,
+                        IsActive: IsActive
+                    },
+                    success: function (data, textStatus) {
+                        $('#entTypeForm')[0].reset();
+                        if (data.Success == false) {
+                            if (data.Message == "InvalidUser") {
+                                window.location.replace = '../Common/NoRight.html';
+                            } else {
+                                bootbox.alert(data.Message);
+                            }
+                        }
+                        if (data.Success === true) {
+                            $('#btnSaveType').button(data.Message);
+                        }
+                        $('#btnSaveType').button('reset');
+                        $('#btnEntTypeClose').click();
+                        $('#dataTypeList').GWDataTable('load', EnterpriseTypeScModel);
+                    },
+                    error: function () {
+                        $('#entTypeForm')[0].reset();
+                        $('#btnSaveType').button('保存失败！');
+                        $('#btnSaveType').button('reset');
+                        $('#btnEntTypeClose').click();
+                    }
+                });
+            }
+        });
+
+        //初始化企业名录
+        function initDataList() {
+            $('#dataList').css('height', $('.sysMaintain-dicMaintain').height() - $('.searchArea').outerHeight(true) - $('.nav-tabs-dic').outerHeight(true));
+            var option = {
+                tableTitle: '企业名录',
+                tableIcon: true,
+                checkbox: true,
+                toolbar: { 'selector': '#enterpriseBtnList' },
+                showLine: true,
+                columns: [
+                    //{
+                    //    title: '企业编号', field: 'Dkey', align: 'center', width: '100', formatter: function (value, rowData) {
+                    //        return "<div  data-ID=" + rowData.ID + ">" + value + "</div>";
+                    //    }
+                    //},
+                    {
+                        title: '企业名称', field: 'EnterpriseName', align: 'left'
+                    },
+                    {
+                        title: '企业类型', field: 'TypeID', align: 'left', width: '240',
+                        formatter: function (value, rowData) {
+                            return "<div  data-ID=" + rowData.ID + " data-name=" + rowData.EnterpriseName + " data-sn=" + rowData.Sn + " data-value=" + rowData.TypeID + ">" + rowData.TypeName + "</div>";
+                        }
+                    },
+                    { title: '排序号', field: 'Sn', align: 'center', width: '80' },
+                       {
+                           title: '是否启用', field: 'IsActive', align: 'center', width: '80',
+                           formatter: function (value) {
+                               var str = '';
+                               if (value === 1) {
+                                   str = '是';
+                               } else {
+                                   str = '否';
+                               }
+                               return str;
+                           }
+                       },
+                    { title: '描述', field: 'Description', align: 'left', width: '400' }
+                ],
+                dataUrl: dataServiceBaseUrl + 'api/SysMaintain/Enterprise?sid=' + sid,
+                queryParams: function (pageNumber, pageSize) {
+                    EnterpriseScModel.PageNum = pageNumber;
+                    EnterpriseScModel.PageSize = pageSize;
+                    return { searchModel: EnterpriseScModel };
+                },
+                pagination: true,
+                onLoadSuccess: function (table) {
+                    $(table).find('.table-content-container .table-body .DValue').each(function () {
+                        var txtTitle = $('#txtSearchDataName').val().trim();
+                        if (txtTitle != '' && txtTitle != '+') {
+                            var html = $(this).html().replace(new RegExp(txtTitle, 'gi'), '<label class="highlight">' + txtTitle + '</label>');
+                            $(this).html(html);
+                        }
+                    });
+                },
+                onBeforeLoad: function (data) {
+                    //自动填充控件数据初始化
+                    var availableTags = [];
+                    var d = data.rows;
+
+                    var len = d ? d.length : 0;
+                    for (var i = 0; i < len; i++) {
+                        availableTags.push(d[i].DValue);
+                    }
+                    $('#txtSearchDataName').autocomplete({
+                        source: availableTags,
+                        minLength: 2,
+                        focus: function (event, ui) {
+                            $('#txtSearchDataName').val(ui.item.value);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            return false;
+                        }
+                    })
+                .autocomplete("instance")._renderItem = function (ul, item) {
+                    var val = $('#txtSearchDataName').val();
+                    //autocomplete自动填充关键词高亮显示
+                    var newVal = item.label.replace(val, "<span style='background:#FFFF00;color:#000000;vertical-align:baseline;'>" + val + "</span>");
+                    return $("<li>").append(newVal).appendTo(ul);
+                };
+                },
+                onRowCheck: function (rowIndex, rowData) {
+                    $('#dataList #btnModifyData').prop('disabled', false);
+                    $('#dataList #btnDeleteData').prop('disabled', false);
+                    $('#dataList #btnSortData').prop('disabled', false);
+                },
+                onRowUnCheck: function (rowIndex, rowData) {
+                    $('#dataList #btnModifyData').prop('disabled', true);
+                    $('#dataList #btnDeleteData').prop('disabled', true);
+                    $('#dataList #btnSortData').prop('disabled', true);
+                }
+            };
+
+            $('#dataList').GWDataTable(option);
+        }
+
+        //企业名录搜索
+        $('#btnSearchData').on('click', function () {
+            EnterpriseScModel.TypeId = $('#selEntType').val();
+            EnterpriseScModel.EntName = $('#txtSearchDataName').val();
+            EnterpriseScModel.IsActive = $('#selDateIsActive').val();
+            $('#dataList').GWDataTable('load', EnterpriseScModel);
+        });
+
+        //企业名录重置
+        $('#btnResetData').on('click', function () {
+            $('#selEntType').val('-1').trigger('change.select2');
+            $('#txtSearchDataName').val('');
+            $('#selDateIsActive').val('-1').trigger('change.select2');
+            EnterpriseScModel.TypeId = -1;
+            EnterpriseScModel.DicName = '';
+            EnterpriseScModel.IsActive = -1;
+            $('#dataList').GWDataTable('load', EnterpriseScModel);
+            $('#btnSortData').prop('disabled', true);
+        });
+
+        //企业名录检索
+        $('#txtSearchDataName').on('keydown', function (e) {
+            if (e.keyCode == 13 && $(this).val().trim() != '') {
+                $('#btnSearchData').trigger('click');
+            }
+        });
+
+
+        // 企业新建
+        function createEnterprise() {
+            bEntDataIsUpdate = false;
+            $('#entDataModalLabel').text('新建企业名录');
+            $("#txtIsActive").bootstrapSwitch('state', false);
+            $('#entDataForm')[0].reset();
+            $('#entDataModal').modal({ backdrop: 'static', keyboard: false });
+
+            if ($('#selEntType').val() == -1) {
+                $('#selEnterpriseType').prop('disabled', false);
+            } else {
+                $('#selEnterpriseType').val($('#selEntType').val()).trigger('change.select2');
+                $('#selEnterpriseType').prop('disabled', true);
+            }
+            initTxtSort();
+        }
+
+        //企业修改
+        function modifyEnterprise() {
+            bEntDataIsUpdate = true;
+            var rows = $('#dataList').GWDataTable('getChecked');
+            if (rows.length === 0) {
+                bootbox.alert({ message: "请选择要修改的行！", size: 'small' });
+            } else {
+                $("#txtName").val(rows[0].EnterpriseName)
+                $("#selEnterpriseType").val(rows[0].TypeID);
+                $('#selEnterpriseType').trigger('change.select2');
+                $("#txtSort").val(rows[0].Sn);
+                $("#txtDetail").val(rows[0].Description);
+                if (rows[0].IsActive == 1) {
+                    $("#txtIsActive").bootstrapSwitch('state', true);
+                }
+                $('#entDataModalLabel').text('修改企业名录');
+                $('#entDataModal').modal({ backdrop: 'static', keyboard: false });
+            }
+        }
+
+        //企业删除
+        function deleteEnterprise() {
+            var rows = $('#dataList').GWDataTable('getChecked');
+            if (rows.length === 0) {
+                bootbox.alert({ message: "请选择要删除的行！", size: 'small' });
+            } else {
+                var ID = rows[0].ID;
+                bootbox.confirm({
+                    size: 'small',
+                    message: "确定要删除吗？",
+                    callback: function (result) {
+                        if (result === true) {
+                            $.ajax({
+                                url: dataServiceBaseUrl + 'api/SysMaintain/Enterprise?sid=' + sid + "&id=" + ID + '&clientInfo=' + getClientInfo(),
+                                type: "DELETE",
+                                dataType: "json",
+                                async: true,
+                                success: function (data, textStatus) {
+                                    if (data.Success == false) {
+                                        if (data.Message == "InvalidUser") {
+                                            window.location.replace = '../Common/NoRight.html';
+                                        } else {
+                                            bootbox.alert(data.Message);
+                                        }
+                                    }
+                                    if (data.Success === true) {
+                                        bootbox.alert("删除成功！");
+                                    }
+                                    //重新加载字典
+                                    $('#dataList').GWDataTable('load', EnterpriseScModel);
+                                },
+                                error: function () {
+                                    bootbox.alert("删除失败！");
+                                }
+                            })
+                        }
+                    }
+                });
+            }
+        }
+
+        //企业名录排序
+        function sortEnterpriseData() {
+            var arrdata = [];
+            var data = $('#dataList').GWDataTable('getData');
+            $.each(data, function (index, item) {
+                arrdata.push({ ID: item.ID, DValue: item.EnterpriseName });
+            });
+            var html = "";
+            var len = arrdata.length;
+            for (var i = 0; i < len; i++) {
+                html += "<li class='group' id=\"" + arrdata[i].ID + "\">" + arrdata[i].DValue + "</li>";
+            }
+            $('#myGroupList').empty();
+            $('#myGroupList').append(html);
+            $('#sortGroupModal').modal();
+            $('#myGroupList').sortable({ delay: 5 });
+        }
+
+        function bindEvent() {
+            //企业名录保存
+            $('#btnSaveData').on('click', function () {
+                $('#txtName').removeAttr('aria-describedby');
+                if ($('#entDataForm').valid()) {
+                    var TypeID = $("#selEnterpriseType").val();
+                    //var DKey = $("#txtCode").val();
+                    var EntName = $("#txtName").val();
+                    var Sn = $("#txtSort").val();
+                    var Description = $("#txtDetail").val();
+                    var IsActive = $("#txtIsActive").bootstrapSwitch('state') == true ? 1 : 0;
+                    var ID = 0;
+                    var relativeUrl = '';
+                    $(this).button('loading');
+                    if (bEntDataIsUpdate) {
+                        var rows = $('#dataList').GWDataTable('getChecked');
+                        if (rows.length > 0) {
+                            ID = rows[0].ID;
+                        }
+                        relativeUrl = 'api/SysMaintain/Enterprise/UpdateEnterprise?sid=' + sid + '&clientInfo=' + getClientInfo();
+                    } else {
+                        relativeUrl = 'api/SysMaintain/Enterprise/AddEnterprise?sid=' + sid + '&clientInfo=' + getClientInfo();
+                    }
+                    $.ajax({
+                        url: dataServiceBaseUrl + relativeUrl,
+                        type: "post",
+                        dataType: "json",
+                        async: true,
+                        data: {
+                            ID: ID,
+                            TypeID: TypeID,
+                            EnterpriseName: EntName,
+                            Sn: Sn,
+                            Description: Description,
+                            IsActive: IsActive
+                        },
+                        success: function (data, textStatus) {
+                            $('#entDataForm')[0].reset();
+                            $('#btnEntDataClose').click();
+                            if (data.Success == false) {
+                                if (data.Message == "InvalidUser") {
+                                    window.location.replace = '../Common/NoRight.html';
+                                } else {
+                                    bootbox.alert(data.Message);
+                                }
+                            }
+                            if (data.Success === true) {
+                                $('#btnSaveData').button(data.Message);
+                            }
+                            $('#btnSaveData').button('reset');
+                            // 重新加载字典
+                            $('#dataList').GWDataTable('load', EnterpriseScModel);
+                        },
+                        error: function () {
+                            $('#entDataForm')[0].reset();
+                            $('#btnEntDataClose').click();
+                            $('#btnSaveData').button('保存失败！');
+                            $('#btnSaveData').button('reset');
+                        }
+                    });
+                }
+            });
+
+            // 排序保存
+            $('#btnSaveGroup').on('click', function () {
+                $('#btnSaveGroup').button('loading');
+                var orderIds = $('#myGroupList').sortable("toArray");
+                var models = [];
+                for (var i = 0, len = orderIds.length; i < len; i++) {
+                    var model = {};
+                    model["ID"] = orderIds[i];
+                    model["Sn"] = i + 1;
+                    models.push(model);
+                }
+                //请求后台
+                $.ajax({
+                    url: dataServiceBaseUrl + 'api/SysMaintain/Enterprise/SortEnterprise?sid=' + sid,
+                    type: "POST",
+                    dataType: "json",
+                    async: true,
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(models),
+                    success: function (data, textStatus) {
+                        if (data.Success == false) {
+                            if (data.Message == "InvalidUser") {
+                                window.location.replace = '../Common/NoRight.html'
+                            } else {
+                                bootbox.alert(data.Message);
+                            }
+                        }
+                        if (data.Success === true) {
+                            $('#btnSaveGroup').button(data.Data);
+                            $('#btnSaveGroup').button('reset');
+                            $('#dataList').GWDataTable('load', EnterpriseScModel);
+                            $('#btnCloseSortGroupModal').click();
+                        }
+                    },
+                    error: function () {
+                        $('#btnSaveGroup').button('排序失败！');
+                        $('#btnSaveGroup').button('reset');
+                        $('#btnCloseSortGroupModal').click();
+                    }
+                });
+            });
+
+            //关闭modal的事件
+            $('#entDataModal').on('hidden.bs.modal', function () {
+                $('body').focus();
+            });
+
+            // 回到顶部功能
+            $('#dataList .table-content-container').scroll(function () {
+                if ($('#dataList .table-content-container').scrollTop() < 100) {
+                    $('#totop').fadeOut();
+                } else {
+                    $('#totop').fadeIn();
+                }
+            });
+            $('#totop').on('click', function () {
+                $('#dataList .table-content-container').animate({ scrollTop: 0 }, 'fast');
+                return false;
+            });
+        }
+
+        //初始化选择框
+        function initSelecter() {
+            $("#selEnterpriseType").empty();
+            var items = [];
+            $.ajax({
+                url: dataServiceBaseUrl + "api/SysMaintain/EnterpriseType/GetEnterpriseTypeListBySC?sid=" + sid + "&isActive=1" + "&typeName=",
+                type: "GET",
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    if (data.Success == false) {
+                        if (data.Message == "InvalidUser") {
+                            window.location.replace = '../Common/NoRight.html';
+                        } else {
+                            bootbox.alert(data.Message);
+                        }
+                    }
+                    if (data.Success === true) {
+                        var dataIsActive = data.Data.rows;
+                        var len = dataIsActive ? dataIsActive.length : 0;
+                        for (var i = 0; i < len; i++) {
+                            var item = {};
+                            item.id = dataIsActive[i].ID;
+                            item.text = dataIsActive[i].EnterpriseTypeName;
+                            items.push(item);
+                        }
+                        $('#selEnterpriseType').select2({
+                            minimumResultsForSearch: -1,
+                            width: 'resolve',
+                            data: items
+                        }).change(initTxtSort);
+                        //顶部搜索菜单
+                        $('#selEntType').select2({
+                            minimumResultsForSearch: -1,
+                            width: '100%',
+                            data: items
+                        }).change(function () {
+                            EnterpriseScModel.TypeId = $('#selEntType').val();
+                            $('#dataList').GWDataTable('load', EnterpriseScModel);
+                            if ($('#selEntType').val() == -1) {
+                                $('#dataList #btnSortData').prop('disabled', true);
+                            } else {
+                                $('#dataList #btnSortData').prop('disabled', false);
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    bootbox.alert("加载企业类型失败！");
+                }
+            });
+            $('#selDateIsActive').select2({ width: '100%', minimumResultsForSearch: -1 });
+            $('#selTypeIsActive').select2({ minimumResultsForSearch: -1 });
+        }
+
+        function initCheckBox() {
+            $('.check-switch').bootstrapSwitch({ "onText": '开启', "offText": '关闭', "size": "normal" });
+        }        
+
+        //新建时类型排序
+        function initTxtSort() {
+            //选择字典类型ID
+            var typeID = $('#selEnterpriseType').val();
+            var data = $('#dataList').GWDataTable('getData');
+            var someData = $.grep(data, function (item, index) {
+                return item.TypeID == parseInt(typeID);
+            });
+
+            var max = 1;
+            $.each(someData, function (index, item) {
+                if (item.Sn >= max) {
+                    max = item.Sn + 1;
+                }
+            });
+            $('#txtSort').val(max);
+        }
+
+        function initValidator() {
+            $('#entTypeForm').validate({
+                rules: {
+                    txtTypeName: { required: true },
+                },
+                messages: {
+                    txtTypeName: { required: "企业类型名称不能为空！" },
+                }, errorPlacement: function (error, element) {
+                    var msg = $(error).text();
+                    var ariaDescribedby = $(element).attr('aria-describedby');
+                    if (ariaDescribedby) {
+                        $('#' + ariaDescribedby + ' .popover-content').text(msg);
+                    } else {
+                        $(element).popover({ content: msg, placement: 'bottom' });
+                        $(element).data('msg', msg);
+                        $(element).popover('show');
+                    }
+                    $(element).parent().addClass('has-error');
+                }, success: function (error, element) {
+                    $(element).popover('destroy');
+                    $(element).parent().removeClass('has-error');
+                }
+            });
+
+            $('#entDataForm').validate({
+                rules: {
+                    txtName: { required: true },
+                    txtSort: {
+                        required: true,
+                        digits: true
+                    },
+                },
+                messages: {
+                    txtName: { required: "字典名称不能为空！" },
+                    txtSort: {
+                        required: "排序号不能为空！",
+                        digits: "排序号只能为正整数"
+                    },
+                }, errorPlacement: function (error, element) {
+                    var msg = $(error).text();
+                    var ariaDescribedby = $(element).attr('aria-describedby');
+                    if (ariaDescribedby) {
+                        $('#' + ariaDescribedby + ' .popover-content').text(msg);
+                    } else {
+                        $(element).popover({ content: msg, placement: 'bottom' });
+                        $(element).data('msg', msg);
+                        $(element).popover('show');
+                    }
+                    $(element).parent().addClass('has-error');
+                }, success: function (error, element) {
+                    $(element).popover('destroy');
+                    $(element).parent().removeClass('has-error');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

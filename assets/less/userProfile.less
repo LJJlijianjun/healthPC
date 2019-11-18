@@ -1,0 +1,130 @@
+﻿/*
+ * userProfile.css 用户信息卡片显示页面css
+ * version : v1.0.0
+ * CreateTime : 2016-7-01 14:00:00
+ * CreateBy : LiYang
+ * LastModifyBy : LiYang
+ * LastModifyTime : 2017-01-07 14:00:00
+ */
+
+.userProfile {
+    width: 750px;
+    height: 430px;
+    text-align: left;
+    color: black;
+    overflow: hidden;
+
+    &:before {
+        position: absolute;
+        display: block;
+        top: 190px;
+        width: 16px;
+        height: 45px;
+        background-color: #5BB0E9;
+        content: "";
+    }
+
+    .gwImage {
+        position: absolute;
+        top: 5px;
+        left: 0;
+        width: 400px;
+        height: 138px;
+        background-image: url(../img/UserProfile/gw.png);
+    }
+
+    .closeModal {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 30px;
+        height: 28px;
+        cursor: pointer;
+        background-image: url('../img/UserProfile/close.png');
+    }
+
+    .userPhotoContainer {
+        position: absolute;
+        top: 50px;
+        right: 60px;
+        width: 140px;
+        height: 140px;
+        background-image: url(../img/UserProfile/userPhotoContainer.png);
+
+        .userPhoto {
+            position: absolute;
+            top: 35px;
+            left: 38px;
+            width: 64px;
+            height: 70px;
+        }
+    }
+
+    .centerContent {
+        position: absolute;
+        top: 192px;
+        left: 16px;
+        right: 0;
+
+        .userName {
+            float: left;
+            height: 43px;
+            line-height: 40px;
+            font-size: 28px;
+            letter-spacing: 1px;
+            padding: 0 16px;
+            background-color: #fff;
+        }
+
+        .line {
+            margin-top: 21px;
+            height: 3px;
+            background-color: #5BB0E9;
+        }
+    }
+
+    .userInfo {
+        position: absolute;
+        top: 235px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        .rowInfo {
+            @div1-width: 115px;
+            @div2-width: 245px;
+
+            height: 35px;
+            line-height: 35px;
+
+            div {
+                display: inline-block;
+                height: 35px;
+                border: none;
+                letter-spacing: 1px;
+            }
+
+            .div1 {
+                width: @div1-width;
+                font-size: 15px;
+                font-weight: bold;
+                text-align: right;
+            }
+
+            .div2 {
+                width: @div2-width;
+                font-size: 14px;
+                text-align: left;
+            }
+
+            .div3 {
+                width: @div1-width + (@div2-width * 2);
+                text-align: left;
+            }
+
+            .email {
+                line-height: 33px;
+            }
+        }
+    }
+}

@@ -1,0 +1,111 @@
+﻿/*
+ * userProfile.css 用户信息卡片显示页面css
+ * version : v1.0.0
+ * CreateTime : 2016-7-01 14:00:00
+ * CreateBy : LiYang
+ * LastModifyBy : LiYang
+ * LastModifyTime : 2017-01-07 14:00:00
+ */
+.userProfile {
+  width: 750px;
+  height: 430px;
+  text-align: left;
+  color: black;
+  overflow: hidden;
+}
+.userProfile:before {
+  position: absolute;
+  display: block;
+  top: 190px;
+  width: 16px;
+  height: 45px;
+  background-color: #5BB0E9;
+  content: "";
+}
+.userProfile .gwImage {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  width: 400px;
+  height: 138px;
+  background-image: url(../img/UserProfile/gw.png);
+}
+.userProfile .closeModal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 28px;
+  cursor: pointer;
+  background-image: url('../img/UserProfile/close.png');
+}
+.userProfile .userPhotoContainer {
+  position: absolute;
+  top: 50px;
+  right: 60px;
+  width: 140px;
+  height: 140px;
+  background-image: url(../img/UserProfile/userPhotoContainer.png);
+}
+.userProfile .userPhotoContainer .userPhoto {
+  position: absolute;
+  top: 35px;
+  left: 38px;
+  width: 64px;
+  height: 70px;
+}
+.userProfile .centerContent {
+  position: absolute;
+  top: 192px;
+  left: 16px;
+  right: 0;
+}
+.userProfile .centerContent .userName {
+  float: left;
+  height: 43px;
+  line-height: 40px;
+  font-size: 28px;
+  letter-spacing: 1px;
+  padding: 0 16px;
+  background-color: #fff;
+}
+.userProfile .centerContent .line {
+  margin-top: 21px;
+  height: 3px;
+  background-color: #5BB0E9;
+}
+.userProfile .userInfo {
+  position: absolute;
+  top: 235px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.userProfile .userInfo .rowInfo {
+  height: 35px;
+  line-height: 35px;
+}
+.userProfile .userInfo .rowInfo div {
+  display: inline-block;
+  height: 35px;
+  border: none;
+  letter-spacing: 1px;
+}
+.userProfile .userInfo .rowInfo .div1 {
+  width: 115px;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: right;
+}
+.userProfile .userInfo .rowInfo .div2 {
+  width: 245px;
+  font-size: 14px;
+  text-align: left;
+}
+.userProfile .userInfo .rowInfo .div3 {
+  width: 605px;
+  text-align: left;
+}
+.userProfile .userInfo .rowInfo .email {
+  line-height: 33px;
+}

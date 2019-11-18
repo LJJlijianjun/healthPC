@@ -1,0 +1,448 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>用户信息中心</title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/iCheck/skins/square/blue.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-selectOrg/dist/gw-selectOrg.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body>
+    <div class="fileInfo-listView">
+        <div class="searchArea">
+            <div class="row" style="margin-bottom:0 !important">
+                <div class="col-xs-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">客户名称</span>
+                        <input class="form-control" id="txtUserName" name="txtUserName" type="text" maxlength="500" placeholder="客户名称" />
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">客户ID</span>
+                        <input class="form-control" id="txtAccount" name="txtAccount" type="text" maxlength="500" placeholder="客户ID" />
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">客户公司</span>
+                        <input class="form-control" id="txtCompanyName" name="txtCompanyName" type="text" maxlength="500" placeholder="客户公司" />
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div class="input-group">
+                        <div class="btn-group">
+                            <button class="btn btn-default" id="btnSearch" type="button">
+                                <span class="fa fa-search"></span> 检索
+                            </button>
+                            <button class="btn btn-default" id="btnReset" type="button">
+                                <span class="fa fa-repeat"></span> 重置
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">注册邮箱</span>
+                        <input class="form-control" id="txtEmail" name="txtEmail" type="text" maxlength="500" placeholder="注册邮箱" />
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">注册时间从</span>
+                        <input class="form-control" id="txtRegisterTimeStart" type="text" readonly="readonly" placeholder="开始时间" />
+                        <span class="input-group-addon">至</span>
+                        <input class="form-control" id="txtRegisterTimeEnd" type="text" readonly="readonly" placeholder="结束时间" />
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">用户状态</span>
+                        <select class="form-control" id="selStatus" name="selStatus">
+                            <option value=-1 selected>全部</option>
+                            <option value=1>已审核</option>
+                            <option value=3>审核未通过</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dataList">
+        </div>
+        <iframe class="w1 h1 none" id="hidFileFrame"></iframe>
+    </div>
+    <!--[if lt IE 9]>
+        <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+        <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/jquery-tools-min.js" type="text/javascript"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../../assets/vendors/gw-selectOrg/dist/gw-selectOrg.min.js?v=1.0.1" type="text/javascript"></script>
+    <script src="../../assets/vendors/select2/dist/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/iCheck/icheck.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/LoadingUI/jquery.loadingui.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/twbs-pagination/jquery.twbsPagination.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1" type="text/javascript"></script>
+    <script src="../../assets/js/workFlow.min.js?v=1.0.2" type="text/javascript"></script>
+    <script src="../../assets/vendors/xss/dist/xss.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/platform.js/platform.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootbox.js/bootbox.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $('#selStatus').select2({
+            selectOnClose: false,
+            width: '100%',
+            allowClear: false,
+            minimumResultsForSearch: Infinity
+        });
+        var btnList;
+        var dataListScModel = {
+            UserName: '',
+            Account: '',
+            CompanyName: '',
+            Email: '',
+            Status: -1,
+            RegisterTimeStart: '',
+            RegisterOrderTimeEnd: ''
+        };
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                initSearch();
+                initDataList();
+            });
+        });
+
+        // 初始化检索区域
+        function initSearch() {
+            //initPublishOrgSelector();
+            initDateSelecter();
+
+            $("#btnSearch").click(function () {
+                dataListScModel.UserName = filterXSS($('#txtUserName').val().trim());
+                dataListScModel.Account = filterXSS($('#txtAccount').val().trim());
+                dataListScModel.CompanyName = filterXSS($('#txtCompanyName').val().trim());
+                //dataListScModel.ID_Card = filterXSS($('#txtIDCard').val().trim());
+                dataListScModel.Email = filterXSS($('#txtEmail').val().trim());
+                dataListScModel.RegisterTimeStart = filterXSS($('#txtRegisterTimeStart').val());
+                dataListScModel.RegisterTimeEnd = filterXSS($('#txtRegisterTimeEnd').val()); 
+                dataListScModel.Status = $('#selStatus').val();
+                $('#selStatus').trigger('change.select2');
+                $('.dataList button.operate').prop('disabled', true);
+                $('.dataList').GWDataTable('load', dataListScModel);
+            });
+
+            $("#btnReset").click(function () {
+                $('#txtUserName').val('');
+                $('#txtAccount').val('');
+                $('#txtCompanyName').val('');
+                //$('#txtIDCard').val('');
+                $('#txtEmail').val('');
+                $('#txtRegisterTimeStart').val('');
+                $('#txtRegisterTimeEnd').val('');
+                $('#selStatus').val(-1)
+                dataListScModel.UserName = '';
+                dataListScModel.Account = '';
+                dataListScModel.CompanyName = '';
+                dataListScModel.Email = '';
+                dataListScModel.Status = -1,
+                //dataListScModel.ID_Card = '';
+                dataListScModel.RegisterTimeStart = '';
+                dataListScModel.RegisterTimeEnd = '';
+                $('.dataList button.operate').prop('disabled', true);
+                $('.dataList').GWDataTable('load', dataListScModel);
+            });
+
+        }
+
+        // 初始化日期选择框
+        function initDateSelecter() {
+            var option = {
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                autoclose: 1,
+                format: 'yyyy-mm-dd',
+                forceParse: true,
+                pickerPosition: "bottom-right"
+            }
+
+            $('#txtRegisterTimeStart').datetimepicker(option);
+            $('#txtRegisterTimeEnd').datetimepicker(option);
+        }
+
+        // 初始化数据dataList
+        function initDataList() {
+            $('.dataList').css('height', $('.fileInfo-listView').height() - $('.searchArea').outerHeight(true));
+            var option = {
+                tableTitle: '用户信息列表',
+                tableIcon: true,
+                //toolbar: { 'btn': btnList },
+                showLine: true,
+                columns:
+                [
+
+                    {
+                        title: '客户名称',
+                        field: 'CustomerName',
+                        align: 'left',
+                        width: '140',
+                        formatter: function (value, rowData) {
+                            var titleClass = '';
+                            return '<a href="Read.html#CustomInfoID=' + rowData.ID + '"  title="' + value + '" data-titleclass="' + titleClass + '">' + HtmlEncode(value) + '</a>';
+                        }
+                    },
+                    //{ title: '标题', field: 'NewsType', align: 'left', width: '200' },
+                    {
+                        title: '客户ID',
+                        field: 'CustomerCode',
+                        align: 'left',
+                        width: '140',
+                        formatter: function (value, rowData) {
+                            var CustomerCode = rowData.CustomerCode;
+                            if (rowData.Status === 3) {
+                                CustomerCode = CustomerCode.replace("_disabled", "");
+                            }
+                            return HtmlEncode(CustomerCode);
+                        }
+                    },
+                    //{
+                    //    title: '电话',
+                    //    field: 'FixedTelephone',
+                    //    align: 'left',
+                    //    width: '150'
+                    //},
+                    {
+                        title: '客户公司',
+                        field: 'EnterpriseName',
+                        align: 'left',
+                        width: '250',
+                        formatter: function (value, rowData) {
+                            return HtmlEncode(value);
+                        }
+                    },
+                    //{ title: '职位', field: 'Position', align: 'left', width: '200' },
+                    {
+                        title: '邮箱', field: 'Email', align: 'left', width: '200',
+                        formatter: function (value, rowData) {
+                            var Email = rowData.Email;
+                            if (rowData.Status === 3) {
+                                Email = Email.replace("_disabled", "");
+                            }
+                            return HtmlEncode(Email);
+                        }
+                    },
+                    {
+                        title: '客户状态',
+                        field: 'title',
+                        align: 'left',
+                        width: '120',
+                        formatter: function (value, rowData) {
+                            var title = '';
+                            if (rowData.Status === 0) {
+                                title = '待审核';
+                            }
+                            if (rowData.Status === 1) {
+                                title = '已审核';
+                            }
+                            if (rowData.Status === 2) {
+                                title = '机构变更待审核';
+                            }
+                            if (rowData.Status === 3) {
+                                title = '审核未通过';
+                            }
+                            return title;
+                            //return '<a href="Read.html#id=' + rowData.ID + '" target="_blank" title="' + value + '" data-titleclass="' + titleClass + '">' + (rowData.Status === 4 ? '（暂时关闭）' : '') + value + '</a>';
+                        }
+                    },
+                    {
+                        title: '风险测评', field: 'Evaluation', align: 'left', width: '140', formatter: function (value, rowData) {
+                            var statusTxt = '';
+                            if (rowData.EvaluationType === 1) {
+                                statusTxt = '(个人版)';
+                            } else if (rowData.EvaluationType === 2) {
+                                statusTxt = '(企业版)'
+                            }
+                            
+                            return value === '' ? '未进行测评' : value + statusTxt;
+                        }
+                    },
+                    { title: '注册时间', field: 'CreateTime', align: 'left', width: '180' }
+                ],
+                dataUrl: dataServiceBaseUrl + 'api/CustomInfo/CustomInfo/GetCustomInfoBySC?sid=' + sid + '&t=' + new Date().getMilliseconds(),
+                queryParams: function (pageNumber, pageSize) {
+                    dataListScModel.PageNum = pageNumber;
+                    dataListScModel.PageSize = pageSize;
+                    return { scModel: dataListScModel };
+                },
+                pagination: true,
+                idField: 'ID',
+
+                onLoadSuccess: function (table) {
+                    setTitleClass(table);
+                    $(table).find('.table-content-container .table-body .CustomerName a').each(function () {
+                        var txtUserName = $('#txtUserName').val().trim();
+                        if (txtUserName != '' && txtUserName != '+') {
+                            var html = $(this).html().replace(new RegExp(txtUserName, 'gi'), '<label class="highlight">' + txtUserName + '</label>');
+                            $(this).html(html);
+                        }
+                    });
+
+                    $(table).find('.table-content-container .table-body .Email').each(function () {
+                        var Email = $('#Email').val();
+                        if (Email != null) {
+                            Email = $('#Email').val().trim();
+                            if (Email != '' && Email != '+') {
+                                var html = $(this).html().replace(new RegExp(Email, 'gi'), '<label class="highlight">' + Email + '</label>');
+                                $(this).html(html);
+                            }
+                        }
+                    });
+
+                }
+            };
+
+            // 管理员
+            var isAdmin = false;
+            if (btnList && btnList.length > 0) {
+                for (var i = 0; i < btnList.length; i++) {
+                    if (btnList[i].id == 'btnCloseFile') {
+                        isAdmin = true;
+                        break;
+                    }
+                }
+            }
+
+            $('.dataList').GWDataTable(option);
+        }
+
+        // 新建
+        function createFileInfo() {
+            WorkflowEngine.CreateProcess({
+                modelId: 5,
+                callback: function (data) {
+                    var taskPage = data.TaskPage;
+                    $.ajax({
+                        url: dataServiceBaseUrl + 'api/FileInfo/FileInfo?processId=' + data.ProcessId + '&sid=' + sid + '&clientInfo=' + getClientInfo(),
+                        type: 'post',
+                        async: false,
+                        cache: false,
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data && data.Success === true && data.Data > 0) {
+                                window.location.href = taskPage + '&sourceUrl=' + window.location.pathname;
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        // 暂时关闭
+        function closeFileInfo() {
+            var fileInfoId = $('.dataList').GWDataTable('getChecked')[0].ID;
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/FileInfo/FileInfo/CloseFileInfo?fileInfoId=' + fileInfoId + '&sid=' + sid,
+                type: 'patch',
+                async: false,
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (data && data.Success === true && data.Data === 0) {
+                        $('#btnReset').click();
+                    }
+                }
+            });
+        }
+
+        // 恢复
+        function resumeFileInfo() {
+            var fileInfoId = $('.dataList').GWDataTable('getChecked')[0].ID;
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/FileInfo/FileInfo/ResumeFileInfo?fileInfoId=' + fileInfoId + '&sid=' + sid,
+                type: 'patch',
+                async: false,
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (data && data.Success === true && data.Data === 0) {
+                        $('#btnReset').click();
+                    }
+                }
+            });
+        }
+
+        // 置顶
+        function topFileInfo() {
+            var fileInfoId = $('.dataList').GWDataTable('getChecked')[0].ID;
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/FileInfo/FileInfo/TopFileInfo?fileInfoId=' + fileInfoId + '&sid=' + sid,
+                type: 'patch',
+                async: false,
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (data && data.Success === true && data.Data === 0) {
+                        $('#btnReset').click();
+                    }
+                }
+            });
+        }
+
+        // 取消置顶
+        function unTopFileInfo() {
+            var fileInfoId = $('.dataList').GWDataTable('getChecked')[0].ID;
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/FileInfo/FileInfo/UnTopFileInfo?fileInfoId=' + fileInfoId + '&sid=' + sid,
+                type: 'patch',
+                async: false,
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (data && data.Success === true && data.Data === 0) {
+                        $('#btnReset').click();
+                    }
+                }
+            });
+        }
+
+        // 导出Excel
+        //function exportExcel() {
+        //    var exportExcelScModel = new Object();
+        //    exportExcelScModel.Title = dataListScModel.Title;
+        //    exportExcelScModel.PublishOrgID = dataListScModel.PublishOrgID;
+        //    exportExcelScModel.PublishTimeStart = dataListScModel.PublishTimeStart;
+        //    exportExcelScModel.PublishTimeEnd = dataListScModel.PublishTimeEnd;
+        //    exportExcelScModel.PageNum = 1;
+        //    exportExcelScModel.PageSize = 0;
+        //    var url = dataServiceBaseUrl + 'api/FileInfo/FileInfo/ExportToExcel?scModel=' + JSON.stringify(exportExcelScModel) + '&sid=' + sid;
+        //    $('#hidFileFrame').attr('src', url);
+        //}
+
+        function refreshToDoCount() {
+            if (parent.getToDoCount) {
+                parent.getToDoCount();
+            }
+        }
+    </script>
+</body>
+</html>

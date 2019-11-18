@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>gw-ProjectPeriodSelector</title>
+    <link href="../../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="src/gw-projectPeriodSelector.css" rel="stylesheet" />
+    <link href="../../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body>
+    <div id="txtQiciStart" class="gwProjectPeriodSelector" style="  position:absolute; left:100px;top:100px; border:2px solid #eee; ">
+        <div class="gwProjectPeriodSelector-form form-control " style="width:160px;" type="text">
+        </div>
+        <div class="gwProjectPeriodSelector-dropdown gwProjectPeriodSelector-dropdown-bottom-right gwProjectPeriodSelector-dropdown-menu" style="display:inline-block;">
+            <div class="gwProjectPeriodSelector-label">
+                <table class="table-condensed year-sel">
+                    <thead>
+                        <tr>
+                            <th class="switch" colspan="5">2年</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="7">
+                                <span class="year year0" data-year="0">0</span>
+                                <span class="year year1" data-year="1">1</span>
+                                <span class="year active year2" data-year="2">2</span>
+                                <span class="year year3" data-year="3">3</span>
+                                <span class="year year4" data-year="4">4</span>
+                                <span class="year year5" data-year="5">5</span>
+                                <span class="year year6" data-year="6">6</span>
+                                <span class="year year7" data-year="7">7</span>
+                                <span class="year year8" data-year="8">8</span>
+                                <span class="year year9" data-year="9">9</span>
+                                <span class="year year10" data-year="10">10</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="gwProjectPeriodSelector-label">
+                <table class="table-condensed month-sel">
+                    <thead>
+                        <tr>
+                            <th class="switch" colspan="5">6个月</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="7">
+                                <span class="month month0" data-month="0">0</span>
+                                <span class="month month1" data-month="1">1</span>
+                                <span class="month month2" data-month="2">2</span>
+                                <span class="month month3" data-month="3">3</span>
+                                <span class="month month4" data-month="4">4</span>
+                                <span class="month month5" data-month="5">5</span>
+                                <span class="month active month6" data-month="6">6</span>
+                                <span class="month month7" data-month="7">7</span>
+                                <span class="month month8" data-month="8">8</span>
+                                <span class="month month9" data-month="9">9</span>
+                                <span class="month month10" data-month="10">10</span>
+                                <span class="month month11" data-month="11">11</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="gwProjectPeriodSelector" id="test1" style="position:absolute;top:200px;left:700px;"></div>
+    </div>
+    <!--[if lt IE 9]>
+    <script src="../html5shiv/dist/html5shiv.min.js" type="text/javascript"> </script>
+    <script src="../respond/src/respond.js" type="text/javascript"> </script>
+    <![endif]-->
+    <script src="../jquery/dist/jquery.min.js"></script>
+    <script src="src/gw-projectPeriodSelector.js"></script>
+    <script type="text/javascript">
+
+        $('#test1').GWProjectPeriodSelector({
+            valueYear: 2,// 设置初始年数，如无则为0
+            valueMonth: 6, // 设置初始月数，如无则为0
+            addOnPosition: 'mid'
+        });
+
+    </script>
+</body>
+</html>

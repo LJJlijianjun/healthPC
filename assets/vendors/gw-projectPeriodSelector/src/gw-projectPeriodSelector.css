@@ -1,0 +1,255 @@
+﻿.gwProjectPeriodSelector {
+    position: relative;
+    min-width:90px;
+    height: 34px;
+    border: 1px solid #ccc;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px #ccc;
+    box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075);
+    /*-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;*/
+    /*-o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;*/
+    /*transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;*/
+}
+    .gwProjectPeriodSelector .form-control {
+        height:33px;
+    }
+
+    .gwProjectPeriodSelector.gwProjectPeriodSelector-mid {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+.gwProjectPeriodSelector-dropdown-menu {
+    list-style: none;
+    left: 0px;
+    top: 34px;
+    margin: 2px 0px 0px;
+    padding: 5px 0px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-image: none;
+    text-align: left;
+    font-family: "微软雅黑";
+    font-size: 14px;
+    float: left;
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    width: 256px;
+    box-shadow: 0px 6px 12px rgba(0,0,0,0.175);
+    background-clip: padding-box;
+    background-color: rgb(255, 255, 255);
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    -webkit-background-clip: padding-box;
+}
+
+
+.gwProjectPeriodSelector-dropdown {
+    padding: 4px;
+    border-radius: 4px;
+    margin-top: 1px;
+    direction: ltr;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+
+    .gwProjectPeriodSelector-dropdown:before {
+        position: absolute;
+        top: -7px;
+        left: 8px;
+        content: "";
+        display: inline-block;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #cccccc;
+        border-bottom-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .gwProjectPeriodSelector-dropdown:after {
+        position: absolute;
+        top: -6px;
+        left: 9px;
+        content: "";
+        display: inline-block;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid white;
+    }
+
+.gwProjectPeriodSelector [class*=' gwProjectPeriodSelector-dropdown']::before {
+    border-right-color: transparent;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    border-left-color: transparent;
+    border-right-width: 7px;
+    border-bottom-width: 7px;
+    border-left-width: 7px;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-left-style: solid;
+    display: inline-block;
+    position: absolute;
+    content: "";
+}
+
+.gwProjectPeriodSelector [class*=' gwProjectPeriodSelector-dropdown']::after {
+    border-right-color: transparent;
+    border-bottom-color: rgb(255, 255, 255);
+    border-left-color: transparent;
+    border-right-width: 6px;
+    border-bottom-width: 6px;
+    border-left-width: 6px;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-left-style: solid;
+    display: inline-block;
+    position: absolute;
+    content: "";
+}
+.gwProjectPeriodSelector-dropdown .gwProjectPeriodSelector-label {
+    display:inline-block;
+    width: 120px;
+    vertical-align:top;
+}
+
+.gwProjectPeriodSelector-dropdown-bottom-right::before {
+    left: 6px;
+    top: -7px;
+}
+
+.gwProjectPeriodSelector-dropdown-bottom-right::after {
+    left: 7px;
+    top: -6px;
+}
+
+.gwProjectPeriodSelector table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    background-color: transparent;
+    margin: 0px;
+}
+
+
+.gwProjectPeriodSelector th {
+    text-align: left;
+}
+
+.gwProjectPeriodSelector td, .gwProjectPeriodSelector th {
+    border-radius: 4px;
+    border: 0px currentColor;
+    border-image: none;
+    width: 30px;
+    height: 24px;
+    text-align: center;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+
+.gwProjectPeriodSelector .table-condensed > tbody > tr > td,
+.gwProjectPeriodSelector .table-condensed > tbody > tr > th,
+.gwProjectPeriodSelector .table-condensed > thead > tr > td,
+.gwProjectPeriodSelector .table-condensed > thead > tr > th {
+    padding: 5px;
+}
+
+.gwProjectPeriodSelector th.switch {
+    width: 130px;
+}
+
+.gwProjectPeriodSelector thead tr:first-child th {
+    cursor: pointer;
+}
+.gwProjectPeriodSelector .year-sel tbody tr {
+    border-right:1px solid #A8DDF6;
+}
+.gwProjectPeriodSelector .month-sel tbody tr {
+    border-left:1px solid #A8DDF6;
+}
+
+.gwProjectPeriodSelector table tr td span {
+    margin: 2%;
+    border-radius: 4px;
+    width: 29%;
+    height: 32px;
+    line-height: 32px;
+    float: left;
+    display: block;
+    cursor: pointer;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+
+    .gwProjectPeriodSelector table tr td span.active,
+    .gwProjectPeriodSelector table tr td span.active:hover {
+        border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+        color: rgb(255, 255, 255);
+        text-shadow: 0px -1px 0px rgba(0,0,0,0.25);
+        background-image: -ms-linear-gradient(rgb(0, 136, 204), rgb(0, 68, 204));
+        background-repeat: repeat-x;
+        background-color: rgb(0, 109, 204);
+    }
+
+    .gwProjectPeriodSelector table tr td span:hover,
+    .gwProjectPeriodSelector table tr td span:hover {
+        background-color: #eee;
+    }
+
+.gwProjectPeriodSelector .table-condensed > tbody > tr > th:hover,
+.gwProjectPeriodSelector .table-condensed > thead > tr > th:hover {
+    background-color: #eee;
+}
+
+.gwProjectPeriodSelector table tr td span.active:hover,
+.gwProjectPeriodSelector table tr td span.active:hover {
+    background-color: #04C;
+}
+
+.gwProjectPeriodSelector .glyphicon {
+    top: 1px;
+    line-height: 1;
+    font-family: "Glyphicons Halflings";
+    font-style: normal;
+    font-weight: 400;
+    display: inline-block;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.gwProjectPeriodSelector .glyphicon {
+    top: -1px;
+    color: rgb(100, 149, 237);
+}
+
+.gwProjectPeriodSelector .glyphicon-arrow-right::before {
+    content: "\e092";
+}
+
+.gwProjectPeriodSelector .glyphicon-arrow-left::before {
+    content: "\e091";
+}
+
+.gwProjectPeriodSelector .gwProjectPeriodSelector th span.glyphicon {
+    pointer-events: none;
+}
+
+.gwProjectPeriodSelector-form {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.gwProjectPeriodSelector-form-mid[disabled].form-control,
+.gwProjectPeriodSelector-form-mid[readonly].form-control {
+    cursor: pointer;
+    opacity: 1;
+    background-color: transparent;
+}
+
+.gwProjectPeriodSelector-form-right[disabled].form-control,
+.gwProjectPeriodSelector-form-right[readonly].form-control {
+    cursor: pointer;
+    opacity: 1;
+    background-color: transparent;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}

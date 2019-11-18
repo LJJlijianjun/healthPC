@@ -1,0 +1,477 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>产品中心</title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/lightbox2/dist/css/lightbox.min.css" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body>
+    <div class="projectInfo-publishView">
+        <div class="container-fluid">
+            <div class="row processInfo">
+                <div class="col-xs-6 pl10 textLeft">
+                </div>
+                <div class="col-xs-6 pr10 textRight">
+                    <a class="process-detail" href="#">流转明细及回退意见</a>&nbsp;&nbsp;
+                    <!--<a class="process-picture" data-lightbox="processPic" data-title="流程图示" href="#">流程图示</a>-->
+                </div>
+            </div>
+
+            <div class="row processToolBar none">
+                <div class="col-xs-12 textRight">
+                    <div class="btn-group processButtonGroup">
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default mt10">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        产品信息
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <div class="input-group pr15">
+                                <span class="input-group-addon required">产品名称</span>
+                                <input class="form-control" id="txtTitle" name="txtTitle" data-popover-placement="bottom" type="text" maxlength="500" placeholder="产品名称" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="input-group pr15">
+                                <span class="input-group-addon required">产品类型</span>
+                                <input class="form-control" id="txtProductType" name="txtProductType" data-popover-placement="bottom" type="text" maxlength="500" placeholder="产品类型" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="input-group">
+                                <span class="input-group-addon required">产品周期</span>
+                                <input class="form-control" id="txtPeriod" name="txtPeriod" data-popover-placement="bottom" type="text" maxlength="500" placeholder="产品周期" readonly="readonly" />
+                                <span class="input-group-addon">天</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt10">
+                        <div class="col-xs-4">
+                            <div class="input-group pr15">
+                                <span class="input-group-addon required">产品金额</span>
+                                <input class="form-control" id="txtWorth" name="txtWorth" data-popover-placement="bottom" type="text" maxlength="500" placeholder="产品金额" readonly="readonly" />
+                                <span class="input-group-addon">元</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="input-group pr15">
+                                <span class="input-group-addon required">预期收益率</span>
+                                <input class="form-control" id="txtExpectIncome" name="txtExpectIncome" data-popover-placement="bottom" type="text" maxlength="500" placeholder="预期收益率" readonly="readonly" />
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="input-group">
+                                <span class="input-group-addon required">产品阶段</span>
+                                <input class="form-control" id="txtStageType" name="txtStageType" data-popover-placement="bottom" type="text" maxlength="500" placeholder="" readonly="readonly" value="未发布" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt10">
+                        <div class="col-xs-8">
+                            <div class="input-group pr15">
+                                <span class="input-group-addon required">产品链接</span>
+                                <input class="form-control" id="txtProductLink" name="txtProductLink" data-popover-placement="bottom" type="text" maxlength="500" placeholder="如无产品链接请输入经营单位网址" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">产品代码</span>
+                                <input class="form-control" id="txtProductCode" name="txtProductCode" data-popover-placement="bottom" type="text" maxlength="500" placeholder="产品代码" readonly="readonly" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title required">资金用途</div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="editPurpose" style="height:150px">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title required">退出方式</div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="editIncomeMode" style="height:150px">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title required">风控措施</div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="editRiskManage" style="height:150px">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title">联系方式</div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-3 pr10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon required">联系人</span>
+                                        <input class="form-control" id="txtContactsName" name="txtContactsName" data-popover-placement="top" type="text" maxlength="20" placeholder="联系人" readonly="readonly" />
+                                    </div>
+                                </div>
+                                <div class="col-xs-3 pr10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon required">电话</span>
+                                        <input style="min-width:100px" class="form-control" id="txtAreaFixedTel" name="txtAreaFixedTel" data-popover-placement="top" type="text" maxlength="4" placeholder="区号" readonly="readonly" />
+                                        <span class="input-group-addon required">-</span>
+                                        <input class="form-control" id="txtContactsFixedTel" name="txtContactsFixedTel" data-popover-placement="top" type="text" maxlength="20" placeholder="电话" readonly="readonly" />
+                                    </div>
+                                </div>
+                                <div class="col-xs-3 pr10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon minWidth64 required">手机</span>
+                                        <input class="form-control" id="txtContactsMobileTel" name="txtContactsMobileTel" data-popover-placement="top" type="text" maxlength="11" placeholder="手机" readonly="readonly" />
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon minWidth64 required">邮箱</span>
+                                        <input class="form-control" id="txtContactsEmail" name="txtContactsEmail" data-popover-placement="top" type="text" maxlength="100" placeholder="邮箱" readonly="readonly" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row processMessage mt10">
+                <div class="col-xs-12">
+                    <div class="panel panel-default mb0">
+                        <div class="panel-heading">
+                            <div class="panel-title">审批意见</div>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered table-condensed none">
+                                <thead>
+                                    <tr>
+                                        <th class="w200">步骤名称</th>
+                                        <th class="w150">审批人</th>
+                                        <th class="w150">审批时间</th>
+                                        <th>审批意见</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a id="totop" href="#" title="回到顶部"><i class="fa fa-angle-up"></i></a>
+        <iframe class="w1 h1 none" id="hidFileFrame"></iframe>
+    </div>
+    <!--[if lt IE 9]>
+    <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/jquery-tools-min.js" type="text/javascript"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../../assets/js/workFlow.min.js?v=1.0.2" type="text/javascript"></script>
+    <script src="../../assets/vendors/underscore/underscore-min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/blueimp-tmpl/js/tmpl.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/lightbox2/dist/js/lightbox.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootbox.js/bootbox.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/ueditor/ueditor.config.js"></script>
+    <script src="../../assets/vendors/ueditor/ueditor.all.js"></script>
+    <script type="text/javascript">
+        var editorPurpose;
+        var editorIncomeMode;
+        var editorRiskManage;
+        $(function () {
+            AuthUtility.Auth(function () {
+                initWorkFlow();
+                editorPurpose = UE.getEditor('editPurpose');
+                editorIncomeMode = UE.getEditor('editIncomeMode');
+                editorRiskManage = UE.getEditor('editRiskManage');
+                bindEvent();
+                loadForm();
+                //initLightBox();
+            });
+        });
+
+        // 初始化工作流
+        function initWorkFlow() {
+            WorkflowEngine.InstanceCanRollBack();
+            WorkflowEngine.GetMessage();
+        }
+
+        // 绑定事件
+        function bindEvent() {
+            // 回到顶部功能
+            $(window).scroll(function () {
+                if ($(this).scrollTop() < 100) {
+                    $('#totop').fadeOut();
+                } else {
+                    $('#totop').fadeIn();
+                }
+            });
+            $('#totop').on('click', function () {
+                $('html,body').animate({ scrollTop: 0 }, 'fast');
+                return false;
+            });
+        }
+
+        // 加载表单
+        function loadForm() {
+            // 获取表单信息，绑定数据
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/ProductInfo/ProductInfo/GetProductInfoByProcessId?sid=' + sid,
+                type: 'get',
+                data: {
+                    processId: $.url().param("processId").trim()
+                },
+                async: true,
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (data && data.Success === true && data.Data) {
+                        // 保存项目供需信息ID
+                        $('#hidProductInfoId').val(data.Data.ProductInfo.ID);
+                        // 保存发布单位ID
+                        $('#hidPublishOrgID').val(data.Data.ProductInfo.PublishOrgID);
+                        // 设置预览a标签链接
+                        $('#hidPreviewLink').attr('href', 'Preview.html#id=' + data.Data.ProductInfo.ID);
+                        // 保存产品状态字段
+                        $('#hidProductInfoStatus').val(data.Data.ProductInfo.Status);
+                        // 产品名称
+                        $('#txtTitle').val(data.Data.ProductInfo.Title);
+                        $('#txtProductCode').val(data.Data.ProductInfo.Code);
+                        $('#txtProductType').val(data.Data.ProductInfo.ProductType);
+                        $('#txtStageType').val(data.Data.ProductInfo.StageType);
+                        $('#txtPeriod').val(data.Data.ProductInfo.Period);
+                        $('#txtWorth').val(data.Data.ProductInfo.Worth);
+                        $('#txtExpectIncome').val(data.Data.ProductInfo.ExpectIncome);
+                        $('#txtProductLink').val(data.Data.ProductInfo.ProductLink);
+                        $('#txtContactsName').val(data.Data.ProductInfo.ContactsName);
+                        var tel = data.Data.ProductInfo.ContactsFixedTel.split('-');
+                        if (tel.length === 1) {
+                            $('#txtContactsFixedTel').val(data.Data.ProductInfo.ContactsFixedTel);
+                        } else if (tel.length === 2) {
+                            if (tel[0].length > 4) {
+                                $('#txtContactsFixedTel').val(data.Data.ProductInfo.ContactsFixedTel);
+                            } else {
+                                $('#txtAreaFixedTel').val(tel[0]);
+                                $('#txtContactsFixedTel').val(tel[1]);
+                            }
+                        } else if (tel.length === 3) {
+                            $('#txtAreaFixedTel').val(tel[0]);
+                            $('#txtContactsFixedTel').val(tel[1] + '-' + tel[2]);
+                        }
+                        $('#txtContactsMobileTel').val(data.Data.ProductInfo.ContactsMobileTel);
+                        $('#txtContactsEmail').val(data.Data.ProductInfo.ContactsEmail);
+                        // 产品详情
+                        editorPurpose.ready(function () {
+                            editorPurpose.setDisabled();
+                            editorPurpose.setContent(unescape(data.Data.ProductInfo.Purpose.replace(/\$/g, '%')));
+                        });
+                        editorIncomeMode.ready(function () {
+                            editorIncomeMode.setDisabled();
+                            editorIncomeMode.setContent(unescape(data.Data.ProductInfo.IncomeMode.replace(/\$/g, '%')));
+                        });
+                        editorRiskManage.ready(function () {
+                            editorRiskManage.setDisabled();
+                            editorRiskManage.setContent(unescape(data.Data.ProductInfo.RiskManage.replace(/\$/g, '%')));
+                        });
+                    }
+                }
+            });
+        }
+
+        // 绑定文件信息
+        function bindFileInfo(containerId, documentType, data) {
+            var $container = $('#' + containerId);
+
+            // 绑定数据
+            if (data && data.files.length > 0) {
+                var tempData = _.where(data.files, { DocumentType: documentType });
+                if (containerId === 'formMainDoc' && tempData && tempData.length > 0) {
+                    tempData = _.where(tempData, { Type: 'pdf' });
+                }
+                if (tempData && tempData.length > 0) {
+                    var docData = { files: tempData };
+
+                    $container.find('tbody.files').html(tmpl(document.getElementById('common-template-show').innerHTML.trim(), docData));
+
+                    $container.on('click', 'tbody.files button.download', function () {
+                        return downLoadFile(this);
+                    });
+
+                    $container.on('click', 'tbody.files button.delete', function () {
+                        var $row = $(this);
+                        $.ajax({
+                            url: $row.data('deleteurl'),
+                            type: 'delete',
+                            async: false,
+                            cache: false,
+                            success: function (data) {
+                                if (data && data.Success === true && data.Data === 0) {
+                                    $row.parent().parent().parent().remove();
+                                    if ($container.find('tbody.files tr').length === 0) {
+                                        $container.find('table').hide();
+                                        $container.find('div.noRecordTip').show();
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    });
+
+                    $container.find('table').show();
+                } else {
+                    $container.find('div.noRecordTip').show();
+                }
+            } else {
+                $container.find('div.noRecordTip').show();
+            }
+        }
+
+        // 绑定拟合作单位信息
+        var isBelowIE10 = false;
+        function bindCooperativeOrgInfo(data) {
+            if (data && data.length > 0) {
+                var hq = _.where(data, { OrgType: 1 });
+                var branch = _.where(data, { OrgType: 2 });
+                var subCompany = _.where(data, { OrgType: 3 });
+
+                if (hq && hq.length > 0) {
+                    var hqOrgListhtml = '';
+                    hqOrgListhtml += '<div class="orgFolder" data-orgtype="1">';
+                    hqOrgListhtml += '<span class="collapse-icon fa fa-minus-square-o">&nbsp;公司总部</span>';
+                    hqOrgListhtml += '</div>';
+                    hqOrgListhtml += bulidCooperativeOrgListReadHtml(1, hq);
+                    $('#divCooperativeOrg .panel-body .cooperativeOrgListRead').append(hqOrgListhtml);
+                }
+
+                if (branch && branch.length > 0) {
+                    var branchOrgListhtml = '';
+                    branchOrgListhtml += '<div class="orgFolder" data-orgtype="2">';
+                    branchOrgListhtml += '<span class="collapse-icon fa fa-minus-square-o">&nbsp;分公司</span>';
+                    branchOrgListhtml += '</div>';
+                    branchOrgListhtml += bulidCooperativeOrgListReadHtml(2, branch);
+                    $('#divCooperativeOrg .panel-body .cooperativeOrgListRead').append(branchOrgListhtml);
+                }
+
+                if (subCompany && subCompany.length > 0) {
+                    var subCompanyOrgListhtml = '';
+                    subCompanyOrgListhtml += '<div class="orgFolder" data-orgtype="3">';
+                    subCompanyOrgListhtml += '<span class="collapse-icon fa fa-minus-square-o">&nbsp;平台公司</span>';
+                    subCompanyOrgListhtml += '</div>';
+                    subCompanyOrgListhtml += bulidCooperativeOrgListReadHtml(3, subCompany);
+                    $('#divCooperativeOrg .panel-body .cooperativeOrgListRead').append(subCompanyOrgListhtml);
+                }
+
+                // 注册折叠事件
+                if ($.browser && $.browser.msie && $.browser.version && parseInt($.browser.version) < 10) {
+                    isBelowIE10 = true;
+                }
+                $('#divCooperativeOrg .panel-body .cooperativeOrgListRead').find('.orgFolder .collapse-icon').on('click', function () {
+                    if ($(this).hasClass('fa-minus-square-o')) {
+                        $(this).removeClass('fa-minus-square-o').addClass('fa-plus-square-o');
+                        if (isBelowIE10) {
+                            $('#divCooperativeOrg .panel-body .cooperativeOrgListRead').find('.orgList[data-porgtype="' + $(this).parent().data('orgtype') + '"]').removeClass('collapse in').addClass('collapse');
+                        }
+                    } else {
+                        $(this).removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
+                        if (isBelowIE10) {
+                            $('#divCooperativeOrg .panel-body .cooperativeOrgListRead').find('.orgList[data-porgtype="' + $(this).parent().data('orgtype') + '"]').removeClass('collapse').addClass('collapse in');
+                        }
+                    }
+                    if (!isBelowIE10) {
+                        $('#divCooperativeOrg .panel-body .cooperativeOrgListRead').find('.orgList[data-porgtype="' + $(this).parent().data('orgtype') + '"]').collapse('toggle');
+                    }
+                });
+
+                // 显示拟合作单位信息
+                $('#divCooperativeOrg .panel-body .cooperativeOrgListRead').show();
+            } else {
+                $('#divCooperativeOrg .noRecordTip').show();
+            }
+        }
+
+        // 生成拟合作单位阅览时的html
+        function bulidCooperativeOrgListReadHtml(orgtype, data) {
+            var html = '';
+            html += '<div class="orgList collapse in" data-porgtype="' + orgtype + '">';
+            html += '<table class="table table-bordered table-hover table-condensed">';
+            html += '<thead>';
+            html += '<tr class="h35">';
+            html += '<td class="w50 bold">序号</td>';
+            html += '<td class="w400 bold">拟合作单位名称</td>';
+            html += '<td class="bold">拟合作方提供服务类型</td>';
+            html += '</tr>';
+            html += '</thead>';
+            html += '<tbody>';
+            for (var i = 0; i < data.length; i++) {
+                html += '<tr class="h35" data-orgid="' + data[i].OrgID + '">';
+                html += '<td class="textCenter">' + (i + 1) + '</td>';
+                html += '<td class="textCenter">' + data[i].OrgName + '</td>';
+                html += '<td class="textCenter">' + data[i].ProvideServiceType + '</td>';
+                html += '</tr>';
+            }
+            html += '</tbody>';
+            html += '</table>';
+            html += '</div>';
+            return html;
+        }
+
+        // 初始化图片查看控件
+        function initLightBox() {
+            lightbox.option({
+                showImageNumberLabel: true,
+                albumLabel: '第%1张，共%2张。',
+                disableScrolling: false,
+                alwaysShowNavOnTouchDevices: true,
+                wrapAround: true
+            });
+        }
+    </script>
+</body>
+</html>

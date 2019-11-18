@@ -1,0 +1,441 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>选择用户</title>
+    <link href="../../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../assets/vendors/gw-selectOrg/dist/gw-selectOrg.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../../assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../../../assets/vendors/iCheck/skins/square/blue.css" rel="stylesheet" />
+    <link href="../../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../../assets/vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet" />
+    <link href="../../../assets/vendors/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="../../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body class="product-Selector">
+    <div class="modal-context">
+        <div class="modal-head">
+            <div class="modal-title">
+                <span>选择用户</span><span id="multi"></span>
+            </div>
+            <div>
+                <button class="close" id="btnCloseModal" type="button" title="关闭">&times;</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="productInfo-listView">
+                <div class="searchArea">
+                    <div class="row">
+                        <div class="col-xs-4 mt10">
+                            <div class="input-group">
+                                <span class="input-group-addon">客户名称</span>
+                                <input class="form-control" id="txtUserName" name="txtUserName" type="text" placeholder="客户名称" />
+                            </div>
+                        </div>
+                        <div class="col-xs-5 mt10">
+                            <div class="input-group">
+                                <span class="input-group-addon">企业名称</span>
+                                <input class="form-control" id="txtCompanyName" name="txtCompanyName" type="text" placeholder="企业名称" />
+                            </div>
+                        </div>
+                        <!--<div class="col-xs-6 mt10">
+                            <div class="input-group">
+                                <span class="input-group-addon">企业类型</span>
+                                <select class="form-control" id="selCompanyType" name="selCompanyType">
+                                    <option>全部</option>
+                                </select>
+                            </div>
+                        </div>-->
+                        <div class="col-xs-3 mt10 textLeft" style="">
+                            <div class="btn-group">
+                                <button class="btn btn-default" id="btnSearch" type="button">
+                                    <span class="fa fa-search"></span> 检索
+                                </button>
+                                <button class="btn btn-default" id="btnReset" type="button">
+                                    <span class="fa fa-repeat"></span> 重置
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dataList mt10" style="height:362px">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col-xs-8" style="width: 640px; padding-right: 0;">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="spanCooperativeItems">已选择用户</span>
+                        <input class="form-control cp" id="txtCooperativeItems" name="txtCooperativeItems" type="text" readonly="readonly" />
+                    </div>
+                </div>
+                <div class="col-xs-4  textRight" style="width: 25%; padding-left: 5px;">
+                    <button class="btn btn-primary" id="btn_clear" type="button">
+                        <span>清空</span>
+                    </button>
+                    <button class="btn btn-primary" id="btnAffirmProductToList" type="button">
+                        <span>确定</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flyingSign" id="flyingAdd">+</div>
+    <div class="flyingSign" id="flyingSubduct">-</div>
+    <script src="../../../assets/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../../../assets/js/jquery-tools-min.js"></script>
+    <script src="../../../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../../../assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../../../assets/vendors/gw-selectOrg/dist/gw-selectOrg.min.js?v=1.0.1"></script>
+    <script src="../../../assets/vendors/select2/dist/js/select2.full.min.js"></script>
+    <script src="../../../assets/vendors/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../../../assets/vendors/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="../../../assets/vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.js" type="text/javascript"></script>
+    <script src="../../../assets/vendors/iCheck/icheck.min.js"></script>
+    <script src="../../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script src="../../../assets/vendors/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script src="../../../assets/vendors/gw-dataTable/src/gw-dataTable.js?v=1.0.1"></script>
+    <script src="../../../assets/vendors/xss/dist/xss.min.js"></script>
+    <script src="../../../assets/vendors/bootbox.js/bootbox.js"></script>
+    <script src="../../../assets/vendors/underscore/underscore-min.js"></script>
+    <script type="text/javascript">
+        $('#selBusinessType').select2({ width: '100%' });
+        $('#selProvideServiceType').select2({ width: '100%' });
+        $('#selCooperativeOrgProvideServiceType').select2({ width: '100%' });
+    </script>
+    <script type="text/javascript">
+        //var selectedProductStr = $.url().param('selectedProductStr');
+        var row = $.url().param('index');
+        var selectedCustomArr = new Array();
+        //var multiCheck = (typeof $.url().param('multiCheck')) == 'undefined' ? true : ($.url().param('multiCheck') == 1 ? true : false);
+        //var selectOrgId = (typeof $.url().param('selectOrgId')) == 'undefined' ? 0 : $.url().param('selectOrgId');
+        var dataListScModel = {
+            UserName: '',
+            CompanyName: ''
+        };
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                initSearch();
+               
+                //initProductInfoByIds();
+                initDataList();
+                initCooperativeProductsInput();
+                bindEvent();
+            });
+        });
+
+        // 检索区域
+        function initSearch() {
+            //$('#multi').html(multiCheck ? '（多选）' : '（单选）');
+            //initCompanyTypeSelecter();
+
+            $("#btnSearch").click(function () {
+                dataListScModel.UserName = filterXSS($('#txtUserName').val().trim());
+                dataListScModel.CompanyName = filterXSS($('#txtCompanyName').val().trim());
+                //dataListScModel.CompanyTypeKV = $('#selCompanyType').val();
+                $('.dataList button.operate').prop('disabled', true);
+                $('.dataList').GWDataTable('load', dataListScModel);
+            });
+
+            $("#btnReset").click(function () {
+                $('#txtUserName').val('');
+                $('#txtCompanyName').val('');
+                //$('#selCompanyType').val('0');
+                //$('#selCompanyType').trigger('change.select2');
+                dataListScModel.UserName = '';
+                dataListScModel.CompanyName = '';
+                //dataListScModel.CompanyTypeKV = '';
+                $('.dataList button.operate').prop('disabled', true);
+                $('.dataList').GWDataTable('load', dataListScModel);
+            });
+
+            $('#txtTitle').on('keydown', function (e) {
+                if (e.keyCode === 13 && $(this).val().trim() != "") {
+                    $("#btnSearch").click();
+                }
+            });
+        }
+
+        //function initProductInfoByIds() {
+        //    if (selectedProductStr) {
+        //        $.ajax({
+        //            url: dataServiceBaseUrl + 'api/ProductInfo/ProductInfo/GetProductInfoByIds?ids=' + selectedProductStr + '&sid=' + sid,
+        //            type: 'get',
+        //            async: true,
+        //            cache: false,
+        //            success: function (result) {
+        //                selectedCustomArr = result.Data;
+        //                initDataList();
+        //            }
+        //        });
+        //    } else {
+        //        selectedCustomArr = [];
+        //        initDataList();
+        //    }
+        //}
+
+        // 初始化表格
+        //UserName,
+        //                                        UserSex,
+        //                                        ID_Card,
+        //                                        tR.CompanyName,
+        //                                        UserPhone
+        function initDataList() {
+            var option = {
+                tableTitle: '',
+                tableIcon: true,
+                checkbox: true,
+                showLine: true,
+                multiCheck: false,
+                columns:
+                [
+                    {
+                        title: '客户名称',
+                        field: 'CustomerName',
+                        align: 'left'
+                        
+                    },
+                    {
+                        title: '部门名称',
+                        field: 'Department',
+                        align: 'left'
+                       
+                    },
+                    {
+                        title: '公司名称', field: 'EnterpriseName', align: 'left', width: '200', formatter: function (value, rowData) {
+                            return '<span title="' + value + '">' + value + '</span>';
+                        }
+                    },
+                    
+                ],
+                dataUrl: dataServiceBaseUrl + 'api/CustomInfo/CustomInfo/GetCustomInfoBySelSC?sid=' + sid,
+                queryParams: function (pageNumber, pageSize) {
+                    dataListScModel.PageNum = pageNumber;
+                    dataListScModel.PageSize = pageSize;
+                    return { scModel: dataListScModel };
+                },
+                pagination: true,
+                pageSize: 6,
+                onLoadSuccess: function (table) {
+                   
+                }
+            };
+            option.idField = 'ID';
+            option.onRowCheck = function (rowIndex, rowData) {
+                selectedCustomArr.splice(0,selectedCustomArr.length);
+                selectedCustomArr.push({ CustomInfoID: rowData.ID, CustomInfoName: rowData.CustomerName });
+                renewCustomBox();
+            };
+            option.onRowUnCheck = function (rowIndex, rowData) {
+                selectedCustomArr.splice(0, selectedCustomArr.length);
+                renewCustomBox();
+            };
+            option.onRowCheckAll = function (rows) {
+            };
+            option.onRowUnCheckAll = function (rows) {
+            };
+            $('.dataList').GWDataTable(option);
+        }
+
+        // 刷新产品选择徽章计数
+        function refreshBadge() {
+            //$('#candidateProductNumBadge').text(selectedCustomArr.length);
+            renewCustomBox();
+        }
+
+        // 更新已选择条目输入框（人员选择）
+        function renewCustomBox() {
+            $('#txtCooperativeItems').tagsinput('removeAll');
+            $('#txtCooperativeItems').tagsinput('add', selectedCustomArr[0]);
+        }
+
+        // 初始化归属产品选择框
+        function initCooperativeProductsInput(data) {
+            $('#txtCooperativeItems').tagsinput({
+                itemValue: 'CustomInfoID',
+                itemText: 'CustomInfoName',
+                tagClass: function () {
+                    return 'label label-info';
+                }
+            });
+
+            //tagsinput 删除事件
+            $('#txtCooperativeItems').on('itemRemoved', function (event) {
+                var row = $('.table-body').find('div[data-id=' + event.item.CustomInfoID + ']');
+                $('.dataList').GWDataTable('uncheckRow', row.data('rowindex'));
+            });
+
+            //$('#txtCooperativeItems').prev().find('input').prop('readonly', true).css('width', 90);
+        }
+
+        // 初始化单位选择框
+        //function initPublishOrgSelector() {
+        //    if (selectOrgId != 0) {
+        //        $('#selPublishOrg').prop('readonly', 'readonly');
+        //        $('#selPublishOrg').css('display', 'table-cell');
+        //        $('#selPublishOrg').css('padding-left', '12px');
+
+        //        $.ajax({
+        //            url: dataServiceBaseUrl + 'api/UserOrg/Org/GetOrganizeInfoByOrgID?orgId=' + selectOrgId + '&sid=' + sid,
+        //            type: 'get',
+        //            async: true,
+        //            cache: false,
+        //            success: function (result) {
+        //                if (result && result.Success === true && result.Data) {
+        //                    $('#selPublishOrg').html(result.Data.Name);
+        //                    initBusinessTypeSelecter();
+        //                    //initServiceTypeSelecter();
+        //                }
+        //            }
+        //        });
+        //    } else {
+        //        $('#selPublishOrg').GWSelectOrg({
+        //            dataUrl: dataServiceBaseUrl + 'api/UserOrg/Org/GetOrgDeptList?sid=' + sid,
+        //            singleSelect: false,
+        //            onDataLoadCompleted: function () {
+        //                initBusinessTypeSelecter();
+        //                //initServiceTypeSelecter();
+        //            }
+        //        });
+        //    }
+        //}
+
+        // 初始化公司类型下拉列表
+        //function initCompanyTypeSelecter() {
+        //    var sel = $("#selCompanyType");
+        //    var url = dataServiceBaseUrl + 'api/SysMaintain/Dictionary?sid=' + sid;
+        //    var data = {
+        //        searchModel: {
+        //            TypeId: 4,
+        //            PageNum: 1,
+        //            PageSize: 0,
+        //            IsActive: 1,
+        //            width: '100%'
+        //        }
+        //    };
+        //    bindSelector(sel, url, data);
+        //}
+
+        // 初始化发布方提供服务类型、你单位提供服务类型下拉列表
+        //function initServiceTypeSelecter() {
+        //    var sel = $("#selProvideServiceType,#selCooperativeOrgProvideServiceType");
+        //    var url = dataServiceBaseUrl + 'api/SysMaintain/Dictionary?sid=' + sid;
+        //    var data = {
+        //        searchModel: {
+        //            TypeId: 4,
+        //            PageNum: 1,
+        //            PageSize: 0,
+        //            IsActive: 1,
+        //            width: '100%'
+        //        }
+        //    };
+        //    bindSelector(sel, url, data);
+        //}
+
+        //select2绑定数据
+        //function bindSelector(sel, url, data, val) {
+        //    sel.select2({
+        //        selectOnClose: false,
+        //        allowClear: false,
+        //        width: '100%',
+        //        minimumResultsForSearch: Infinity
+        //    });
+
+        //    $.ajax({
+        //        url: url,
+        //        data: data,
+        //        type: 'get',
+        //        async: true,
+        //        cache: false,
+        //        success: function (result) {
+        //            if (result && result.Success === true && result.Data) {
+        //                sel.empty();
+        //                sel.append("<option value='0'>全部</option>");
+        //                $.each(result.Data.rows, function (i, item) {
+        //                    sel.append("<option value='" + item.Dkey + "'>" + item.DValue + "</option>");
+        //                });
+        //                sel.val(sel[0][0].value);
+        //                sel.trigger('change.select2');
+        //                $('#btnSearch,#btnReset').prop('disabled', false);
+        //            }
+        //        }
+        //    });
+        //}
+
+        function getselectedCustomArr() {
+            return selectedCustomArr;
+        }
+
+        // 初始化时间选择
+        function initDateSelecter() {
+            var option = {
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                autoclose: 1,
+                format: 'yyyy-mm-dd',
+                forceParse: true,
+                pickerPosition: "bottom-right"
+            }
+            $('#txtPublishTimeStart').datetimepicker(option);
+            $('#txtPublishTimeEnd').datetimepicker(option);
+        }
+
+        // 加减动作动画
+        function flyingAnimate(ev, thingFly, flyToDom, callback) {
+            var $offset = $(ev).offset();
+            var $offsetfavbar = $(flyToDom).offset();
+            $(thingFly).css('left', $offset.left + 'px');
+            $(thingFly).css('top', $offset.top + 'px');
+            $(thingFly).animate({
+                left: ($offsetfavbar.left + 30) + "px",
+                top: ($offsetfavbar.top - 10) + "px",
+                opacity: "0.8",
+                fontSize: "24px"
+            }, 500, function () {
+                $(thingFly).css({
+                    left: "-1000px",
+                    top: "-100px",
+                    opacity: "1",
+                    fontSize: "50px"
+                });
+                callback();
+            });
+        }
+
+        function bindEvent() {
+            $('#btnCloseModal').on('click', function () {
+                $('#btnCloseCustomInfoSelectModal', parent.document).click();
+                return false;
+            });
+
+            $('#btn_clear').on('click', function () {
+                selectedCustomArr.length = 0;
+                $('.dataList').GWDataTable('uncheckAll');
+                refreshBadge();
+                return false;
+            });
+            //CustomInfoID
+            $('#btnAffirmProductToList').on('click', function () {
+                if (selectedCustomArr.length == 1) {
+                    parent.getCustomInfo(selectedCustomArr[0].CustomInfoID, selectedCustomArr[0].CustomInfoName, row);
+                    $('#btnCloseCustomInfoSelectModal', parent.document).click();
+                }
+                return false;
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>人员组织机构同步</title>
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body>
+    <div class="sysMaintain-syncUserOrgMaintain">
+        <div class="searchArea">
+            <div class="row">
+                <div class="col-xs-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">触发类型</span>
+                        <select class="form-control" name="selSyncType" id="selSyncType"></select>
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">执行状态</span>
+                        <select class="form-control" name="selExecuteResult" id="selExecuteResult"></select>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">执行时间从</span>
+                        <input class="form-control" name="txtSyncUserOrgTimeStart" id="txtSyncUserOrgTimeStart" type="text" readonly="readonly" placeholder="开始时间" />
+                        <span class="input-group-addon">至</span>
+                        <input class="form-control" name="txtSyncUserOrgTimeEnd" id="txtSyncUserOrgTimeEnd" type="text" readonly="readonly" placeholder="结束时间" />
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div class="input-group">
+                        <div class="btn-group">
+                            <button class="btn btn-default" id="btnSearch" type="button">
+                                <span class="fa fa-search"></span> 检索
+                            </button>
+                            <button class="btn btn-default" id="btnReset" type="button">
+                                <span class="fa fa-repeat"></span> 重置
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dataList">
+        </div>
+        <!--modal弹出框-->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h5 class="modal-title bold">执行结果详情</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p class="lh30 break-all" id="myModal_Content"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal" type="button">关闭</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!--modal弹出框-->
+    </div>
+    <div class="none" id="btnList">
+        <button class="btn btn-default" type="button" id="btnAync" onclick="aycnMessage()"><span class="fa fa-refresh"></span>&nbsp;同步</button>
+        <!--<button class="btn btn-default" type="button" id="btnExprot" onclick="exportExcel()"><span class="fa fa-download"></span>&nbsp;导出Excel</button>-->
+    </div>
+    <iframe class="w1 h1 none" id="hidFileFrame"></iframe>
+    <!--[if lt IE 9]>
+    <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script type="text/javascript" src="../../assets/vendors/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../../assets/js/jquery-tools-min.js"></script>
+    <script type="text/javascript" src="../../assets/js/config.min.js?v=1.0.0"></script>
+    <script type="text/javascript" src="../../assets/js/auth.min.js?v=1.0.0"></script>
+    <script type="text/javascript" src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/select2/dist/js/select2.full.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript" src="../../assets/js/common.min.js?v=1.0.3"></script>
+    <script type="text/javascript" src="../../assets/vendors/platform.js/platform.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+    <script type="text/javascript" src="../../assets/vendors/bootbox.js/bootbox.js"></script>
+    <script type="text/javascript">
+        var syncUserOrgScModel = {
+            SyncType: -1,
+            ExecuteResult: -1,
+            SyncUserOrgTimeStart: '',
+            SyncUserOrgTimeEnd: ''
+        }
+
+        $(function () {
+            bootbox.setLocale("zh_CN");
+            AuthUtility.Auth(function () {
+                initSearch();
+                initDataList();
+            });
+        });
+
+        function initSearch() {
+            $("#btnSearch").click(function () {
+                syncUserOrgScModel.SyncType = $('#selSyncType').val();
+                syncUserOrgScModel.ExecuteResult = $('#selExecuteResult').val();
+                syncUserOrgScModel.SyncUserOrgTimeStart = $('[name=txtSyncUserOrgTimeStart]').val();
+                syncUserOrgScModel.SyncUserOrgTimeEnd = $('[name=txtSyncUserOrgTimeEnd]').val();
+                $('.dataList').GWDataTable('load', syncUserOrgScModel);
+            });
+
+            $("#btnReset").click(function () {
+                $('[name=txtSyncUserOrgTimeStart]').val('');
+                $('[name=txtSyncUserOrgTimeEnd]').val('');
+                $("#selSyncType").val(-1).trigger('change.select2');
+                $("#selExecuteResult").val(-1).trigger('change.select2');
+
+                syncUserOrgScModel.SyncType = $('#selSyncType').val();
+                syncUserOrgScModel.ExecuteResult = $('#selExecuteResult').val();
+                syncUserOrgScModel.SyncUserOrgTimeStart = $('[name=txtSyncUserOrgTimeStart]').val();
+                syncUserOrgScModel.SyncUserOrgTimeEnd = $('[name=txtSyncUserOrgTimeEnd]').val();
+                $('.dataList').GWDataTable('load', syncUserOrgScModel);
+            });
+
+            initDateSelecter();
+
+            $("#selSyncType").select2({
+                minimumResultsForSearch: -1,
+                data: [{ id: -1, text: '全部' }, { id: 1, text: '自动触发' }, { id: 2, text: '人工触发' }]
+            });
+
+            $("#selExecuteResult").select2({
+                minimumResultsForSearch: -1,
+                data: [{ id: -1, text: '全部' }, { id: 0, text: '失败' }, { id: 1, text: '成功' }]
+            });
+        }
+
+        function initDateSelecter() {
+            var option = {
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                autoclose: 1,
+                format: 'yyyy-mm-dd',
+                forceParse: true,
+                pickerPosition: "bottom-right"
+            }
+            $('[name=txtSyncUserOrgTimeStart]').datetimepicker(option);
+            $('[name=txtSyncUserOrgTimeEnd]').datetimepicker(option);
+        }
+
+        // 初始化数据dataList
+        function initDataList() {
+            $('.dataList').css('height', $('.sysMaintain-syncUserOrgMaintain').height() - $('.searchArea').outerHeight(true));
+            var option = {
+                tableTitle: '人员机构同步',
+                tableIcon: true,
+                toolbar: { 'selector': '#btnList' },
+                showLine: true,
+                columns: [
+                    { title: '执行人', field: 'SyncUserName', align: 'left', width: '120' },
+                    { title: '执行人单位', field: 'SyncUserOrgName', align: 'left' },
+                    { title: '执行时间', field: 'SyncTime', align: 'center', width: '180' },
+                    {
+                        title: '执行状态', field: 'ExecuteResult', align: 'center', width: '100',
+                        formatter: function (value, rowData, index) {
+                            var str = '';
+                            if (value === 1) {
+                                str = '成功';
+                            } else if (value === 0) {
+                                str = '失败';
+                            }
+                            return str;
+                        }
+                    },
+                    {
+                        title: '触发类型', field: 'SyncType', align: 'center', width: '100',
+                        formatter: function (value, rowData, index) {
+                            var str = '';
+                            if (value === 1) {
+                                str = '自动触发';
+                            } else if (value === 2) {
+                                str = '人工触发';
+                            }
+                            return str;
+                        }
+                    },
+                    {
+                        title: '执行结果', field: 'Message', align: 'center', width: '100',
+                        formatter: function (value, rowData, index) {
+                            return '<a href="javascript:void(0);" onclick="openModal( \'' + value + '\')">详情</a>';
+                        }
+                    }
+                ],
+                dataUrl: dataServiceBaseUrl + 'api/SysMaintain/SyncUserOrg?sid=' + sid,
+                queryParams: function (pageNumber, pageSize) {
+                    syncUserOrgScModel.PageNum = pageNumber;
+                    syncUserOrgScModel.PageSize = pageSize;
+                    return { searchModel: syncUserOrgScModel };
+                },
+                pagination: true,
+                onLoadSuccess: function (table) {
+                }
+            };
+
+            $('.dataList').GWDataTable(option);
+        }
+
+        function aycnMessage() {
+            $('.sysMaintain-syncUserOrgMaintain').loadingUI({ text: '同步中...' });
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/SysMaintain/SyncUserOrg/SyncUserOrgInfo?sid=' + sid + '&clientInfo=' + getClientInfo(),
+                type: "POST",
+                dataType: "json",
+                async: true,
+                success: function (data, textStatus) {
+                    $('.sysMaintain-syncUserOrgMaintain').loadingUI('hide');
+                    $("#btnReset").trigger('click');
+                    bootbox.alert({ message: "人员机构同步成功！", size: 'small' });
+                },
+                error: function () {
+                    $('.sysMaintain-syncUserOrgMaintain').loadingUI('hide');
+                    bootbox.alert({ message: "人员机构同步失败！", size: 'small' });
+                }
+            });
+        }
+
+        function openModal(message) {
+            var arrayTable = message.split(',');
+            var strInnerHTML;
+            if (Array.isArray(arrayTable) && arrayTable.length > 0) {
+                strInnerHTML = '<ul>';
+                $.each(arrayTable, function (index, item) {
+                    if (item) {
+                        strInnerHTML += '<li>' + item + '</li>';
+                    }
+                });
+                strInnerHTML += '<ul>';
+            }
+            $('#myModal_Content').html($(strInnerHTML));
+            $('#myModal').modal({ backdrop: 'static', keyboard: false });
+        }
+
+        // 导出Excel
+        //function exportExcel() {
+        //    var searchModel = new Object();
+        //    searchModel.ExecuteResult = syncUserOrgScModel.ExecuteResult;
+        //    searchModel.SyncType = syncUserOrgScModel.SyncType;
+        //    searchModel.SyncUserOrgTimeStart = syncUserOrgScModel.SyncUserOrgTimeStart;
+        //    searchModel.SyncUserOrgTimeEnd = syncUserOrgScModel.SyncUserOrgTimeEnd;
+        //    searchModel.PageNum = 1;
+        //    searchModel.PageSize = 0;
+        //    var url = dataServiceBaseUrl + 'api/SysMaintain/SyncUserOrg/ExportToExcel?scModel=' + JSON.stringify(searchModel) + '&sid=' + sid;
+        //    $('#hidFileFrame').attr('src', url);
+        //}
+    </script>
+</body>
+</html>

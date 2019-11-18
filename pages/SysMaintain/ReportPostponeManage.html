@@ -1,0 +1,458 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>报表上报延期</title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-selectOrg/dist/gw-selectOrg.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-selectSeason/src/gw-selectSeason.css" rel="stylesheet" />
+    <link href="../../assets/vendors/iCheck/skins/square/blue.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body>
+    <div class="sysMaintain-ReportPostponeManage">
+        <div class="searchArea" id="reportPostponeSearchArea">
+            <div class="btn-toolbar">
+                <div class="input-group w320">
+                    <span class="input-group-addon">发布单位</span>
+                    <div class="GWSelectOrg w240" id="selPublishOrg"></div>
+                </div>
+                <div class="input-group w170">
+                    <span class="input-group-addon">期间种类</span>
+                    <select class="form-control w90" id="periodTypeSelector"></select>
+                </div>
+                <div class="input-group none w365" id="monthSelector">
+                    <span class="input-group-addon">期次从</span>
+                    <input type="text" class="form-control w130" id="txtPeriodTimeStart" readonly="readonly" placeholder="开始" />
+                    <span class="input-group-addon">至</span>
+                    <input type="text" class="form-control w130" id="txtPeriodTimeEnd" readonly="readonly" placeholder="结束" />
+                </div>
+                <div class="input-group none w365" id="yearSelector">
+                    <span class="input-group-addon">期次从</span>
+                    <input type="text" class="form-control w130" id="txtYearStart" readonly="readonly" placeholder="开始" />
+                    <span class="input-group-addon">至</span>
+                    <input type="text" class="form-control w130" id="txtYearEnd" readonly="readonly" placeholder="结束" />
+                </div>
+                <div class="input-group w365" id="seasonSelector">
+                    <span class="input-group-addon">期次从</span>
+                    <div class="gwSelectSeason w130" id="selSeasonStart"></div>
+                    <span class="input-group-addon">至</span>
+                    <div class="gwSelectSeason w130" id="selSeasonEnd"></div>
+                </div>
+                <div class="input-group">
+                    <div class="btn-group">
+                        <button class="btn btn-default" type="button" id="btnSearchReportInfo">
+                            <span class="fa fa-search"></span> 检索
+                        </button>
+                        <button class="btn btn-default" type="button" id="btnResetReportInfo">
+                            <span class="fa fa-repeat"></span> 重置
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dataList">
+        </div>
+        <div class="modal fade" id="reportPostponeModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" id="reportPostponeDialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h5 class="modal-title">修改</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb10">
+                            <div class="col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        报表名称
+                                    </span>
+                                    <input class="form-control" type="text" id="txtReportName" readonly onmouseover="this.title=this.value" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb10">
+                            <div class="col-xs-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        发布单位
+                                    </span>
+                                    <input class="form-control" type="text" id="txtPublishOrgName" readonly onmouseover="this.title=this.value" />
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        期间种类
+                                    </span>
+                                    <input class="form-control" type="text" id="txtReportType" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="input-group w_percent100">
+                                    <span class="input-group-addon w81">
+                                        期次
+                                    </span>
+                                    <input class="form-control" type="text" id="txtPeriodName" readonly />
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        上报期限
+                                    </span>
+                                    <input class="form-control" id="txtDeadLine" type="text" readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="btnConfirmPostpone">确认</button>
+                        <button class="btn btn-default" id="btnReturn">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--[if lt IE 9]>
+    <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../../assets/js/jquery-tools-min.js"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../../assets/vendors/gw-selectOrg/dist/gw-selectOrg.min.js?v=1.0.1"></script>
+    <script src="../../assets/vendors/select2/dist/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/gw-selectSeason/src/gw-selectSeason.js"></script>
+    <script src="../../assets/vendors/iCheck/icheck.min.js"></script>
+    <script src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script src="../../assets/vendors/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+    <script src="../../assets/vendors/xss/dist/xss.min.js"></script>
+    <script src="../../assets/vendors/platform.js/platform.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootbox.js/bootbox.js"></script>
+    <script type="text/javascript">
+        $('select').select2({ width: '100%' });
+    </script>
+    <script type="text/javascript">
+        var scReportInfoModel = new Object();
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                initSearch(function () {
+                    bindEvent();
+                    loadReportInfoList();
+                });
+            });
+        });
+
+        function initSearch(callback) {
+            initOrgSelector(function () {
+                initPeriodTypeSelector();
+                initDateSelecter();
+                callback();
+            });
+        }
+
+        function initOrgSelector(callback) {
+            $('#selPublishOrg').GWSelectOrg({
+                data: null,
+                dataUrl: dataServiceBaseUrl + 'api/UserOrg/Org/GetOrgDeptList?sid=' + sid,
+                singleSelect: false,
+                onDataLoadCompleted: function () {
+                    callback();
+                }
+            });
+        }
+
+        function bindEvent() {
+            $("#btnSearchReportInfo").click(function () {
+                loadReportInfoList();
+            });
+
+            $("#btnResetReportInfo").click(function () {
+                $('#yearSelector').addClass('none');
+                $('#monthSelector').addClass('none');
+                $('#seasonSelector').removeClass('none');
+                $('#periodTypeSelector').val(2);
+                $('#periodTypeSelector').trigger('change.select2');
+                $('#selPublishOrg').GWSelectOrg('reSetSelected');
+                $('#txtPeriodTimeStart').val('');
+                $('#txtPeriodTimeEnd').val('');
+                $('#txtYearStart').val('');
+                $('#txtYearEnd').val('');
+                $('#selSeasonStart').GWSelectSeason('setDefaultSeason');
+                $('#selSeasonEnd').GWSelectSeason('setDefaultSeason');
+                loadReportInfoList();
+            });
+
+            $('#btnConfirmPostpone').click(function () {
+                $('#btnConfirmPostpone').prop('disabled', true);
+                var row = $('.dataList').GWDataTable('getChecked')[0];
+                var oldDeadline = '';
+                var oldTime = null;
+                if (row.Deadline != null) {
+                    oldDeadline = row.Deadline.split(' ');
+                    oldTime = new Date(oldDeadline[0] + ' 23:59:59').getTime();
+                }
+                var deadline = $('#txtDeadLine').val();
+                if (deadline != null && deadline != '') {
+                    deadline += ' 23:59:59';
+                }
+                var newTime = new Date(deadline).getTime();
+                if (deadline == null || deadline == '') {
+                    bootbox.alert({
+                        message: '请选择上报期限！', callback: function () {
+                            $('#btnConfirmPostpone').prop('disabled', false);
+                        }
+                    });
+                    return false;
+                } else if (row.Deadline != null && newTime <= oldTime) {
+                    bootbox.alert({
+                        message: '延期时间应大于原定时间！', callback: function () {
+                            $('#txtDeadLine').val(row.Deadline.split(' ')[0]);
+                            $('#txtDeadLine').trigger('change.select2');
+                            $('#btnConfirmPostpone').prop('disabled', false);
+                        }
+                    });
+                    return false;
+                } else {
+                    $.ajax({
+                        url: dataServiceBaseUrl + 'api/ReportInfo/ReportInfo/UpdateReportInfo?sid=' + sid + '&clientInfo=' + getClientInfo(),
+                        data: { ID: row.ID, deadline: deadline },
+                        type: 'put',
+                        async: true,
+                        cache: false,
+                        success: function (result) {
+                            $('#btnConfirmPostpone').prop('disabled', false);
+                            if (result.Success) {
+                                $('#reportPostponeModal').modal('hide');
+                                $('.dataList').GWDataTable('load');
+                            }
+                        }
+                    });
+                }
+            });
+
+            $('#btnReturn').click(function () {
+                $('#reportPostponeModal').modal('hide');
+            });
+        }
+
+        function initPeriodTypeSelector() {
+            var sel = $('#periodTypeSelector');
+            var url = dataServiceBaseUrl + 'api/SysMaintain/Dictionary?sid=' + sid;
+            var data = {
+                searchModel: {
+                    TypeId: 7,
+                    PageNum: 1,
+                    PageSize: 0,
+                    IsActive: 1
+                }
+            };
+
+            $.ajax({
+                url: url,
+                data: data,
+                type: 'get',
+                async: true,
+                cache: false,
+                success: function (result) {
+                    if (result && result.Success === true && result.Data) {
+                        sel.empty();
+                        sel.append('<option value="0">全部</option>');
+                        $.each(result.Data.rows, function (i, item) {
+                            sel.append("<option value='" + item.Dkey + "'>" + item.DValue + "</option>");
+                        });
+                        sel.select2({
+                            selectOnClose: false,
+                            allowClear: false,
+                            minimumResultsForSearch: Infinity,
+                            width: '99.9%'
+                        }).change(function () {
+                            if ($(this).val() == '1') {  // 月报
+                                $('#yearSelector').addClass('none');
+                                $('#seasonSelector').addClass('none');
+                                $('#monthSelector').removeClass('none');
+                            } else if ($(this).val() == '2') {  // 季报
+                                $('#yearSelector').addClass('none');
+                                $('#monthSelector').addClass('none');
+                                $('#seasonSelector').removeClass('none');
+                            } else if ($(this).val() == '3') {  // 年报
+                                $('#seasonSelector').addClass('none');
+                                $('#monthSelector').addClass('none');
+                                $('#yearSelector').removeClass('none');
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        function initDateSelecter() {
+            var option = {
+                language: 'zh-CN',
+                startView: 3,
+                minView: 3,
+                autoclose: 1,
+                format: 'yyyy-mm',
+                pickerPosition: "bottom-right"
+            }
+
+            $('#txtPeriodTimeStart').datetimepicker(option);
+            $('#txtPeriodTimeEnd').datetimepicker(option);
+
+            var option2 = {
+                language: 'zh-CN',
+                startView: 4,
+                minView: 4,
+                autoclose: 1,
+                format: 'yyyy',
+                pickerPosition: "bottom-right"
+            }
+            $('#txtYearStart').datetimepicker(option2);
+            $('#txtYearEnd').datetimepicker(option2);
+
+            $('#selSeasonStart').GWSelectSeason({
+                width: 130,
+                valueYear: '',// 设置初始年份，如无则为当前年
+                valueSeason: 1, // 设置初始季度，如无则为第一季度
+                addOnPosition: 'mid'
+            });
+
+            $('#selSeasonEnd').GWSelectSeason({
+                width: 130,
+                valueYear: '',// 设置初始年份，如无则为当前年
+                valueSeason: 1 // 设置初始季度，如无则为第一季度
+            });
+
+            var option3 = {
+                language: 'zh-CN',
+                startView: 2,
+                minView: 2,
+                autoclose: 1,
+                format: 'yyyy-mm-dd',
+                pickerPosition: "bottom-right"
+            }
+            $('#txtDeadLine').datetimepicker(option3);
+        }
+
+        function loadReportInfoList() {
+            $('.dataList').css('height', $('.sysMaintain-ReportPostponeManage').height() - $('#reportPostponeSearchArea').outerHeight(true));
+
+            scReportInfoModel.PublishOrgIDs = $('#selPublishOrg').GWSelectOrg('getSelectedOrgIDs').toString();
+            scReportInfoModel.ReportTypeKV = $('#periodTypeSelector').val();
+            var dateStart;
+            var dateEnd;
+            if (scReportInfoModel.ReportTypeKV == '1') {
+                dateStart = $('#txtPeriodTimeStart').val() ? $('#txtPeriodTimeStart').val().split('-') : [];
+                dateEnd = $('#txtPeriodTimeEnd').val() ? $('#txtPeriodTimeEnd').val().split('-') : [];
+                scReportInfoModel.YearStart = dateStart[0];
+                scReportInfoModel.MonthStart = dateStart[1];
+                scReportInfoModel.YearEnd = dateEnd[0];
+                scReportInfoModel.MonthEnd = dateEnd[1];
+            } else if (scReportInfoModel.ReportTypeKV == '2') {
+                dateStart = $('#selSeasonStart').GWSelectSeason('getSelectSeason');
+                dateEnd = $('#selSeasonEnd').GWSelectSeason('getSelectSeason');
+                scReportInfoModel.YearStart = dateStart.year ? dateStart.year : '';
+                scReportInfoModel.SeasonStart = dateStart.season ? dateStart.season : '';
+                scReportInfoModel.YearEnd = dateEnd.year ? dateEnd.year : '';
+                scReportInfoModel.SeasonEnd = dateEnd.season ? dateEnd.season : '';
+            } else if (scReportInfoModel.ReportTypeKV == '3') {
+                scReportInfoModel.YearStart = $('#txtYearStart').val() ? $('#txtYearStart').val() : '';
+                scReportInfoModel.YearEnd = $('#txtYearEnd').val() ? $('#txtYearStart').val() : '';
+            }
+
+            $('.dataList').GWDataTable({
+                dataUrl: dataServiceBaseUrl + 'api/ReportInfo/ReportInfo/GetReportInfoBySC?sid=' + sid,
+                tableTitle: '报表',
+                tableIcon: true,
+                pagination: true,
+                checkbox: true,
+                multiCheck: false,
+                queryParams: function (pageNumber, pageSize) {
+                    scReportInfoModel.PageNum = pageNumber;
+                    scReportInfoModel.PageSize = pageSize;
+                    return scReportInfoModel;
+                },
+                toolbar: { 'btn': [{ id: "btnPostpone", faClass: "edit", text: "延期设置", onclick: "reportPostpone();" }] },
+                dataType: 'json',
+                columns:
+                [
+                    {
+                        title: '报表名称',
+                        field: 'Title',
+                        align: 'left',
+                        formatter: function (value, row) {
+                            return '<span title="' + row.Title + '">' + row.Title + '</span>';
+                        }
+                    },
+                    { title: '发布单位', field: 'PublishOrgName', align: 'center', width: '240' },
+                    { title: '期间种类', field: 'ReportType', align: 'center', width: '100' },
+                    { title: '期次', field: 'PeriodName', align: 'center', width: '120' },
+                    {
+                        title: '期限',
+                        field: 'Deadline',
+                        align: 'center',
+                        width: '150',
+                        formatter: function (value, row) {
+                            if (!value) {
+                                return '<span>-</span>';
+                            } else {
+                                var deadline = new Date(value.replace(/-/g, '/'));
+                                var currentTime = new Date();
+                                var days = parseInt((deadline.getTime() - currentTime.getTime()) / (1000 * 60 * 60 * 24));
+                                if (days < 3 && days >= 0) {
+                                    return '<span class="text-warning">' + deadline.Format('yyyy-MM-dd') + '</span>';
+                                } else if (days < 0) {
+                                    return '<span class="text-danger">' + deadline.Format('yyyy-MM-dd') + '</span>';
+                                } else {
+                                    return '<span>' + deadline.Format('yyyy-MM-dd') + '</span>';
+                                }
+                            }
+                        }
+                    }
+                ]
+            }, 'refresh');
+        }
+
+        function reportPostpone() {
+            var row = $('.dataList').GWDataTable('getChecked');
+            if (row.length == 0) {
+                bootbox.alert({ message: '请选择要延期的报表！' });
+            } else {
+                $('#txtReportName').val(row[0].Title);
+                $('#txtPublishOrgName').val(row[0].PublishOrgName);
+                var reportTypeName = '';
+                if (row[0].ReportTypeKV == 1) {
+                    reportTypeName = '月报';
+                } else if (row[0].ReportTypeKV == 2) {
+                    reportTypeName = '季报';
+                } else if (row[0].ReportTypeKV == 3) {
+                    reportTypeName = '年报';
+                }
+                $('#txtReportType').val(reportTypeName);
+                $('#txtPeriodName').val(row[0].PeriodName);
+                $('#txtDeadLine').val(row[0].Deadline == null ? '' : new Date(row[0].Deadline.replace(/-/g, '/')).Format('yyyy-MM-dd'));
+                $('#btnConfirmPostpone').prop('disabled', false);
+                $('#reportPostponeModal').modal('show');
+            }
+        }
+    </script>
+</body>
+</html>

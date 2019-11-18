@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>列表页面</title>
+    <script src="../../jQuery/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="../../jQuery/jquery-tools-min.js" type="text/javascript"></script>
+    <script src="jquery.loadingui.js" type="text/javascript"></script>
+    <link href="jquery.loadingui.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        var count = 0;
+        $(function () {
+            $('#content').loadingUI({ text: '加载中...' });
+            $('body').click(function () {
+                if (count % 4 == 3) {
+                    $('#content').loadingUI({ text: '加载中...' });
+                }
+                if (count % 4 == 0) {
+                    $('#content').loadingUI('hide');
+                }
+                if (count % 4 == 1) {
+                    $('body').loadingUI();
+                }
+                if (count % 4 == 2) {
+                    $('body').loadingUI('hide');
+                }
+                count++;
+            });
+        });
+    </script>
+    <style type="text/css">
+        #content
+        {
+            border: 1px solid gray;
+            margin: 100px 30px 0 50px;
+            width: 400px;
+            height: 300px;
+            overflow: scroll;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+    </div>
+</body>
+</html>

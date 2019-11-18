@@ -1,0 +1,586 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-pageSideBar/dist/gw-pageSideBar.min.css?v=1.0.0" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/lightbox2/dist/css/lightbox.min.css" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+    <script type="text/javascript">
+        try {
+            window.moveTo(0, 0);
+            window.resizeTo(window.screen.availWidth, window.screen.availHeight);
+        } catch (e) {
+        }
+    </script>
+</head>
+<body>
+    <div class="caseInfo-readView">
+        <div class="content">
+            <span class="articleVersion" id="spVersion"></span>
+            <div class="home"><i class="fa fa-home" title="返回首页" onclick="window.location.href='../Index.html'"></i><span class="text" title="返回首页" onclick="window.location.href='../Index.html'">返回首页</span></div>
+            <p class="articleTitle" id="pTitle"></p>
+            <div class="articleInfo">
+                <div class="articleBaseInfo">
+                    <div>
+                        <span>发布时间：</span>
+                        <span id="spPublishTime"></span>
+                        <span class="ml20">发布人：</span>
+                        <span id="spCreateUserName"></span>
+                    </div>
+                    <div>
+                        <span>发布单位：</span>
+                        <span id="spPublishOrgName"></span>
+                    </div>
+                </div>
+                <div class="articleToolbar">
+                    <div class="btn-group">
+                        <button class="btn btn-default" id="btnDownLoadAll" type="button" disabled="disabled"><span class="fa fa-download"></span>&nbsp;全部下载</button>
+                        <button class="btn btn-default none" id="btnReadHistoryVersion" type="button" disabled="disabled"><span class="fa fa-eye"></span>&nbsp;查看历史版本</button>
+                        <button class="btn btn-default none" id="btnAddNewVersion" type="button" disabled="disabled"><span class="fa fa-plus"></span>&nbsp;发起新版本</button>
+                        <button class="btn btn-default none" id="btnFav" type="button" disabled="disabled"><span class="fa fa-star-o"></span>&nbsp;添加收藏</button>
+                    </div>
+                </div>
+            </div>
+            <div class="splitLine"></div>
+            <div class="articleContent">
+                <div class="h600">
+                    <iframe id="mainContentReadFrame" frameborder="0"></iframe>
+                </div>
+                <div class="mt20">
+                    <table role="presentation" class="table table-condensed table-bordered">
+                        <tr class="h35">
+                            <td class="textRight" style="background-color: #F5F5F5">
+                                <span>业务类型：</span>
+                            </td>
+                            <td colspan="3">
+                                <span id="spBusinessType"></span>
+                            </td>
+                        </tr>
+                        <tr class="h35">
+                            <td class="textRight w110 f5-bg">
+                                <span>联系人：</span>
+                            </td>
+                            <td class="w310">
+                                <span id="spContactsName"></span>
+                            </td>
+                            <td class="textRight w110 f5-bg">
+                                <span>电话：</span>
+                            </td>
+                            <td class="w310">
+                                <span id="spContactsFixedTel"></span>
+                            </td>
+                        </tr>
+                        <tr class="h35">
+                            <td class="textRight f5-bg">
+                                <span>手机：</span>
+                            </td>
+                            <td>
+                                <span id="spContactsMobileTel"></span>
+                            </td>
+                            <td class="textRight f5-bg">
+                                <span>邮箱：</span>
+                            </td>
+                            <td>
+                                <span id="spContactsEmail"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="articleAttach caseInfoAttachment">
+                    <div class="attachToolbar">
+                        <div class="attachTitle">
+                            <i class="fa fa-paperclip"></i>&nbsp;相关附件
+                        </div>
+                        <div class="download">
+                            <button class="btn btn-default" type="button" disabled="disabled">
+                                <i class="fa fa-download"></i>&nbsp;打包下载
+                            </button>
+                        </div>
+                    </div>
+                    <div class="attachList">
+                    </div>
+                </div>
+
+                <div class="mt20 none" id="divCaseInfoRelProductInfo">
+                    <div class="title">
+                        产品归属
+                    </div>
+                    <div class="mt10">
+                        <table role="presentation" class="table table-condensed table-bordered">
+                            <thead>
+                                <tr class="h35">
+                                    <td class="w50 boldFont">序号</td>
+                                    <td class="boldFont">产品名称</td>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div class="noRecordTip"></div>
+                    </div>
+                </div>
+
+                <div class="mt20 none" id="divCaseInfoRelProjectInfo">
+                    <div class="title">
+                        关联项目
+                    </div>
+                    <div class="mt10">
+                        <table role="presentation" class="table table-condensed table-bordered">
+                            <thead>
+                                <tr class="h35">
+                                    <td class="w50 boldFont">序号</td>
+                                    <td class="boldFont">项目名称</td>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div class="noRecordTip"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="addQuestion">
+                <div class="head">
+                    <div class="title">
+                        <span class="fa fa-question-circle"></span>&nbsp;提交问题
+                    </div>
+                    <button class="btn btn-primary" id="btnAddQuestion" type="button" disabled="disabled">我要提问</button>
+                </div>
+                <div class="questionContent">
+                    <textarea class="form-control" id="txtQuestionContent" name="txtQuestionContent" rows="5" maxlength="200" placeholder="在此输入问题内容..."></textarea>
+                </div>
+            </div>
+
+            <div class="questionList">
+                <div class="head">
+                    <div class="title">
+                        <span class="fa fa-th-large"></span>&nbsp;问题列表
+                    </div>
+                    <div class="statistics"></div>
+                </div>
+                <div class="questionListDetail">
+                </div>
+            </div>
+
+            <div class="modal fade" id="historyVersionModal" aria-labelledby="historyVersionModalLabel" aria-hidden="true" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" id="btnCloseHistoryVersionModal" data-dismiss="modal" aria-hidden="true" type="button" title="关闭">&times;</button>
+                            <h5 class="modal-title bold" id="historyVersionModalLabel">历史版本</h5>
+                        </div>
+                        <div class="modal-body">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="pageSideBar"></div>
+        <input type="hidden" id="hidFileIds" />
+        <input type="hidden" id="hidCaseInfoStatus" />
+        <input type="hidden" id="hidFavId" />
+        <iframe class="w1 h1 none" id="hidFileFrame"></iframe>
+    </div>
+    <!--[if lt IE 9]>
+    <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/jquery-tools-min.js" type="text/javascript"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../../assets/vendors/underscore/underscore-min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script src="../../assets/js/workFlow.min.js?v=1.0.2" type="text/javascript"></script>
+    <script src="../../assets/vendors/xss/dist/xss.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/gw-pageSideBar/dist/gw-pageSideBar.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+    <script src="../../assets/vendors/lightbox2/dist/js/lightbox.min.js"></script>
+    <script src="../../assets/vendors/platform.js/platform.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootbox.js/bootbox.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var caseInfoId = $.url().fparam('id');
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                if (!caseInfoId || !parseInt(caseInfoId)) return;
+                getCaseInfo();
+            });
+        });
+
+        // 获取案例信息
+        function getCaseInfo() {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/CaseInfo/CaseInfo/GetReadCaseInfo?sid=' + sid,
+                type: 'get',
+                data: {
+                    caseInfoId: caseInfoId
+                },
+                async: true,
+                cache: false,
+                success: function (data) {
+                    if (data && data.Success === true) {
+                        if (data.Message == 'InvalidUser' || data.Message == 'NoPermisson') {
+                            window.location.href = '../Common/NoRight.html';
+                        } else if (data.Data) {
+                            loadCaseInfoData(data.Data);
+                        }
+                    } else {
+                        bootbox.alert({ message: '加载案例数据失败！' });
+                    }
+                },
+                error: function () {
+                    bootbox.alert({ message: '加载案例数据失败！' });
+                }
+            });
+        }
+
+        // 加载案例数据
+        function loadCaseInfoData(data) {
+            // 网页标题
+            document.title = data.CaseInfo.Title;
+
+            // 产品状态
+            $('#hidCaseInfoStatus').val(data.CaseInfo.Status);
+
+            // 收藏状态
+            $('#hidFavId').val(data.FavId);
+            if (data.CaseInfo.Status === 3 && data.FavId >= 0) {
+                if (data.FavId > 0) {
+                    $('#btnFav').html('<span class="fa fa-star"></span>&nbsp;取消收藏');
+                }
+                $('#btnFav').removeClass('none');
+            } else {
+                $('#btnFav').remove();
+            }
+
+            // 案例信息Part1
+            $('#spVersion').text((data.CaseInfo.Version === 'A' && data.CaseInfo.Status !== 5) ? '' : data.CaseInfo.Version + '版');
+            $('#pTitle').text(data.CaseInfo.Title);
+            $('#spPublishTime').text(new Date(data.CaseInfo.PublishTime.replace(/-/g, '/')).Format('yyyy-MM-dd'));
+            $('#spCreateUserName').text(data.CaseInfo.CreateUserName);
+            $('#spPublishOrgName').text(data.CaseInfo.PublishOrgName);
+
+            // 阅览历史版本按钮、旧版本数据
+            if (data.HistoryVersion && data.HistoryVersion.length > 0) {
+                $('#btnReadHistoryVersion').removeClass('none');
+                $('#historyVersionModal .modal-body').GWDataTable({
+                    tableTitle: '',
+                    showLine: true,
+                    data: { 'rows': data.HistoryVersion },
+                    columns: [
+                        {
+                            title: '标题',
+                            field: 'Title',
+                            formatter: function (value, rowData) {
+                                return '<a target="_blank" href="Read.html#id=' + rowData.CaseInfoID + '" title="' + value + '">' + value + '</a>';
+                            }
+                        },
+                        {
+                            title: '版本', field: 'Version', width: '70', formatter: function (value) {
+                                return '<span>' + value + '版</span>';
+                            }
+                        },
+                        { title: '发布人', field: 'CreateUserName', width: '100' },
+                        {
+                            title: '发布时间',
+                            field: 'PublishTime',
+                            align: 'center',
+                            width: '110',
+                            formatter: function (value) {
+                                return new Date(value.replace(/-/g, '/')).Format('yyyy-MM-dd');
+                            }
+                        }
+                    ]
+                });
+            } else {
+                $('#btnReadHistoryVersion').remove();
+            }
+
+            // 发起新版本按钮
+            if (data.ShowAddNewVersionBtn === true) {
+                $('#btnAddNewVersion').removeClass('none');
+            } else {
+                $('#btnAddNewVersion').remove();
+            }
+
+            // 生成所有文件的ID字符串，全部下载时使用
+            var fileIds = '';
+            for (var i = 0; i < data.Documents.length; i++) {
+                if (data.Documents[i].DocumentType === 1 && data.Documents[i].FileExtType === 'swf')
+                    continue;
+                fileIds += data.Documents[i].FileID + ',';
+            }
+            fileIds = fileIds.substr(0, fileIds.length - 1);
+            $('#hidFileIds').val(fileIds);
+
+            // 案例正文
+            var mainDoc;
+            if ($.browser.msie && parseInt($.browser.version) < 9) {
+                mainDoc = _.where(data.Documents, { DocumentType: 1, FileExtType: 'swf' });
+            } else {
+                mainDoc = _.where(data.Documents, { DocumentType: 1, FileExtType: 'pdf' });
+            }
+            if (mainDoc && mainDoc.length === 1) {
+                $('#mainContentReadFrame').attr('src', '../Common/FileReader.html?fileId=' + mainDoc[0].FileID + '&fileName=' + encodeURIComponent(mainDoc[0].OriginFileName));
+            }
+
+            // 案例信息Part2
+            $('#spBusinessType').text(data.CaseInfo.BusinessType);
+            $('#spContactsName').text(data.CaseInfo.ContactsName);
+            $('#spContactsFixedTel').text(data.CaseInfo.ContactsFixedTel);
+            $('#spContactsMobileTel').text(data.CaseInfo.ContactsMobileTel);
+            $('#spContactsEmail').text(data.CaseInfo.ContactsEmail);
+
+            // 相关附件
+            bindFileList('caseInfoAttachment', 1, _.where(data.Documents, { DocumentType: 2 }));
+
+            // 关联产品
+            if (data.CaseInfoRelProductInfo && data.CaseInfoRelProductInfo.length > 0) {
+                for (var i = 0; i < data.CaseInfoRelProductInfo.length; i++) {
+                    $('#divCaseInfoRelProductInfo table tbody').append('<tr class="h35">' +
+                                                                                        '<td class="textCenter">' + (i + 1) + '</td>' +
+                                                                                        '<td class="textLeft"><a href="../ProductInfo/Read.html#id={0}" target="_blank" title="{1}">{1}</a></td>'.format(data.CaseInfoRelProductInfo[i].ProductInfoID, data.CaseInfoRelProductInfo[i].ProductInfoTitle) +
+                                                                                    '</tr>');
+                }
+                $('#divCaseInfoRelProductInfo').removeClass('none');
+            }
+
+            // 关联项目
+            if (data.CaseInfoRelProjectInfo && data.CaseInfoRelProjectInfo.length > 0) {
+                for (var i = 0; i < data.CaseInfoRelProjectInfo.length; i++) {
+                    $('#divCaseInfoRelProjectInfo table tbody').append('<tr class="h35">' +
+                                                                                        '<td class="textCenter">' + (i + 1) + '</td>' +
+                                                                                        '<td class="textLeft"><a href="../ProjectInfo/Read.html#id={0}" target="_blank" title="{1}">{1}</a></td>'.format(data.CaseInfoRelProjectInfo[i].ProjectInfoID, data.CaseInfoRelProjectInfo[i].ProjectInfoTitle) +
+                                                                                    '</tr>');
+                }
+                $('#divCaseInfoRelProjectInfo').removeClass('none');
+            }
+
+            // 绑定事件
+            initEvents();
+
+            // 加载SideBar
+            loadPageSideBar();
+
+            // 加载问题列表
+            loadDiscussInfo(4, caseInfoId);
+
+            // 初始化图片查看控件
+            initLightBox();
+
+            // 隐藏父页面的未读图标
+            if (window.opener != null && window.opener != undefined && (typeof (window.opener.hideReadFlag) == 'function' || typeof (window.opener.hideReadFlag) == 'object')) {
+                window.opener.hideReadFlag($.url().fparam('id'), 4);
+            }
+        }
+
+        // 绑定事件
+        function initEvents() {
+            // 全部下载
+            $('#btnDownLoadAll').on('click', function () {
+                downloadFile($('#hidFileIds').val());
+            }).prop('disabled', false);
+
+            // 查看历史版本
+            if ($('#btnReadHistoryVersion') && $('#btnReadHistoryVersion').length === 1) {
+                $('#btnReadHistoryVersion').on('click', function () {
+                    $('#historyVersionModal').modal({ backdrop: 'static', keyboard: false });
+                }).prop('disabled', false);
+            }
+
+            // 发起新版本
+            if ($('#btnAddNewVersion') && $('#btnAddNewVersion').length === 1) {
+                $('#btnAddNewVersion').on('click', function () {
+                    bootbox.confirm({
+                        message: '是否确认发起新版本？',
+                        size: 'small',
+                        callback: function (result) {
+                            if (result === true) {
+                                addNewVersion(function () {
+                                    bootbox.alert({ 'message': '新版本覆盖流程发起成功，请到待办列表中查看！' });
+                                    $('#btnAddNewVersion').remove();
+                                    if (window.opener != null && window.opener != undefined && (typeof (window.opener.refreshToDoCount) == 'function' || typeof (window.opener.refreshToDoCount) == 'object')) {
+                                        window.opener.refreshToDoCount();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }).prop('disabled', false);
+            }
+
+            // 工具栏收藏
+            if ($('#btnFav') && $('#btnFav').length === 1) {
+                $('#btnFav').on('click', function () {
+                    if ($(this).find('span').hasClass('fa-star')) {
+                        deleteFavorite('toolbar');
+                    } else {
+                        addFavorite('toolbar');
+                    }
+                }).prop('disabled', false);
+            }
+
+            // 各类文件的打包下载
+            $('.articleAttach').each(function () {
+                var $this = $(this);
+                var attachList = $this.find('.attachList div');
+                if (attachList && attachList.length > 0) {
+                    var attachIds = '';
+                    attachList.each(function () {
+                        attachIds += $(this).data('fileid') + ',';
+                    });
+                    attachIds = attachIds.substr(0, attachIds.length - 1);
+                    $this.find('.attachToolbar .download button').on('click', function () {
+                        downloadFile(attachIds);
+                    }).prop('disabled', false);
+                }
+            });
+
+            // 我要提问
+            if ($('#hidCaseInfoStatus').val() === '3') {
+                $('#btnAddQuestion').on('click', function () {
+                    addQuestion(4, caseInfoId);
+                }).prop('disabled', false);
+            } else {
+                $('.addQuestion').hide();
+            }
+        }
+
+        // 加载SideBar
+        function loadPageSideBar() {
+            var sideBarOption = {
+                sideBarFunction: ['home', 'toTop'],
+                homePath: '../Index.html',
+                bottom: 30,
+                right: 20
+            };
+
+            if ($('#hidCaseInfoStatus').val() === '3') {
+                if (parseInt($('#hidFavId').val()) >= 0) {
+                    sideBarOption.sideBarFunction = ['home', 'quiz', 'favorite', 'toTop'];
+                    sideBarOption.quizContainer = '#txtQuestionContent';
+                    sideBarOption.isFavorite = parseInt($('#hidFavId').val()) > 0;
+                    sideBarOption.onBeforeAddFavorite = function () {
+                        return addFavorite('sidebar');
+                    };
+                    sideBarOption.onBeforeRemoveFavorite = function () {
+                        return deleteFavorite('sidebar');
+                    };
+                } else {
+                    sideBarOption.sideBarFunction = ['home', 'quiz', 'toTop'];
+                    sideBarOption.quizContainer = '#txtQuestionContent';
+                }
+            }
+
+            $('#pageSideBar').GWPageSideBar(sideBarOption);
+        }
+
+        // 添加收藏
+        function addFavorite(from) {
+            var result = false;
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/Common/Common/AddFavorite?moduleTypeKV=4&itemId=' + caseInfoId + '&sid=' + sid,
+                type: 'post',
+                async: false,
+                cache: false,
+                success: function (data) {
+                    if (data && data.Success === true && data.Data > 0) {
+                        $('#hidFavId').val(data.Data);
+                        $('#btnFav').html('<span class="fa fa-star"></span>&nbsp;取消收藏');
+                        if (from === 'toolbar') {
+                            $('#pageSideBar').GWPageSideBar('addFavorite');
+                        }
+                        result = true;
+                    }
+                }
+            });
+            return result;
+        }
+
+        // 取消收藏
+        function deleteFavorite(from) {
+            var result = false;
+            if (parseInt($('#hidFavId').val()) > 0) {
+                $.ajax({
+                    url: dataServiceBaseUrl + 'api/Common/Common/DeleteFavorite?favoriteIDs=' + $('#hidFavId').val() + '&sid=' + sid,
+                    type: 'delete',
+                    async: false,
+                    cache: false,
+                    success: function (data) {
+                        if (data && data.Success === true && data.Data === 0) {
+                            $('#hidFavId').val('');
+                            $('#btnFav').html('<span class="fa fa-star-o"></span>&nbsp;添加收藏');
+                            if (from === 'toolbar') {
+                                $('#pageSideBar').GWPageSideBar('removeFavorite');
+                            }
+                            result = true;
+                        }
+                    }
+                });
+            }
+            return result;
+        }
+
+        // 发起新版本
+        function addNewVersion(callback) {
+            WorkflowEngine.CreateProcess({
+                modelId: 4,
+                callback: function (data) {
+                    $.ajax({
+                        url: dataServiceBaseUrl + 'api/CaseInfo/CaseInfo?caseInfoId=' + caseInfoId + '&processId=' + data.ProcessId + '&sid=' + sid + '&clientInfo=' + getClientInfo(),
+                        type: 'post',
+                        beforeSend: function () {
+                            $('body').loadingUI({ text: '正在发起新版本覆盖流程，请稍候...' });
+                        },
+                        async: true,
+                        cache: false,
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data && data.Success === true && data.Data > 0) {
+                                callback();
+                            }
+                            else if (data.Message === 'NoPermisson' || data.Message === 'InvalidUser') {
+                                window.location = '../Common/NoRight.html';
+                            }
+                            else if (data.Message === 'NewVersion Exist') {
+                                bootbox.alert({ 'message': '已经存在新版本流程，发起失败！' });
+                                $('#btnAddNewVersion').remove();
+                            }
+                            else {
+                                bootbox.alert({ 'message': '发起失败' });
+                            }
+                            $('body').loadingUI('hide');
+                        },
+                        error: function () {
+                            bootbox.alert({ 'message': '发起失败' });
+                            $('body').loadingUI('hide');
+                        }
+                    });
+                }
+            });
+        }
+
+        // 初始化图片查看控件
+        function initLightBox() {
+            lightbox.option({
+                showImageNumberLabel: true,
+                albumLabel: '第%1张，共%2张。',
+                disableScrolling: false,
+                alwaysShowNavOnTouchDevices: true,
+                wrapAround: true
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>我的收藏</title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/iCheck/skins/square/blue.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body>
+    <div class="myWork-myFavoriteList">
+        <div class="searchArea">
+            <div class="row">
+                <div class="col-xs-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">类型</span>
+                        <select class="form-control" id="selModuleType"></select>
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">标题</span>
+                        <input type="text" class="form-control" id="txtTitle" placeholder="标题" />
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div class="input-group">
+                        <div class="btn-group">
+                            <button class="btn btn-default" type="button" id="btnSearch">
+                                <span class="fa fa-search"></span> 检索
+                            </button>
+                            <button class="btn btn-default" type="button" id="btnReset">
+                                <span class="fa fa-repeat"></span> 重置
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dataList">
+        </div>
+    </div>
+    <!--[if lt IE 9]>
+    <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/jquery-tools-min.js" type="text/javascript"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/select2/dist/js/select2.full.min.js"></script>
+    <script src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script src="../../assets/vendors/iCheck/icheck.js"></script>
+    <script src="../../assets/vendors/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootbox.js/bootbox.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $('#selModuleType').select2({ width: 'resolve' });
+    </script>
+    <script type="text/javascript">
+        var scModel = {
+            ModuleTypeKV: 0,
+            Title: ''
+        }
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                initSearch();
+                initDataTable();
+            });
+        });
+
+        function initSearch() {
+            initModuleTypeSelector();
+
+            $("#btnSearch").click(function () {
+                searchData();
+            });
+
+            $("#btnReset").click(function () {
+                $('#selModuleType').val('0');
+                $('#selModuleType').trigger('change.select2');
+                $('#txtTitle').val('');
+                searchData();
+            });
+
+            $('#txtTitle').on('keydown', function (e) {
+                if (e.keyCode === 13 && $(this).val().trim() != "") {
+                    $("#btnSearch").click();
+                }
+            });
+        }
+
+        function initModuleTypeSelector() {
+            var searchModel = new Object();
+            searchModel.TypeId = 1;
+            searchModel.IsActive = 1;
+            searchModel.PageNum = 1;
+            searchModel.PageSize = 0;
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/Dictionary/Dictionary?sid=' + sid,
+                data: { searchModel: searchModel },
+                type: 'get',
+                success: function (data) {
+                    $('#selModuleType').select2({
+                        minimumResultsForSearch: Infinity,
+                        selectOnClose: true,
+                        width: 'resolve'
+
+                    });
+                    if (data.Success && data.Data) {
+                        $('#selModuleType').empty();
+                        $('#selModuleType').append('<option value="0">全部</option>');
+                        for (var i = 0; i < data.Data.rows.length; i++) {
+                            $('#selModuleType').append('<option value="' + data.Data.rows[i].Dkey + '">' + data.Data.rows[i].DValue + '</option>');
+                        }
+                        $('#selModuleType').val('0');
+                        $('#selModuleType').trigger('change.select2');
+                    }
+                },
+                cache: false
+            });
+        }
+
+        function initDataTable() {
+            $('#dataList').css('height', $('.myWork-myFavoriteList').height() - $('.searchArea').outerHeight(true));
+            $('#dataList').GWDataTable({
+                dataUrl: dataServiceBaseUrl + 'api/Common/Common/GetUserFavoriteListBySC?sid=' + sid,
+                tableTitle: '我的收藏',
+                tableIcon: true,
+                pagination: true,
+                multiCheck: true,
+                checkbox: true,
+                queryParams: function (pageNumber, pageSize) {
+                    scModel.PageNum = pageNumber;
+                    scModel.PageSize = pageSize;
+                    return { scModel: scModel };
+                },
+                toolbar: {
+                    'btn': [
+                        {
+                            id: 'btnUnFavorite',
+                            name: 'btnUnFavorite',
+                            btnClass: 'operate',
+                            faClass: 'fa fa-star ',
+                            text: '取消收藏',
+                            enabled: true,
+                            onclick: cancelCollection
+                        }
+                    ]
+                },
+                idField: "ID",
+                columns:
+                [
+                    {
+                        title: '标题',
+                        field: 'Title',
+                        align: 'left',
+                        formatter: function (value, row) {
+                            var linkTitle = 'javascript:void(0);';
+                            switch (row.ModuleTypeKV) {
+                                case 1:
+                                    linkTitle = '../NewsInfo/Read.html#id=' + row.ItemID;
+                                    break;
+                                case 2:
+                                    linkTitle = '../ProductInfo/Read.html#id=' + row.ItemID;
+                                    break;
+                                case 3:
+                                    linkTitle = '../ProjectInfo/Read.html#id=' + row.ItemID;
+                                    break;
+                                case 4:
+                                    linkTitle = '../CaseInfo/Read.html#id=' + row.ItemID;
+                                    break;
+                                case 5:
+                                    linkTitle = '../FileInfo/Read.html#id=' + row.ItemID;
+                                    break;
+                                case 6:
+                                    linkTitle = 'MyFavoriteReportItemList.html?ReportInfoID=' + row.ItemID + '&FolderName=' + encodeURIComponent(value);
+                                    return '<a href="' + linkTitle + '" title="' + value + '" onclick="javascript: void(0);">' + value + '</a>';
+                                default:
+                                    break;
+                            }
+                            return '<a href="' + linkTitle + '" target="_blank" title="' + value + '" onclick="javascript: void(0);">' + value + '</a>';
+                        }
+                    },
+                    { title: '类型', field: 'ModuleType', align: 'left', width: '140' },
+
+                    {
+                        title: '发布单位',
+                        field: 'PublishOrgName',
+                        align: 'left', width: '160',
+                        formatter: function (value, row) {
+                            return '<span title="' + row.PublishOrgName + '">' + row.PublishOrgName + '</span>';
+                        }
+                    },
+                    {
+                        title: '发布时间', field: 'PublishTime', align: 'center', width: '100', formatter: function (value, row) {
+                            return new Date(value.replace(/-/g, '/')).Format('yyyy-MM-dd');
+                        }
+                    },
+                    {
+                        title: '收藏时间',
+                        field: 'FavCreateTime',
+                        align: 'left',
+                        width: '100',
+                        formatter: function (value, row) {
+                            return getDateDiff(row.CurrentDateTime, row.FavCreateTime);
+                        }
+                    }
+                ],
+                onLoadSuccess: function (table) {
+                    $(table).find('.table-content-container .table-body .Title a').each(function () {
+                        var txtTitle = $('#txtTitle').val().trim();
+                        if (txtTitle != '' && txtTitle != '+') {
+                            var html = $(this).html().replace(new RegExp(txtTitle, 'gi'), '<label class="highlight">' + txtTitle + '</label>');
+                            $(this).html(html);
+                        }
+                    });
+                }
+            });
+        }
+
+        function searchData() {
+            scModel.ModuleTypeKV = $('#selModuleType').val() ? $('#selModuleType').val() : 0;
+            scModel.Title = $('#txtTitle').val() ? $('#txtTitle').val() : '';
+            $('#dataList').GWDataTable("load", scModel);
+        }
+
+        function cancelCollection() {
+            var objToCancelList = $('#dataList').GWDataTable("getChecked");
+            var arrToCancelList = new Array();
+            if (objToCancelList.length > 0) {
+                for (var i = 0; i < objToCancelList.length; i++) {
+                    arrToCancelList.push(objToCancelList[i].ID);
+                }
+                bootbox.confirm({
+                    size: 'small',
+                    message: "确定要取消收藏吗？",
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: dataServiceBaseUrl + 'api/Common/Common/DeleteFavorite?favoriteIDs=' + arrToCancelList.toString() + '&sid=' + sid,
+                                type: 'delete',
+                                success: function (data) {
+                                    if (data && data.Success === true && data.Data === 0) {
+                                        searchData();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            } else {
+                bootbox.alert({ size: 'small', message: "请至少选择一项再取消！" });
+            }
+        }
+    </script>
+</body>
+</html>

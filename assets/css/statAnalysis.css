@@ -1,0 +1,370 @@
+﻿/*
+ * statAnalysis.css 应用统计分析相关页面css
+ * version : v1.0.0
+ * CreateTime : 2016-7-01 14:00:00
+ * CreateBy : NieJuWei
+ * LastModifyBy : NieJuWei
+ * LastModifyTime : 2017-01-12 14:00:00
+ */
+.listView {
+  height: 100%;
+  overflow: hidden;
+}
+.listView .fa {
+  color: #337ab7;
+}
+.listView .container {
+  width: 100% !important;
+}
+.listView .searchArea {
+  position: relative;
+  margin-top: 7px;
+  border: 2px solid #7ecef4;
+  border-radius: 6px;
+}
+.listView .searchArea .btn-toolbar {
+  margin: 8px 10px 6px 4px;
+}
+.listView .searchArea .btn-toolbar .input-group {
+  margin-left: 6px;
+}
+.listView .searchArea .btn-toolbar .btn {
+  height: 34px !important;
+}
+.listView .searchArea .row {
+  margin-top: 0 !important;
+  margin-right: 10px !important;
+  margin-bottom: 6px !important;
+  margin-left: 4px !important;
+}
+.listView .searchArea .row > div {
+  padding-right: 0;
+  padding-left: 6px;
+  margin-top: 8px;
+}
+.listView .searchArea:before {
+  position: absolute;
+  top: -13px;
+  left: 40px;
+  display: block;
+  content: "信息检索";
+  width: 70px;
+  text-align: center;
+  background-color: white;
+  color: #4c4c4c;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.listView .reportInfoItem-listTitle {
+  margin-top: 8px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+.listView .reportInfoItem-listTitle .reportInfo-center-title {
+  font-size: 22px;
+  color: #1e80cb;
+  letter-spacing: 1px;
+}
+.listView .dataList {
+  width: 100%;
+}
+.listView .dataList a.weight {
+  font-weight: bold;
+}
+.listView .dataList a.weight:hover {
+  text-decoration: underline;
+}
+.listView #visitAndFavInfoModal .modal-dialog {
+  width: 800px;
+}
+.listView #visitAndFavInfoModal .modal-dialog .modal-body {
+  height: 450px;
+  padding: 0;
+}
+.listView #visitAndFavInfoModal .modal-dialog .modal-body #frameVisitAndFavInfoModal {
+  border-radius: 8px;
+}
+.stat-visitInfoList {
+  overflow-y: hidden;
+}
+.stat-visitInfoList .modal-context .modal-head {
+  width: 100%;
+  height: 30px;
+  padding: 4px 15px;
+  background-color: #FFF;
+  /*border-bottom: 1.5px solid #E5E5E5;*/
+}
+.stat-visitInfoList .modal-context .modal-head .modal-title span {
+  font-size: 14px;
+  font-weight: 700;
+  color: #353535;
+}
+.stat-visitInfoList .modal-context .modal-head .close {
+  position: absolute;
+  top: 3px;
+  right: 15px;
+  font-size: 21px;
+  font-weight: 900;
+  color: #15578E;
+  opacity: 1;
+}
+.stat-visitInfoList .modal-context .modal-head .close:hover {
+  position: absolute;
+  font-size: 21px;
+  text-decoration: underline;
+  color: #15578E;
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
+.stat-visitInfoList .modal-context .modal-body {
+  padding: 0 10px;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView {
+  height: 100%;
+  overflow: hidden;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView .fa {
+  color: #337ab7;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView .container {
+  width: 100% !important;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView .searchArea {
+  position: relative;
+  margin-top: 7px;
+  border: 2px solid #7ecef4;
+  border-radius: 6px;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView .searchArea .btn-toolbar {
+  margin: 8px 10px 6px 4px;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView .searchArea .btn-toolbar .input-group {
+  margin-left: 6px;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView .searchArea .btn-toolbar .btn {
+  height: 34px !important;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView .searchArea .row {
+  margin-top: 0 !important;
+  margin-right: 10px !important;
+  margin-bottom: 6px !important;
+  margin-left: 4px !important;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView .searchArea .row > div {
+  padding-right: 0;
+  padding-left: 6px;
+  margin-top: 8px;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView .searchArea:before {
+  position: absolute;
+  top: -13px;
+  left: 40px;
+  display: block;
+  content: "信息检索";
+  width: 70px;
+  text-align: center;
+  background-color: white;
+  color: #4c4c4c;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView .reportInfoItem-listTitle {
+  margin-top: 8px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView .reportInfoItem-listTitle .reportInfo-center-title {
+  font-size: 22px;
+  color: #1e80cb;
+  letter-spacing: 1px;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView .dataList {
+  width: 100%;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView .dataList a.weight {
+  font-weight: bold;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView .dataList a.weight:hover {
+  text-decoration: underline;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView #visitAndFavInfoModal .modal-dialog {
+  width: 800px;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView #visitAndFavInfoModal .modal-dialog .modal-body {
+  height: 450px;
+  padding: 0;
+}
+.stat-visitInfoList .modal-context .modal-body .visitInfo-listView #visitAndFavInfoModal .modal-dialog .modal-body #frameVisitAndFavInfoModal {
+  border-radius: 8px;
+}
+.stat-visitInfoList .modal-context .noData {
+  position: absolute;
+  top: 330px;
+  left: 430px;
+  text-align: center;
+}
+.stat-visitInfoList .modal-context .txtNoData {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 14px;
+  text-align: left;
+}
+.stat-List {
+  height: 100%;
+  overflow: hidden;
+}
+.stat-List .fa {
+  color: #337ab7;
+}
+.stat-List .container {
+  width: 100% !important;
+}
+.stat-List .searchArea {
+  position: relative;
+  margin-top: 7px;
+  border: 2px solid #7ecef4;
+  border-radius: 6px;
+}
+.stat-List .searchArea .btn-toolbar {
+  margin: 8px 10px 6px 4px;
+}
+.stat-List .searchArea .btn-toolbar .input-group {
+  margin-left: 6px;
+}
+.stat-List .searchArea .btn-toolbar .btn {
+  height: 34px !important;
+}
+.stat-List .searchArea .row {
+  margin-top: 0 !important;
+  margin-right: 10px !important;
+  margin-bottom: 6px !important;
+  margin-left: 4px !important;
+}
+.stat-List .searchArea .row > div {
+  padding-right: 0;
+  padding-left: 6px;
+  margin-top: 8px;
+}
+.stat-List .searchArea:before {
+  position: absolute;
+  top: -13px;
+  left: 40px;
+  display: block;
+  content: "信息检索";
+  width: 70px;
+  text-align: center;
+  background-color: white;
+  color: #4c4c4c;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.stat-List .reportInfoItem-listTitle {
+  margin-top: 8px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+.stat-List .reportInfoItem-listTitle .reportInfo-center-title {
+  font-size: 22px;
+  color: #1e80cb;
+  letter-spacing: 1px;
+}
+.stat-List .dataList {
+  width: 100%;
+}
+.stat-List .dataList a.weight {
+  font-weight: bold;
+}
+.stat-List .dataList a.weight:hover {
+  text-decoration: underline;
+}
+.stat-List #visitAndFavInfoModal .modal-dialog {
+  width: 800px;
+}
+.stat-List #visitAndFavInfoModal .modal-dialog .modal-body {
+  height: 450px;
+  padding: 0;
+}
+.stat-List #visitAndFavInfoModal .modal-dialog .modal-body #frameVisitAndFavInfoModal {
+  border-radius: 8px;
+}
+.stat-List #visitLogDetail {
+  height: 450px;
+}
+.reportItemList {
+  height: 100%;
+  overflow: hidden;
+}
+.reportItemList .fa {
+  color: #337ab7;
+}
+.reportItemList .container {
+  width: 100% !important;
+}
+.reportItemList .searchArea {
+  position: relative;
+  margin-top: 7px;
+  border: 2px solid #7ecef4;
+  border-radius: 6px;
+}
+.reportItemList .searchArea .btn-toolbar {
+  margin: 8px 10px 6px 4px;
+}
+.reportItemList .searchArea .btn-toolbar .input-group {
+  margin-left: 6px;
+}
+.reportItemList .searchArea .btn-toolbar .btn {
+  height: 34px !important;
+}
+.reportItemList .searchArea .row {
+  margin-top: 0 !important;
+  margin-right: 10px !important;
+  margin-bottom: 6px !important;
+  margin-left: 4px !important;
+}
+.reportItemList .searchArea .row > div {
+  padding-right: 0;
+  padding-left: 6px;
+  margin-top: 8px;
+}
+.reportItemList .searchArea:before {
+  position: absolute;
+  top: -13px;
+  left: 40px;
+  display: block;
+  content: "信息检索";
+  width: 70px;
+  text-align: center;
+  background-color: white;
+  color: #4c4c4c;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.reportItemList .reportInfoItem-listTitle {
+  margin-top: 8px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+.reportItemList .reportInfoItem-listTitle .reportInfo-center-title {
+  font-size: 22px;
+  color: #1e80cb;
+  letter-spacing: 1px;
+}
+.reportItemList .dataList {
+  width: 100%;
+}
+.reportItemList .dataList a.weight {
+  font-weight: bold;
+}
+.reportItemList .dataList a.weight:hover {
+  text-decoration: underline;
+}
+.reportItemList #visitAndFavInfoModal .modal-dialog {
+  width: 800px;
+}
+.reportItemList #visitAndFavInfoModal .modal-dialog .modal-body {
+  height: 450px;
+  padding: 0;
+}
+.reportItemList #visitAndFavInfoModal .modal-dialog .modal-body #frameVisitAndFavInfoModal {
+  border-radius: 8px;
+}

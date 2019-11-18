@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../../assets/css/page.min.css" rel="stylesheet" />
+    <title>审批常用词</title>
+</head>
+<body class="approveWord-selector">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5>常用词</h5>
+            <div class="btn-group btn-group-sm" id="divEditApproveWords">
+                <button class="btn btn-primary" id="btnEditApproveWords" type="button" data-html="edit">
+                    <span class="fa fa-edit"></span>编辑
+                </button>
+            </div>
+            <button class="close" id="btnCloseModal" type="button" title="关闭">&times;</button>
+        </div>
+        <div class="modal-body">
+            <table class="table" id="tblApproveWords">
+                <tbody></tbody>
+            </table>
+            <div class="noData" style="display:none;">
+                <div style="">
+                    <img src="../../../assets/img/clock.png" />
+                </div>
+                <div class="txtNoData">
+                    暂无数据，请添加审批常用语。
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="input-group">
+                <input class="form-control" id="txtAddApproveWord" onmouseover="this.title=this.value" type="text" maxlength="200" placeholder="添加审批词" />
+                <span class="input-group-btn">
+                    <button class="btn btn-success" id="btnAddApproveWord" data-html="choice"><span class="fa fa-check"></span>选择</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <script src="../../../assets/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../../../assets/js/jquery-tools-min.js"></script>
+    <script src="../../../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../../../assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../../../assets/vendors/xss/dist/xss.min.js"></script>
+    <script src="../../../assets/js/workFlow.min.js?v=1.0.2" type="text/javascript"></script>
+    <script type="text/javascript">
+        var commonWord = '';
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                initApproveWord();
+            });
+        });
+
+        function initApproveWord() {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/Common/Common/GetUserCommonWordsByUserInfo?sid=' + sid,
+                type: 'get',
+                async: true,
+                cache: false,
+                success: function (result) {
+                    if (!result.Data || result.Data.length == 0) {
+                        $('.noData').css('display', 'block');
+                    } else {
+                        $.each(result.Data, function (index, element) {
+                            var newRow = '<tr class="read"><td class="colWord" title="' + element.ApproveWords + '">' + element.ApproveWords + '</td><td class="colRemove"><a href="#" class="btnRemoveApproveWord" onclick="removeApproveWord(this,' + element.ID + ')"><span class="glyphicon glyphicon-remove"></span></a></td></tr>';
+                            $('#tblApproveWords>tbody').append(newRow);
+                        });
+                    }
+                    bindEvent();
+                }
+            });
+            return false;
+        }
+
+        function bindEvent() {
+            var that;
+            var rowClick = function () {
+                if ((typeof that) == 'object') {
+                    that.removeClass('choiceColor');
+                }
+                $(this).addClass('choiceColor');
+                that = $(this);
+                return false;
+            }
+            $('#tblApproveWords tbody tr').bind('click', rowClick);
+
+            $('#btnEditApproveWords').on('click', function () {
+                if ($(this).data('html') == 'edit') {
+                    $('.btnRemoveApproveWord').css('display', 'table-cell');
+                    $('#btnEditApproveWords').html('<span class="fa fa-check"></span>完成编辑');
+                    $('#btnEditApproveWords').data('html', 'save');
+
+                    $('#btnAddApproveWord').html('<span class="fa fa-plus"></span>新增');
+                    $('#btnAddApproveWord').data('html', 'add');
+                    $('#btnAddApproveWord').css('border-top-left-radius', '0');
+                    $('#btnAddApproveWord').css('border-bottom-left-radius', '0');
+                    $('#txtAddApproveWord').css('visibility', 'visible');
+                    $('#txtAddApproveWord').focus();
+
+                    if ((typeof that) == 'object') {
+                        that.removeClass('choiceColor');
+                        that = '';
+                    }
+                    $('#tblApproveWords tbody tr').removeClass('read').unbind('click', rowClick);
+
+                } else {
+                    $('.btnRemoveApproveWord').css('display', 'none');
+                    $('#btnEditApproveWords').html('<span class="fa fa-edit"></span>编辑');
+                    $('#btnEditApproveWords').data('html', 'edit');
+
+                    $('#btnAddApproveWord').html('<span class="fa fa-check"></span>选择');
+                    $('#btnAddApproveWord').data('html', 'choice');
+                    $('#btnAddApproveWord').css('border-top-left-radius', '4px');
+                    $('#btnAddApproveWord').css('border-bottom-left-radius', '4px');
+                    $('#txtAddApproveWord').css('visibility', 'hidden');
+                    $('#tblApproveWords tbody tr').addClass('read').bind('click', rowClick);
+                }
+                return false;
+            });
+
+            $('#btnAddApproveWord').on('click', function () {
+                if ($('#btnAddApproveWord').data('html') == 'choice') {
+                    if ((typeof that) == 'object') {
+                        that.removeClass('choiceColor');
+                        commonWord = that.children().get(0).innerHTML;
+                        parent.addApproveCommonWord();
+                    }
+                } else {
+                    var approveWord = filterXSS($('#txtAddApproveWord').val().trim());
+                    if (approveWord != '') {
+                        $.ajax({
+                            url: dataServiceBaseUrl + 'api/Common/Common/AddUserApproveCommonWords?sid=' + sid,
+                            type: 'post',
+                            data: {
+                                ApproveWords: approveWord
+                            },
+                            async: true,
+                            cache: false,
+                            success: function (result) {
+                                if (result.Success) {
+                                    if ($('#tblApproveWords tbody tr').length == 0) {
+                                        $('.noData').css('display', 'none');
+                                    }
+                                    var newRow = '<tr><td class="colWord" title="' + $('#txtAddApproveWord').val().trim() + '">' + $('#txtAddApproveWord').val().trim() + '</td><td class="colRemove"><a href="#" class="btnRemoveApproveWord" style="display:block" onclick="removeApproveWord(this,' + result.Data + ')"><span class="glyphicon glyphicon-remove"></span></a></td></tr>';
+                                    $('#tblApproveWords>tbody').prepend(newRow);
+                                }
+                                $('#txtAddApproveWord').val('');
+                            }
+                        });
+                    }
+                }
+                return false;
+            });
+            $('#btnCloseModal').on('click', function () {
+                $('#btnCloseApproveWordSelectModal', parent.document).click();
+                return false;
+            });
+            $('#btnCloseModal').on('click', function () {
+                $('#btnCloseApproveWordSelectModal', parent.document).click();
+                return false;
+            });
+        }
+
+        function removeApproveWord(obj, val) {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/Common/Common/DeleteUserApproveCommonWords?commonwordID=' + val + '&sid=' + sid,
+                type: 'delete',
+                async: true,
+                cache: false,
+                success: function (result) {
+                    if (result.Success) {
+                        var row = $(obj).parent().parent();
+                        row.remove();
+                        if ($('#tblApproveWords tbody tr').length == 0) {
+                            $('.noData').css('display', 'block');
+                        }
+                    }
+                }
+            });
+            return false;
+        }
+
+        function getCommonWord() {
+            return commonWord;
+        }
+    </script>
+</body>
+</html>

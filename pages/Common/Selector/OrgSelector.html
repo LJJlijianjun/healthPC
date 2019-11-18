@@ -1,0 +1,361 @@
+﻿<!DOCTYPE html>
+<html lang="zh-ch">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../assets/vendors/iCheck/skins/square/blue.css" rel="stylesheet" />
+    <link href="../../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body class="project-org-selector">
+    <div class="orgSelector">
+    </div>
+    <div>
+        <button type="button" id="btnAffirmOrgToList" class="btn btn-primary btn-right-align-first">
+            确定 <span id="candidateOrgNumBadge" class="badge">0</span>
+        </button>
+        <button type="button" id="btnReset" class="btn btn-primary btn-right-align">
+            <span>清空</span>
+        </button>
+    </div>
+    <div id="flyingAdd" class="flyingSign">+</div>
+    <div id="flyingSubduct" class="flyingSign">-</div>
+    <script src="../../../assets/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../../../assets/js/jquery-tools-min.js"></script>
+    <script src="../../../assets/vendors/velocity/velocity.min.js"></script>
+    <script src="../../../assets/js/config.min.js?v=1.0.0"></script>
+    <script src="../../../assets/js/auth.min.js?v=1.0.0"></script>
+    <script src="../../../assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../../../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../../../assets/vendors/iCheck/icheck.min.js"></script>
+    <script type="text/javascript">
+        // 多选配置
+        // isMultiSelect = 1 单选
+        // isMultiSelect = 2 多选
+        var isMultiSelect = $.url().param('isMultiSelect');
+        // 是否显示事业单位
+        // isShowHQBusinessDept = 0 不显示
+        // isShowHQBusinessDept = 1 显示
+        var isShowHQBusinessDept = $.url().param('isShowHQBusinessDept');
+        // 根节点ID
+        // rootID = 0 全部机构
+        // rootID = 1 公司总部
+        // rootID = 2 分公司
+        // rootID = 3 平台公司
+        var rootID = $.url().param('rootID') || 0;
+
+        if (rootID != 0 && rootID != 1) {
+            isShowHQBusinessDept = 0;
+        }
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                initElement();
+            });
+            bindEvent();
+        });
+
+        function initElement() {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/UserOrg/Org/GetTopOrgList?rootID=' + rootID + '&sid=' + sid,
+                type: "get",
+                dataType: "json",
+                async: true,
+                success: function (data, textStatus) {
+                    if (data.Success) {
+                        var strHtml = "";
+                        var group = new Array();
+                        var groupIds = new Array();
+                        data = data.Data
+
+                        // 显示 则数据结果加上相应值
+                        if (isShowHQBusinessDept == "1") {
+                            for (var i = 0; i < HQBusinessDept.length; i++) {
+                                data.push(HQBusinessDept[i]);
+                            }
+                        }
+
+                        for (var i = 0; i < data.length; i++) {
+
+                            if (data[i].orgInfo.IsView == 0) { continue; }
+                            var flag = groupIds.indexOf(data[i].RootID);
+
+                            if (flag < 0) {
+                                groupIds[groupIds.length] = data[i].RootID;
+                                var obj = new Object();
+                                obj.RootID = data[i].RootID;
+                                obj.RootName = data[i].RootName;
+                                obj.Info = new Array();
+                                obj.Info[0] = data[i].orgInfo;
+
+                                group[group.length] = obj;
+                            } else {
+                                group[flag].Info[group[flag].Info.length] = data[i].orgInfo;
+                            }
+                        }
+
+                        for (var i = 0; i < group.length; i++) {
+                            var itemIndex = 0;
+                            if (group[i].Info.length == 1) {
+                                strHtml += '<div class="group">';
+                                strHtml += '<div class="list-inline"><div class="noexpander"><div class="tags-label" data-orgtype="1" data-orgid="' + group[i].Info[0].Org_ID;
+                                strHtml += '"><input type="checkbox" class="itemAll"><div class="bold-orgName">';
+                                strHtml += group[i].RootName;
+                                strHtml += '</div></div></div></div>';
+                                strHtml += '</div>';
+                            } else {
+                                strHtml += '<div class="group">';
+                                strHtml += '<div class="list-inline exp-e"><div class="expander  showList" data-itemlistid="itemList' + i + '"></div><div class="orgItem"><div class="tags-label" data-orgtype="' + group[i].RootID + '" data-orgid="' + (0 - group[i].RootID);
+                                if (isMultiSelect === "1") {
+                                    strHtml += '"><div class="bold-orgName">';
+                                } else {
+                                    strHtml += '"><input type="checkbox" class="itemAll"><div class="bold-orgName">';
+                                }
+                                strHtml += group[i].RootName;
+                                strHtml += '</div></div></div></div>';
+
+                                strHtml += '<div id="itemList' + i + '" class="list-inline collapse in itemList">';
+                                for (var j = 0; j < group[i].Info.length; j++) {
+                                    // 显示事业部
+                                    if (isShowHQBusinessDept == "1") {
+                                        // 不显示总部
+                                        if (group[i].Info[j].Org_ID == 1) {
+                                            continue;
+                                        } else {
+                                            itemIndex++;
+                                        }
+                                    } else {
+                                        itemIndex++;
+                                    }
+                                    if ((itemIndex % 4) == 1) {
+                                        strHtml += '<div class="rowTest">';
+                                    }
+                                    strHtml += '<div class="orgItem"><div class="tags-label" data-orgtype="' + group[i].RootID + '" data-orgid="' + group[i].Info[j].Org_ID
+                                    strHtml += '"><input type="checkbox"><div class="normal-orgName">';
+                                    strHtml += group[i].Info[j].Name;
+                                    strHtml += '</div></div></div>';
+                                    if ((itemIndex % 4) == 0) {
+                                        strHtml += '</div>';
+                                    } else if (j == group[i].Info.length - 1) {
+                                        strHtml += '</div>';
+                                    }
+                                }
+
+                                strHtml += '</div>';
+                                strHtml += '</div>';
+                            }
+                        }
+
+                        $('.orgSelector').html(strHtml);
+                        initCheckBox();
+                        setSelectedOrg();
+                        setUnSelectOrg();
+                    } else {
+                    }
+                    setCollapseTool();
+                },
+                error: function (e) {
+                }
+            });
+        }
+
+        function initCheckBox() {
+            $('.orgSelector input[type=checkbox]').iCheck({
+                checkboxClass: 'icheckbox_square-blue-16'
+            }).on('ifClicked', function () {
+                toggleICheckState($(this));
+            });
+        }
+
+        function toggleICheckState(iptCheck) {
+            // 单选
+            if (isMultiSelect === "1") {
+                // 判断当前checkbox是否被选中
+                if (!iptCheck.is(':checked')) {
+                    $('.orgSelector input[type=checkbox]').iCheck('uncheck');
+                    iptCheck.iCheck('check');
+                    // 加号动画
+                    flyingAnimate(iptCheck, $('#flyingAdd'), $('#btnAffirmOrgToList'), renewCandidateOrgNum);
+                } else {
+                    iptCheck.iCheck('uncheck');
+                    flyingAnimate(iptCheck, $('#flyingSubduct'), $('#btnAffirmOrgToList'), renewCandidateOrgNum);
+                }
+            } else {
+                // 判断当前checkbox是否被选中
+                if (!iptCheck.is(':checked')) {
+                    iptCheck.iCheck('check');
+                    if (iptCheck.hasClass('itemAll')) {
+                        iptCheck.parent().parent().parent().parent().next().find('.tags-label input[type=checkbox]:not(:disabled)').iCheck('check');
+                    } else {
+                        var intAllSelectedFlag = iptCheck.parent().parent().parent().parent().parent().find('.tags-label input[type=checkbox]').length
+                        - iptCheck.parent().parent().parent().parent().parent().find('.tags-label input[type=checkbox]:checked').length;
+                        if (intAllSelectedFlag < 1) {
+                            iptCheck.parent().parent().parent().parent().parent().prev().find('.tags-label input[type=checkbox]').iCheck('check');
+                        }
+                    }
+
+                    // 加号动画
+                    flyingAnimate(iptCheck, $('#flyingAdd'), $('#btnAffirmOrgToList'), renewCandidateOrgNum);
+
+                } else {
+                    iptCheck.iCheck('uncheck');
+                    if (iptCheck.hasClass('itemAll')) {
+                        iptCheck.parent().parent().parent().parent().next().find('.tags-label input[type=checkbox]').iCheck('uncheck');
+                    } else {
+                        iptCheck.parent().parent().parent().parent().parent().prev().find('.tags-label input[type=checkbox]').iCheck('uncheck');
+                    }
+                    // 减号动画
+                    flyingAnimate(iptCheck, $('#flyingSubduct'), $('#btnAffirmOrgToList'), renewCandidateOrgNum);
+                }
+            }
+        }
+
+        function setSelectedOrg() {
+            // 已选择机构
+            var selectedOrgStr = $.url().param('selectedOrgStr');
+            if (selectedOrgStr && selectedOrgStr.length > 0) {
+                var arr = selectedOrgStr.split(',');
+                for (var i = 0; i < arr.length; i++) {
+                    var $tagsLabel = $('.orgSelector').find('.tags-label[data-orgid=' + arr[i] + ']');
+                    var $checkInput = $('.orgSelector').find('.tags-label[data-orgid=' + arr[i] + ']').find('input[type=checkbox]');
+                    $checkInput.iCheck('check');
+
+                    if ($tagsLabel.parent().parent().parent().find('.tags-label input[type=checkbox]').length
+                        == $tagsLabel.parent().parent().parent().find('.tags-label input[type=checkbox]:checked').length) {
+                        $tagsLabel.parent().parent().parent().prev().find('.tags-label input[type=checkbox]').iCheck('check');
+                    }
+                }
+                // 将候选徽章计数变更为已选择数量
+                $('#candidateOrgNumBadge').text(arr.length);
+            }
+        }
+
+        function setUnSelectOrg() {
+            // 不可选择机构ID
+            var unSelectOrgStr = $.url().param('unSelectOrgStr');
+            if (unSelectOrgStr && unSelectOrgStr.length > 0) {
+                var arr = unSelectOrgStr.split(',');
+                for (var i = 0; i < arr.length; i++) {
+                    $('.orgSelector').find('.tags-label[data-orgid=' + arr[i] + ']').find('input[type=checkbox]').iCheck('uncheck');
+                    $('.orgSelector').find('.tags-label[data-orgid=' + arr[i] + ']').find('input[type=checkbox]').iCheck('disable');
+                    $('.orgSelector').find('.tags-label[data-orgid=' + arr[i] + ']').find('input[type=checkbox]').parent().next().css('color', '#999');
+                    $('.orgSelector').find('.tags-label[data-orgid=' + arr[i] + ']').find('input[type=checkbox]').parent().next().css('cursor', 'default');
+                }
+                // 更新徽章计数
+                renewCandidateOrgNum();
+            }
+        }
+
+        function getSelectedOrgs() {
+            var selectedOrgArr = [];
+            $('.orgSelector input[type=checkbox]:checked').each(function () {
+                if (!$(this).hasClass('itemAll') || $(this).parent().parent().data('orgid') == "1") {
+                    selectedOrgArr.push({
+                        'OrgID': $(this).parent().parent().data('orgid'),
+                        'OrgName': $(this).parent().next().text(),
+                        'OrgType': $(this).parent().parent().data('orgtype')
+                    });
+                }
+            });
+            return selectedOrgArr;
+        }
+
+        function renewCandidateOrgNum() {
+            var selectedOrgArr = getSelectedOrgs();
+
+            // 将候选徽章计数变更为已选择数量
+            $('#candidateOrgNumBadge').text(selectedOrgArr.length);
+        }
+
+        function setCollapseTool() {
+            $('.showList').on('click', function () {
+
+                var isIE10 = true;
+
+                try {
+                    if ($.browser && $.browser.msie && $.browser.version && parseInt($.browser.version) < 10) {
+                        isIE10 = false;
+                    }
+                } catch (e) {
+                }
+                var itemlistid = $(this).data().itemlistid;
+
+                if ($(this).parent().hasClass('exp-e')) {
+                    $(this).parent().removeClass('exp-e');
+
+                    if (!isIE10) {
+                        $('#' + itemlistid).removeClass('collapse in').addClass('collapse');
+                    }
+
+                } else {
+                    $(this).parent().addClass('exp-e');
+                    if (!isIE10) {
+                        $('#' + itemlistid).removeClass('collapse').addClass('collapse in');
+                    }
+                }
+
+                if (isIE10) {
+                    $('#' + itemlistid).collapse('toggle');
+                }
+            });
+        }
+
+        function bindEvent() {
+            $('#btnAffirmOrgToList').on('click', function () {
+                parent.addOrgToList();
+                return false;
+            });
+            $('#btnReset').on('click', function () {
+                $('.orgSelector input[type=checkbox]').iCheck('uncheck');
+                renewCandidateOrgNum();
+                return false;
+            });
+
+            var unSelectOrgStr = $.url().param('unSelectOrgStr');
+            var arr = null;
+            if (unSelectOrgStr && unSelectOrgStr.length > 0) {
+                arr = unSelectOrgStr.split(',');
+            }
+
+            $(document).on('click', function (event) {
+                if ($(event.target).hasClass('normal-orgName') || $(event.target).hasClass('bold-orgName')) {
+                    var iptCheck = $(event.target).parent().find('input[type=checkbox]');
+                    var tagsLabel = $(event.target).parent();
+                    //判断是不是禁用的部门
+                    if (arr != null && arr.indexOf(tagsLabel.attr('data-orgid')) !== -1) {
+
+                    } else {
+                        toggleICheckState(iptCheck);
+                    }
+                    return false;
+                }
+            });
+        }
+
+        function flyingAnimate(ev, thingFly, flyToDom, callback) {
+            var $offset = $(ev).offset();
+            var $offsetfavbar = $(flyToDom).offset();
+            $(thingFly).css('left', $offset.left + 'px');
+            $(thingFly).css('top', $offset.top + 'px');
+            $(thingFly).animate({
+                left: ($offsetfavbar.left + 30) + "px",
+                top: ($offsetfavbar.top - 5) + "px",
+                opacity: "0.8",
+                fontSize: "24px"
+            }, 500, function () {
+                $(thingFly).css({
+                    left: "-1000px",
+                    top: "-100px",
+                    opacity: "1",
+                    fontSize: "50px"
+                });
+                callback();
+            });
+        }
+    </script>
+</body>
+</html>

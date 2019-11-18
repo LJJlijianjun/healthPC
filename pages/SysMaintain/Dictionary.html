@@ -1,0 +1,1045 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>字典数据维护</title>
+    <!--plugin styles-->
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/jquery-ui/themes/base/autocomplete.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/iCheck/skins/square/blue.css" rel="stylesheet" />
+    <!--mine plugin-->
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <!--mine style-->
+    <link href="../../assets/vendors/jquery-ui-1.11.4/themes/base/all.css" rel="stylesheet" />
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+    <style type="text/css">
+        #dicDataModal {
+            z-index: 1050;
+        }
+
+        /*排序弹出框排序样式*/
+        .sortGroupModal {
+            color: black;
+        }
+
+            .sortGroupModal .modal-dialog {
+                width: 300px;
+                margin: 90px auto 0 auto;
+            }
+
+                .sortGroupModal .modal-dialog .modal-content .modal-header {
+                    padding: 10px;
+                }
+
+                .sortGroupModal .modal-dialog .modal-content .modal-body {
+                    height: 300px;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                }
+
+                    .sortGroupModal .modal-dialog .modal-content .modal-body #myGroupList {
+                        padding-left: 15px;
+                        padding-right: 15px;
+                    }
+
+                        .sortGroupModal .modal-dialog .modal-content .modal-body #myGroupList .group {
+                            display: block;
+                            width: 100%;
+                            height: 34px;
+                            padding: 6px 12px;
+                            font-size: 14px;
+                            line-height: 1.4285;
+                            color: #555555;
+                            background-color: white;
+                            background-image: none;
+                            border: 1px solid #cccccc;
+                            border-radius: 4px;
+                            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+                            box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075);
+                            -webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+                            -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+                            transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+                            cursor: pointer;
+                            margin-bottom: 10px;
+                            text-align: center;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            -o-text-overflow: ellipsis;
+                            text-overflow: ellipsis;
+                        }
+        /*排序弹出框排序样式*/
+    </style>
+</head>
+<body>
+    <div class="sysMaintain-dicMaintain">
+        <ul class="nav nav-tabs nav-tabs-dic" role="tablist">
+            <li class="active" role="presentation"><a data-toggle="tab" href="#DicType" role="tab">字典类型维护</a></li>
+            <li role="presentation"><a data-toggle="tab" href="#DicData" role="tab">字典数据维护</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="DicType" role="tabpanel">
+                <div class="searchArea">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <div class="input-group">
+                                <span class="input-group-addon">名称</span>
+                                <input class="form-control" id="txtSearchTypeName" name="txtSearchTypeName" type="text" placeholder="名称" />
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="input-group">
+                                <span class="input-group-addon">是否启用</span>
+                                <select class="form-control" id="selTypeIsActive" name="selTypeIsActive">
+                                    <option value="-1">全部</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="input-group">
+                                <div class="btn-group">
+                                    <button class="btn btn-default" id="btnSearchType" type="button">
+                                        <span class="fa fa-search"></span> 检索
+                                    </button>
+                                    <button class="btn btn-default" id="btnResetType" type="button">
+                                        <span class="fa fa-repeat"></span> 重置
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dataList" id="dataTypeList"></div>
+            </div>
+            <div class="tab-pane active" id="DicData" role="tabpanel">
+                <div class="searchArea">
+                    <div class="btn-toolbar">
+                        <div class="input-group w331">
+                            <span class="input-group-addon">字典类型</span>
+                            <select class="form-control w250" name="modelTypeSelector" id="selDicType">
+                                <option value="-1">全部</option>
+                            </select>
+                        </div>
+                        <div class="input-group w331">
+                            <span class="input-group-addon">字典名称</span>
+                            <input class="form-control w250" name="txtSearchDataName" id="txtSearchDataName" type="text" placeholder="字典名称" />
+                        </div>
+                        <div class="input-group w157">
+                            <span class="input-group-addon">是否启用</span>
+                            <select class="form-control w76" name="selDateIsActive" id="selDateIsActive">
+                                <option value="-1">全部</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <div class="btn-group">
+                                <button class="btn btn-default" id="btnSearchData" type="button">
+                                    <span class="fa fa-search"></span> 检索
+                                </button>
+                                <button class="btn btn-default" id="btnResetData" type="button">
+                                    <span class="fa fa-repeat"></span> 重置
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dataList" id="dataList"></div>
+            <a id="totop" href="#" title="回到顶部"><i class="fa fa-angle-up"></i></a>
+        </div>
+
+        <!-- Modal Begin-->
+        <form id="dicDataForm">
+            <div class="modal fade" id="dicDataModal" tabindex="-1" role="dialog" aria-labelledby="dicDataModalLabel" aria-hidden="true">
+                <div class="modal-dialog w600">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" id="btnDicDataClose" data-dismiss="modal" type="button" aria-hidden="true" title="关闭">&times;</button>
+                            <h5 class="modal-title bold" id="dicDataModalLabel">新建字典数据</h5>
+                        </div>
+                        <div class="modal-body container-fluid pl15 pr15">
+                            <div class="row mt8">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon w100">字典名称</span>
+                                        <input class="form-control w470" id="txtName" name="txtName" type="text" placeholder="字典名称" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon w100">字典类型</span>
+                                        <select class="form-control w170" id="selDictionaryType"></select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group floatRight">
+                                        <span class="input-group-addon w100">字典编号</span>
+                                        <input class="form-control w105" id="txtCode" name="txtCode" type="text" placeholder="字典编号" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon w97">排序号</span>
+                                        <input class="form-control" id="txtSort" name="txtSort" type="text" placeholder="排序号" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group floatRight">
+                                        <span class="input-group-addon w100">是否启用</span>
+                                        <input class="check-switch" id="txtIsActive" value="1" type="checkbox" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon w100">备注</span>
+                                        <textarea class="form-control w470" id="txtDetail" rows="5"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary btn-sm w90" id="btnSaveData" data-loading-text="保存中..." type="button">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- Modal End-->
+        <!--排序弹出框-->
+        <div class="sortGroupModal">
+            <form id="sortGroupModalForm">
+                <div class="modal fade" id="sortGroupModal" tabindex="-1" aria-labelledby="sortGroupModalLabel" aria-hidden="true" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" id="btnCloseSortGroupModal" data-dismiss="modal" type="button" aria-hidden="true" title="关闭">&times;</button>
+                                <h5 class="modal-title" id="sortGroupModalLabel bold">排序</h5>
+                            </div>
+                            <div class="modal-body container-fluid">
+                                <ul id="myGroupList"></ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary btn-sm w90" id="btnSaveGroup" data-loading-text="保存中..." type="button">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!--排序弹出框-->
+        <!-- Modal Begin字典类型编辑模态窗口-->
+        <form id="dicTypeForm">
+            <div class="modal fade" id="dicTypeModal" aria-labelledby="dicTypeModalLabel" aria-hidden="true" role="dialog" tabindex="-1">
+                <div class="modal-dialog w600">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" id="btnDicTypeClose" data-dismiss="modal" type="button" title="关闭" aria-hidden="true">&times;</button>
+                            <h5 class="modal-title bold" id="dicTypeModalLabel">新建字典类型</h5>
+                        </div>
+                        <div class="modal-body container-fluid pl15 pr15">
+                            <div class="row mt8">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon w100">字典类型名称</span>
+                                        <input class="form-control" id="txtTypeName" name="txtTypeName" type="text" placeholder="字典类型名称" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group floatRight">
+                                        <span class="input-group-addon w100">是否启用</span>
+                                        <input class="check-switch" data-size="normal" id="txtTypeIsActive" value="1" type="checkbox" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt8">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon w110">备注</span>
+                                        <textarea class="form-control w457" id="txtTypeDetail" rows="5"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary btn-sm w90" id="btnSaveType" type="button" data-loading-text="保存中...">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- Modal End-->
+        <div class="btn-group none" id="dictionaryTypeBtnList">
+            <button class="btn btn-default" type="button" id="btnCreateType" onclick="createDictionaryType()"><span class="fa fa-plus"></span>&nbsp;新建</button>
+            <button class="btn btn-default" type="button" id="btnModifyType" disabled="disabled" onclick="modifyDictionaryType()"><span class="fa fa-edit"></span>&nbsp;修改</button>
+            <button class="btn btn-default" type="button" id="btnDeleteType" disabled="disabled" onclick="deleteDictionaryType()"><span class="fa fa-trash-o"></span>&nbsp;删除</button>
+        </div>
+
+        <div class="btn-group none" id="dictionaryBtnList">
+            <button class="btn btn-default" type="button" id="btnCreateData" onclick="createDictionary()"><span class="fa fa-plus"></span>&nbsp;新建</button>
+            <button class="btn btn-default" type="button" id="btnModifyData" disabled="disabled" onclick="modifyDictionary()"><span class="fa fa-edit"></span>&nbsp;修改</button>
+            <button class="btn btn-default" type="button" id="btnDeleteData" disabled="disabled" onclick="deleteDictionary()"><span class="fa fa-trash-o"></span>&nbsp;删除</button>
+            <button class="btn btn-default" type="button" id="btnSortData" disabled="disabled" onclick="sortDictionaryData()"><span class="fa fa-sort"></span>&nbsp;排序</button>
+        </div>
+    </div>
+    <!--[if lt IE 9]>
+    <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <!-- 应该先引用jQuery UI 再引用BootStrap -->
+    <!--base js-->
+    <script type="text/javascript" src="../../assets/vendors/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../../assets/js/jquery-tools-min.js"></script>
+    <script type="text/javascript" src="../../assets/js/config.min.js?v=1.0.0"></script>
+    <script type="text/javascript" src="../../assets/js/auth.min.js?v=1.0.0"></script>
+    <script type="text/javascript" src="../../assets/js/common.min.js?v=1.0.3"></script>
+    <!--plugin js-->
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/core.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/widget.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/menu.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/position.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/autocomplete.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/mouse.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/sortable.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/iCheck/icheck.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/select2/dist/js/select2.full.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+    <script type="text/javascript" src="../../assets/vendors/bootbox.js/bootbox.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/platform.js/platform.js"></script>
+    <script type="text/javascript">
+        //字典类型查询model
+        var dictionaryTypeScModel = {
+            TypeName: '',
+            IsActive: -1
+        }
+        //字典数据查询model
+        var dictionaryScModel = {
+            TypeId: -1,
+            DicName: '',
+            IsActive: -1,
+            PageNum: 1,
+            PageSize: 0
+        }
+
+        var bDicDataIsUpdate = false;
+        var bDicTypeIsUpdate = false;
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                bootbox.setLocale("zh_CN");
+                initCheckBox();
+                initDataList();
+                initDataTypeList();
+                initSelecter();
+                initValidator();
+                bindEvent();
+            });
+        });
+
+        //初始化字典数据
+        function initDataList() {
+            $('#dataList').css('height', $('.sysMaintain-dicMaintain').height() - $('.searchArea').outerHeight(true) - $('.nav-tabs-dic').outerHeight(true));
+            var option = {
+                tableTitle: '字典数据',
+                tableIcon: true,
+                checkbox: true,
+                toolbar: { 'selector': '#dictionaryBtnList' },
+                showLine: true,
+                columns: [
+                    {
+                        title: '字典编号', field: 'Dkey', align: 'center', width: '100', formatter: function (value, rowData) {
+                            return "<div  data-ID=" + rowData.ID + ">" + value + "</div>";
+                        }
+                    },
+                    {
+                        title: '字典名称', field: 'DValue', align: 'left'
+                    },
+                    {
+                        title: '字典类型', field: 'TypeID', align: 'left', width: '240',
+                        formatter: function (value, rowData) {
+                            return "<div  data-ID=" + rowData.ID + " data-name=" + rowData.DValue + " data-sn=" + rowData.Sn + " data-value=" + rowData.TypeID + ">" + rowData.TypeName + "</div>";
+                        }
+                    },
+                    { title: '排序号', field: 'Sn', align: 'center', width: '80' },
+                       {
+                           title: '是否启用', field: 'IsActive', align: 'center', width: '80',
+                           formatter: function (value) {
+                               var str = '';
+                               if (value === 1) {
+                                   str = '是';
+                               } else {
+                                   str = '否';
+                               }
+                               return str;
+                           }
+                       },
+                    { title: '描述', field: 'Description', align: 'left', width: '400' }
+                ],
+                dataUrl: dataServiceBaseUrl + 'api/SysMaintain/Dictionary?sid=' + sid,
+                queryParams: function () {
+                    return { searchModel: dictionaryScModel };
+                },
+                pagination: false,
+                onLoadSuccess: function (table) {
+                    $(table).find('.table-content-container .table-body .DValue').each(function () {
+                        var txtTitle = $('#txtSearchDataName').val().trim();
+                        if (txtTitle != '' && txtTitle != '+') {
+                            var html = $(this).html().replace(new RegExp(txtTitle, 'gi'), '<label class="highlight">' + txtTitle + '</label>');
+                            $(this).html(html);
+                        }
+                    });
+                },
+                onBeforeLoad: function (data) {
+                    //自动填充控件数据初始化
+                    var availableTags = [];
+                    var d = data.rows;
+
+                    var len = d ? d.length : 0;
+                    for (var i = 0; i < len; i++) {
+                        availableTags.push(d[i].DValue);
+                    }
+                    $('#txtSearchDataName').autocomplete({
+                        source: availableTags,
+                        minLength: 2,
+                        focus: function (event, ui) {
+                            $('#txtSearchDataName').val(ui.item.value);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            return false;
+                        }
+                    })
+                .autocomplete("instance")._renderItem = function (ul, item) {
+                    var val = $('#txtSearchDataName').val();
+                    //autocomplete自动填充关键词高亮显示
+                    var newVal = item.label.replace(val, "<span style='background:#FFFF00;color:#000000;vertical-align:baseline;'>" + val + "</span>");
+                    return $("<li>").append(newVal).appendTo(ul);
+                };
+                },
+                onRowCheck: function (rowIndex, rowData) {
+                    $('#dataList #btnModifyData').prop('disabled', false);
+                    $('#dataList #btnDeleteData').prop('disabled', false);
+                },
+                onRowUnCheck: function (rowIndex, rowData) {
+                    $('#dataList #btnModifyData').prop('disabled', true);
+                    $('#dataList #btnDeleteData').prop('disabled', true);
+                }
+            };
+
+            $('#dataList').GWDataTable(option);
+        }
+
+        //字典新建
+        function createDictionary() {
+            bDicDataIsUpdate = false;
+            $('#dicDataModalLabel').text('新建字典数据');
+            $("#txtIsActive").bootstrapSwitch('state', false);
+            $('#dicDataForm')[0].reset();
+            $('#dicDataModal').modal({ backdrop: 'static', keyboard: false });
+
+            if ($('#selDicType').val() == -1) {
+                $('#selDictionaryType').prop('disabled', false);
+            } else {
+                $('#selDictionaryType').val($('#selDicType').val()).trigger('change.select2');
+                $('#selDictionaryType').prop('disabled', true);
+            }
+            initTxtSort();
+        }
+
+        //字典修改
+        function modifyDictionary() {
+            bDicDataIsUpdate = true;
+            var rows = $('#dataList').GWDataTable('getChecked');
+            if (rows.length === 0) {
+                bootbox.alert({ message: "请选择要修改的行！", size: 'small' });
+            } else {
+                $("#txtCode").val(rows[0].Dkey);
+                $("#txtName").val(rows[0].DValue)
+                $("#selDictionaryType").val(rows[0].TypeID);
+                $('#selDictionaryType').trigger('change.select2');
+                $("#txtSort").val(rows[0].Sn);
+                $("#txtDetail").val(rows[0].Description);
+                if (rows[0].IsActive == 1) {
+                    $("#txtIsActive").bootstrapSwitch('state', true);
+                }
+                $('#dicDataModalLabel').text('修改数据字典数据');
+                $('#dicDataModal').modal({ backdrop: 'static', keyboard: false });
+            }
+        }
+
+        //字典删除
+        function deleteDictionary() {
+            var rows = $('#dataList').GWDataTable('getChecked');
+            if (rows.length === 0) {
+                bootbox.alert({ message: "请选择要删除的行！", size: 'small' });
+            } else {
+                var ID = rows[0].ID;
+                bootbox.confirm({
+                    size: 'small',
+                    message: "确定要删除吗？",
+                    callback: function (result) {
+                        if (result === true) {
+                            $.ajax({
+                                url: dataServiceBaseUrl + 'api/SysMaintain/Dictionary?sid=' + sid + "&id=" + ID + '&clientInfo=' + getClientInfo(),
+                                type: "DELETE",
+                                dataType: "json",
+                                async: true,
+                                success: function (data, textStatus) {
+                                    if (data.Success == false) {
+                                        if (data.Message == "InvalidUser") {
+                                            window.location.replace = '../Common/NoRight.html';
+                                        } else {
+                                            bootbox.alert(data.Message);
+                                        }
+                                    }
+                                    if (data.Success === true) {
+                                        bootbox.alert("删除成功！");
+                                    }
+                                    //重新加载字典
+                                    $('#dataList').GWDataTable('load', dictionaryScModel);
+                                },
+                                error: function () {
+                                    bootbox.alert("删除失败！");
+                                }
+                            })
+                        }
+                    }
+                });
+            }
+        }
+
+        //初始化字典类型表
+        function initDataTypeList() {
+            $('#dataTypeList').css('height', $('.sysMaintain-dicMaintain').height() - $('.searchArea').outerHeight(true) - $('.nav-tabs-dic').outerHeight(true));
+            var option = {
+                tableTitle: '字典类型',
+                tableIcon: true,
+                checkbox: true,
+                toolbar: { 'selector': '#dictionaryTypeBtnList' },
+                showLine: true,
+                columns: [
+                     {
+                         title: '字典类型名称', field: 'TypeName', align: 'left',
+                         formatter: function (value, rowData, index) {
+                             return "<div  data-ID=" + rowData.ID + ">" + value + "</div>";
+                         }
+                     },
+                    {
+                        title: '是否启用', field: 'IsActive', align: 'left', width: '100',
+                        formatter: function (value) {
+                            var str = '';
+                            if (value === 1) {
+                                str = '是';
+                            } else {
+                                str = '否';
+                            }
+                            return str;
+                        }
+                    },
+                     { title: '描述', field: 'Description', align: 'left', width: '600' }
+                ],
+                dataUrl: dataServiceBaseUrl + 'api/SysMaintain/DictionaryType/GetDictionaryTypeListBySC?sid=' + sid,
+                queryParams: function () {
+                    return { searchModel: dictionaryTypeScModel };
+                },
+                pagination: false,
+                onLoadSuccess: function (table) {
+                    $(table).find('.table-content-container .table-body .TypeName').each(function () {
+                        var txtTitle = $('#txtSearchTypeName').val().trim();
+                        if (txtTitle != '' && txtTitle != '+') {
+                            var html = $(this).html().replace(new RegExp(txtTitle, 'gi'), '<label class="highlight">' + txtTitle + '</label>');
+                            $(this).html(html);
+                        }
+                    });
+                },
+                onRowCheck: function (rowIndex, rowData) {
+                    $('#dataTypeList #btnModifyType').prop('disabled', false);
+                    $('#dataTypeList #btnDeleteType').prop('disabled', false);
+                },
+                onRowUnCheck: function (rowIndex, rowData) {
+                    $('#dataTypeList #btnModifyType').prop('disabled', true);
+                    $('#dataTypeList #btnDeleteType').prop('disabled', true);
+                }
+            };
+
+            $('#dataTypeList').GWDataTable(option);
+        }
+        //字典类型新建
+        function createDictionaryType() {
+            bDicTypeIsUpdate = false;
+            $("#txtTypeIsActive").bootstrapSwitch('state', false);
+            $('#dicTypeModalLabel').text('新建字典类型');
+            $('#dicTypeForm')[0].reset();
+            $('#dicTypeModal').modal({ backdrop: 'static', keyboard: false });
+        }
+
+        //字典类型修改
+        function modifyDictionaryType() {
+            bDicTypeIsUpdate = true;
+            var rows = $('#dataTypeList').GWDataTable('getChecked');
+            if (rows.length === 0) {
+                bootbox.alert({ message: "请选择要修改的行！", size: 'small' });
+            } else {
+                $("#txtTypeName").val(rows[0].TypeName);
+                $("#txtTypeDetail").val(rows[0].Description);
+                if (rows[0].IsActive == 1) {
+                    $("#txtTypeIsActive").bootstrapSwitch('state', true);
+                }
+                $('#dicTypeModalLabel').text('修改意见');
+                $('#dicTypeModal').modal({ backdrop: 'static', keyboard: false });
+            }
+        }
+
+        //字典类型删除
+        function deleteDictionaryType() {
+            var rows = $('#dataTypeList').GWDataTable('getChecked');
+            if (rows.length === 0) {
+                bootbox.alert({ message: "请选择要删除的行！", size: 'small' });
+            } else {
+                var ID = rows[0].ID;
+                bootbox.confirm({
+                    size: 'small',
+                    message: "确定要删除吗？",
+                    callback: function (result) {
+                        if (result === true) {
+                            $.ajax({
+                                url: dataServiceBaseUrl + 'api/SysMaintain/DictionaryType?sid=' + sid + '&id=' + ID + '&clientInfo=' + getClientInfo(),
+                                type: "DELETE",
+                                dataType: "json",
+                                async: true,
+                                success: function (data, textStatus) {
+                                    if (data.Success == false) {
+                                        if (data.Message == "InvalidUser") {
+                                            window.location.replace = '../Common/NoRight.html';
+                                        } else {
+                                            bootbox.alert(data.Message);
+                                        }
+                                    }
+                                    if (data.Success === true) {
+                                        bootbox.alert("删除成功！");
+                                    }
+                                    //重新加载字典类型
+                                    $('#dataTypeList').GWDataTable('load', dictionaryTypeScModel);
+                                },
+                                error: function () {
+                                    bootbox.alert("删除失败！");
+                                }
+                            })
+                        }
+                    }
+                });
+            }
+        }
+
+        //字典类型类型排序
+        function sortDictionaryData() {
+            var arrdata = [];
+            var data = $('#dataList').GWDataTable('getData');
+            $.each(data, function (index, item) {
+                arrdata.push({ ID: item.ID, DValue: item.DValue });
+            });
+            var html = "";
+            var len = arrdata.length;
+            for (var i = 0; i < len; i++) {
+                html += "<li class='group' id=\"" + arrdata[i].ID + "\">" + arrdata[i].DValue + "</li>";
+            }
+            $('#myGroupList').empty();
+            $('#myGroupList').append(html);
+            $('#sortGroupModal').modal();
+            $('#myGroupList').sortable({ delay: 5 });
+        }
+
+        function initSelecter() {
+            $("#selDictionaryType").empty();
+            var items = [];
+            $.ajax({
+                url: dataServiceBaseUrl + "api/SysMaintain/DictionaryType/GetDictionaryTypeListBySC?sid=" + sid + "&isActive=1" + "&typeName=",
+                type: "GET",
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    if (data.Success == false) {
+                        if (data.Message == "InvalidUser") {
+                            window.location.replace = '../Common/NoRight.html';
+                        } else {
+                            bootbox.alert(data.Message);
+                        }
+                    }
+                    if (data.Success === true) {
+                        var dataIsActive = data.Data.rows;
+                        var len = dataIsActive ? dataIsActive.length : 0;
+                        for (var i = 0; i < len; i++) {
+                            var item = {};
+                            item.id = dataIsActive[i].ID;
+                            item.text = dataIsActive[i].TypeName;
+                            items.push(item);
+                        }
+                        $('#selDictionaryType').select2({
+                            minimumResultsForSearch: -1,
+                            width: 'resolve',
+                            data: items
+                        }).change(initTxtSort);
+                        //顶部搜索菜单
+                        $('#selDicType').select2({
+                            minimumResultsForSearch: -1,
+                            width: '100%',
+                            data: items
+                        }).change(function () {
+                            dictionaryScModel.TypeId = $('#selDicType').val();
+                            $('#dataList').GWDataTable('load', dictionaryScModel);
+                            if ($('#selDicType').val() == -1) {
+                                $('#dataList #btnSortData').prop('disabled', true);
+                            } else {
+                                $('#dataList #btnSortData').prop('disabled', false);
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    bootbox.alert("加载数据字典类型失败！");
+                }
+            });
+            $('#selDateIsActive').select2({ width: '100%', minimumResultsForSearch: -1 });
+            $('#selTypeIsActive').select2({ minimumResultsForSearch: -1 });
+        }
+
+        function initCheckBox() {
+            $('.check-switch').bootstrapSwitch({ "onText": '开启', "offText": '关闭', "size": "normal" });
+        }
+
+        function bindEvent() {
+            //字典数据保存
+            $('#btnSaveData').on('click', function () {
+                $('#txtName').removeAttr('aria-describedby');
+                if ($('#dicDataForm').valid()) {
+                    var TypeID = $("#selDictionaryType").val();
+                    var DKey = $("#txtCode").val();
+                    var DValue = $("#txtName").val();
+                    var Sn = $("#txtSort").val();
+                    var Description = $("#txtDetail").val();
+                    var IsActive = $("#txtIsActive").bootstrapSwitch('state') == true ? 1 : 0;
+                    var ID = 0;
+                    var relativeUrl = '';
+                    $(this).button('loading');
+                    if (bDicDataIsUpdate) {
+                        var rows = $('#dataList').GWDataTable('getChecked');
+                        if (rows.length > 0) {
+                            ID = rows[0].ID;
+                        }
+                        relativeUrl = 'api/SysMaintain/Dictionary/UpdateDictionary?sid=' + sid + '&clientInfo=' + getClientInfo();
+                    } else {
+                        relativeUrl = 'api/SysMaintain/Dictionary/AddDictionary?sid=' + sid + '&clientInfo=' + getClientInfo();
+                    }
+                    $.ajax({
+                        url: dataServiceBaseUrl + relativeUrl,
+                        type: "post",
+                        dataType: "json",
+                        async: true,
+                        data: {
+                            ID: ID,
+                            TypeID: TypeID,
+                            DKey: DKey,
+                            DValue: DValue,
+                            Sn: Sn,
+                            Description: Description,
+                            IsActive: IsActive
+                        },
+                        success: function (data, textStatus) {
+                            $('#dicDataForm')[0].reset();
+                            $('#btnDicDataClose').click();
+                            if (data.Success == false) {
+                                if (data.Message == "InvalidUser") {
+                                    window.location.replace = '../Common/NoRight.html';
+                                } else {
+                                    bootbox.alert(data.Message);
+                                }
+                            }
+                            if (data.Success === true) {
+                                $('#btnSaveData').button(data.Message);
+                            }
+                            $('#btnSaveData').button('reset');
+                            // 重新加载字典
+                            $('#dataList').GWDataTable('load', dictionaryScModel);
+                        },
+                        error: function () {
+                            $('#dicDataForm')[0].reset();
+                            $('#btnDicDataClose').click();
+                            $('#btnSaveData').button('保存失败！');
+                            $('#btnSaveData').button('reset');
+                        }
+                    });
+                }
+            });
+
+            //字典数据搜索
+            $('#btnSearchData').on('click', function () {
+                dictionaryScModel.TypeId = $('#selDicType').val();
+                dictionaryScModel.DicName = $('#txtSearchDataName').val();
+                dictionaryScModel.IsActive = $('#selDateIsActive').val();
+                $('#dataList').GWDataTable('load', dictionaryScModel);
+            });
+
+            //字典数据重置
+            $('#btnResetData').on('click', function () {
+                $('#selDicType').val('-1').trigger('change.select2');
+                $('#txtSearchDataName').val('');
+                $('#selDateIsActive').val('-1').trigger('change.select2');
+                dictionaryScModel.TypeId = -1;
+                dictionaryScModel.DicName = '';
+                dictionaryScModel.IsActive = -1;
+                $('#dataList').GWDataTable('load', dictionaryScModel);
+                $('#btnSortData').prop('disabled', true);
+            });
+
+            //字典数据检索
+            $('#txtSearchDataName').on('keydown', function (e) {
+                if (e.keyCode == 13 && $(this).val().trim() != '') {
+                    $('#btnSearchData').trigger('click');
+                }
+            });
+
+            //保存字典类型数据
+            $('#btnSaveType').on('click', function () {
+                $('#txtTypeName').removeAttr('aria-describedby');
+                if ($('#dicTypeForm').valid()) {
+                    var TypeName = $("#txtTypeName").val();
+                    var Description = $("#txtTypeDetail").val();
+                    var IsActive = $("#txtTypeIsActive").bootstrapSwitch('state') == true ? 1 : 0;
+                    var ID = 0;
+                    var relativeUrl = '';
+                    $(this).button('loading');
+                    //修改字典类型数据
+                    if (bDicTypeIsUpdate) {
+                        var rows = $('#dataTypeList').GWDataTable('getChecked');
+                        if (rows.length !== 0) {
+                            ID = rows[0].ID;
+                        }
+                        relativeUrl = 'api/SysMaintain/DictionaryType/UpdateDictionaryType?sid=' + sid + '&clientInfo=' + getClientInfo();
+                    } else {
+                        relativeUrl = 'api/SysMaintain/DictionaryType/AddDictionaryType?sid=' + sid + '&clientInfo=' + getClientInfo();
+                    }
+                    $.ajax({
+                        url: dataServiceBaseUrl + relativeUrl,
+                        type: "post",
+                        dataType: "json",
+                        async: true,
+                        data: {
+                            ID: ID,
+                            TypeName: TypeName,
+                            Description: Description,
+                            IsActive: IsActive
+                        },
+                        success: function (data, textStatus) {
+                            $('#dicTypeForm')[0].reset();
+                            if (data.Success == false) {
+                                if (data.Message == "InvalidUser") {
+                                    window.location.replace = '../Common/NoRight.html';
+                                } else {
+                                    bootbox.alert(data.Message);
+                                }
+                            }
+                            if (data.Success === true) {
+                                $('#btnSaveType').button(data.Message);
+                            }
+                            $('#btnSaveType').button('reset');
+                            $('#btnDicTypeClose').click();
+                            $('#dataTypeList').GWDataTable('load', dictionaryTypeScModel);
+                        },
+                        error: function () {
+                            $('#dicTypeForm')[0].reset();
+                            $('#btnSaveType').button('保存失败！');
+                            $('#btnSaveType').button('reset');
+                            $('#btnDicTypeClose').click();
+                        }
+                    });
+                }
+            });
+
+            //字典类型搜索
+            $('#btnSearchType').on('click', function () {
+                dictionaryTypeScModel.TypeName = $('#txtSearchTypeName').val();
+                dictionaryTypeScModel.IsActive = $('#selTypeIsActive').val();
+                $('#dataTypeList').GWDataTable('load', dictionaryTypeScModel);
+            });
+
+            //字典类型重置
+            $('#btnResetType').on('click', function () {
+                $('#txtSearchTypeName').val('');
+                $('#selTypeIsActive').val('-1').trigger('change.select2');
+                dictionaryTypeScModel.TypeName = '';
+                dictionaryTypeScModel.IsActive = -1;
+                $('#dataTypeList').GWDataTable('load', dictionaryTypeScModel);
+            });
+
+            //字典类型检索
+            $('#txtSearchTypeName').on('keydown', function (e) {
+                if (e.keyCode === 13 && $(this).val().trim() != "") {
+                    $("#btnSearchType").click();
+                }
+            });
+
+            //关闭modal的事件
+            $('#dicDataModal').on('hidden.bs.modal', function () {
+                $('body').focus();
+            });
+
+            // 排序保存
+            $('#btnSaveGroup').on('click', function () {
+                $('#btnSaveGroup').button('loading');
+                var orderIds = $('#myGroupList').sortable("toArray");
+                var models = [];
+                for (var i = 0, len = orderIds.length; i < len; i++) {
+                    var model = {};
+                    model["ID"] = orderIds[i];
+                    model["Sn"] = i + 1;
+                    models.push(model);
+                }
+                //请求后台
+                $.ajax({
+                    url: dataServiceBaseUrl + 'api/SysMaintain/Dictionary/SortDictionary?sid=' + sid,
+                    type: "POST",
+                    dataType: "json",
+                    async: true,
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(models),
+                    success: function (data, textStatus) {
+                        if (data.Success == false) {
+                            if (data.Message == "InvalidUser") {
+                                window.location.replace = '../Common/NoRight.html'
+                            } else {
+                                bootbox.alert(data.Message);
+                            }
+                        }
+                        if (data.Success === true) {
+                            $('#btnSaveGroup').button(data.Data);
+                            $('#btnSaveGroup').button('reset');
+                            $('#dataList').GWDataTable('load', dictionaryScModel);
+                            $('#btnCloseSortGroupModal').click();
+                        }
+                    },
+                    error: function () {
+                        $('#btnSaveGroup').button('排序失败！');
+                        $('#btnSaveGroup').button('reset');
+                        $('#btnCloseSortGroupModal').click();
+                    }
+                });
+            });
+
+            // 回到顶部功能
+            $('#dataList .table-content-container').scroll(function () {
+                if ($('#dataList .table-content-container').scrollTop() < 100) {
+                    $('#totop').fadeOut();
+                } else {
+                    $('#totop').fadeIn();
+                }
+            });
+            $('#totop').on('click', function () {
+                $('#dataList .table-content-container').animate({ scrollTop: 0 }, 'fast');
+                return false;
+            });
+        }
+
+        //新建时类型排序
+        function initTxtSort() {
+            //选择字典类型ID
+            var typeID = $('#selDictionaryType').val();
+            var data = $('#dataList').GWDataTable('getData');
+            var someData = $.grep(data, function (item, index) {
+                return item.TypeID == parseInt(typeID);
+            });
+
+            var max = 1;
+            $.each(someData, function (index, item) {
+                if (item.Sn >= max) {
+                    max = item.Sn + 1;
+                }
+            });
+            $('#txtSort').val(max);
+        }
+
+        function initValidator() {
+            $('#dicTypeForm').validate({
+                rules: {
+                    txtTypeName: { required: true }
+                },
+                messages: {
+                    txtTypeName: { required: "字典类型名称不能为空！" }
+                }, errorPlacement: function (error, element) {
+                    var msg = $(error).text();
+                    var ariaDescribedby = $(element).attr('aria-describedby');
+                    if (ariaDescribedby) {
+                        $('#' + ariaDescribedby + ' .popover-content').text(msg);
+                    } else {
+                        $(element).popover({ content: msg, placement: 'bottom' });
+                        $(element).data('msg', msg);
+                        $(element).popover('show');
+                    }
+                    $(element).parent().addClass('has-error');
+                }, success: function (error, element) {
+                    $(element).popover('destroy');
+                    $(element).parent().removeClass('has-error');
+                }
+            });
+
+            $('#dicDataForm').validate({
+                rules: {
+                    txtName: { required: true },
+                    txtCode: {
+                        required: true,
+                        digits: true
+                    },
+                    txtSort: {
+                        required: true,
+                        digits: true
+                    }
+                },
+                messages: {
+                    txtName: { required: "字典名称不能为空！" },
+                    txtCode: {
+                        required: "字典编号不能为空！",
+                        digits: "字典编号只能为正整数！"
+                    },
+                    txtSort: {
+                        required: "排序号只不能为空！",
+                        digits: "排序号只能为正整数"
+                    }
+                }, errorPlacement: function (error, element) {
+                    var msg = $(error).text();
+                    var ariaDescribedby = $(element).attr('aria-describedby');
+                    if (ariaDescribedby) {
+                        $('#' + ariaDescribedby + ' .popover-content').text(msg);
+                    } else {
+                        $(element).popover({ content: msg, placement: 'bottom' });
+                        $(element).data('msg', msg);
+                        $(element).popover('show');
+                    }
+                    $(element).parent().addClass('has-error');
+                }, success: function (error, element) {
+                    $(element).popover('destroy');
+                    $(element).parent().removeClass('has-error');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-pageSideBar/dist/gw-pageSideBar.min.css?v=1.0.0" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/lightbox2/dist/css/lightbox.min.css" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/product-particulars.css?v=1.0.2" rel="stylesheet" />
+    <style>
+        .color33 {
+            color: #333333 !important;
+        }
+
+        .select2-selection__rendered {
+            color: #333333 !important;
+        }
+    </style>
+    <script type="text/javascript">
+        try {
+            window.moveTo(0, 0);
+            window.resizeTo(window.screen.availWidth, window.screen.availHeight);
+        } catch (e) {
+        }
+    </script>
+</head>
+<body>
+
+    <!--详情盒子-->
+    <div class="particulars-box container ">
+        <div class="row">
+            <div class="particulars-header">
+                <h3 id="spTitle"></h3>
+                <span id="spCode"></span>
+            </div>
+
+            <div class="particulars-body">
+                <div class="col-sm-12 particulars-body-list1">
+                    <ul class="">
+                        <li class="col-sm-3"><span>融资成本</span></li>
+                        <li class="col-sm-3"><span>发布时间：</span><span class="color33" id="spPublishTime"></span></li>
+                        <li class="col-sm-3"><span>产品类型：</span><span class="color33" id="spProductType"></span></li>
+                        <li class="col-sm-3">
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-12 particulars-body-list2">
+                    <ul class="">
+                        <li class="particulars-body-interest col-sm-3" id="spExpectIncome"></li>
+                        <li class="col-sm-3"><span>融资期限：</span><span class="color33" id="spPeriod"></span></li>
+                        <li class="col-sm-3"><span>融资规模：</span><span class="color33" id="spWorth"></span></li>
+                        <li class="col-sm-3">
+                            <!--<div class="input-group hidden" id="divSave">
+                                <button class="btn btn-sm btn-default" id="btnSaveProductStage">修改产品阶段</button>
+                            </div>-->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--项目介绍-->
+    <div class="projects container ">
+        <div class="row">
+            <div class="col-sm-12 projects-top">
+                <div class="projects-top-header">
+                    <h3>项目介绍</h3>
+                </div>
+                <div class="projects-top-body">
+                    <div class="projects-body-left col-sm-6 text-left">
+                        <h4 class="">资金用途</h4>
+                        <img src="../../assets/img/ProductInfo/projects-top.png" alt="">
+                        <p id="pPurpose"></p>
+                    </div>
+                    <div class="projects-body-right col-sm-6 text-right">
+                        <h4 class="">退出方式</h4>
+                        <img src="../../assets/img/ProductInfo/projects-bottom.png" alt="">
+                        <p id="pIncomeMode"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12  projects-bottom">
+                <div class="projects-bottom-header">
+                    <h3>风控措施</h3>
+                </div>
+                <div class="projects-bottom-body" id="divRiskManage">
+
+                </div>
+            </div>
+            <!--产品阶段图-->
+            <div class="projects-img">
+                <div class="projects-img-header text-center">
+                    <h3>当前产品阶段</h3>
+                </div>
+                <div class="projects-img-body">
+                    <img src="../../assets/img/ProductInfo/stage1.png" alt="">
+                </div>
+                <div class="projects-img-footer text-center">
+                    <a href="#" target="_blank" id="aProductLink">更多详细</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!--[if lt IE 9]>
+    <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/jquery-tools-min.js" type="text/javascript"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../../assets/vendors/underscore/underscore-min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script src="../../assets/js/workFlow.min.js?v=1.0.2" type="text/javascript"></script>
+    <script src="../../assets/vendors/select2/dist/js/select2.full.min.js"></script>
+    <script src="../../assets/vendors/xss/dist/xss.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/gw-pageSideBar/dist/gw-pageSideBar.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+    <script src="../../assets/vendors/lightbox2/dist/js/lightbox.min.js"></script>
+    <script src="../../assets/vendors/platform.js/platform.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootbox.js/bootbox.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var productInfoId = $.url().fparam('id');
+        var imgStagePath = '../../assets/img/ProductInfo/';
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                if (!productInfoId || !parseInt(productInfoId)) return;
+                getProductInfo();
+            });
+        });
+
+        // 获取产品信息
+        function getProductInfo() {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/ProductInfo/ProductInfo/GetReadProductInfo?sid=' + sid,
+                type: 'get',
+                data: {
+                    productInfoId: productInfoId
+                },
+                async: true,
+                cache: false,
+                success: function (data) {
+                    if (data && data.Success === true) {
+                        if (data.Message == 'InvalidUser' || data.Message == 'NoPermisson') {
+                            window.location.href = '../Common/NoRight.html';
+                        } else if (data.Data) {
+                            if (data.Data.IsAdmin) {
+                                $('#divProductStage').removeClass('hidden');
+                                $('#divSave').removeClass('hidden');
+                                initProductStageTypeSelector(data.Data.ProductInfo.StageKV);
+                                //initEvent();
+                            }
+                            loadProductInfoData(data.Data);
+                        }
+                    } else {
+                        bootbox.alert({ message: '加载产品数据失败！' });
+                    }
+                },
+                error: function () {
+                    bootbox.alert({ message: '加载产品数据失败！' });
+                }
+            });
+        }
+
+        // 加载产品数据
+        function loadProductInfoData(data) {
+            // 网页标题
+            document.title = data.ProductInfo.Title;
+
+            // 产品信息
+            $('#spTitle').text(data.ProductInfo.Title);
+            $('#spCode').text(data.ProductInfo.Code);
+            $('#spPublishTime').text(data.ProductInfo.PublishTime == null?'': new Date(data.ProductInfo.PublishTime.replace(/-/g, '/')).Format('yyyy-MM-dd'));
+            $('#spProductType').text(data.ProductInfo.ProductType);
+            $('.projects-img-body img').attr('src', imgStagePath + 'stage' + data.ProductInfo.StageKV+'.png');
+            $('#spPeriod').text(data.ProductInfo.Period+"天");
+            $('#spWorth').text(data.ProductInfo.Worth+'万元');
+            $('#spExpectIncome').text(data.ProductInfo.ExpectIncome + "%");
+            $('#pPurpose').html(unescape(data.ProductInfo.Purpose.replace(/\$/g, '%')));
+            $('#pIncomeMode').html(unescape(data.ProductInfo.IncomeMode.replace(/\$/g, '%')));
+            $('#divRiskManage').html(unescape(data.ProductInfo.RiskManage.replace(/\$/g, '%')));
+            $('#aProductLink').attr('href', data.ProductInfo.ProductLink);
+        }
+
+        //function initEvent() {
+        //    $('#btnSaveProductStage').click(function () {
+        //        var stage = $('#selProductStageType').val();
+        //        $.ajax({
+        //            url: dataServiceBaseUrl + 'api/ProductInfo/ProductInfo/UpdateProductStage?sid=' + sid + '&stageKV=' + stage + '&productInfoId=' + productInfoId,
+        //            type: 'patch',
+        //            async: false,
+        //            cache: false,
+        //            success: function (result) {
+        //                if (result && result.Success === true && result.Data) {
+
+        //                }
+        //            }
+        //        });
+        //    });
+        //}
+
+        // 初始化产品阶段选择列表
+        function initProductStageTypeSelector(val) {
+            var sel = $("#selProductStageType");
+            var url = dataServiceBaseUrl + 'api/SysMaintain/Dictionary?sid=' + sid;
+            var data = {
+                searchModel: {
+                    TypeId: 3,
+                    PageNum: 1,
+                    PageSize: 0,
+                    IsActive: 1
+                }
+            };
+            bindSelector(sel, url, data, val);
+        }
+
+        //select2绑定数据
+        function bindSelector(sel, url, data, val) {
+            sel.select2({
+                selectOnClose: false,
+                allowClear: false,
+                minimumResultsForSearch: Infinity,
+                width: '99.9%'
+            });
+
+            $.ajax({
+                url: url,
+                data: data,
+                type: 'get',
+                async: false,
+                cache: false,
+                success: function (result) {
+                    if (result && result.Success === true && result.Data) {
+                        sel.empty();
+                        $.each(result.Data.rows, function (i, item) {
+                            sel.append("<option value='" + item.Dkey + "'>" + item.DValue + "</option>");
+                        });
+                        sel.val(val);
+                        sel.trigger('change.select2');
+                        bModifiedFlag = false;
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

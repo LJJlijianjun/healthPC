@@ -1,0 +1,452 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>用户角色维护</title>
+    <!--plugin styles-->
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/datatables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/jquery-ui/themes/base/autocomplete.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet" />
+    <!--mine plugin-->
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/vendors/iCheck/skins/square/blue.css" rel="stylesheet" />
+    <style type="text/css">
+        /*begin排序弹出框排序样式*/
+        .sortGroupModal {
+            color: black;
+        }
+
+            .sortGroupModal .modal-dialog {
+                width: 300px;
+                margin: 90px auto 0 auto;
+            }
+
+                .sortGroupModal .modal-dialog .modal-content .modal-header {
+                    padding: 10px;
+                }
+
+                .sortGroupModal .modal-dialog .modal-content .modal-body {
+                    height: 300px;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                }
+
+                    .sortGroupModal .modal-dialog .modal-content .modal-body #myGroupList {
+                        padding-left: 15px;
+                        padding-right: 15px;
+                    }
+
+                        .sortGroupModal .modal-dialog .modal-content .modal-body #myGroupList .group {
+                            display: block;
+                            width: 100%;
+                            height: 34px;
+                            padding: 6px 12px;
+                            font-size: 14px;
+                            line-height: 1.4285;
+                            color: #555555;
+                            background-color: white;
+                            background-image: none;
+                            border: 1px solid #cccccc;
+                            border-radius: 4px;
+                            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+                            box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075);
+                            -webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+                            -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+                            transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+                            cursor: pointer;
+                            margin-bottom: 10px;
+                            text-align: center;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            -o-text-overflow: ellipsis;
+                            text-overflow: ellipsis;
+                        }
+        /*end排序弹出框排序样式*/
+    </style>
+</head>
+<body>
+    <div class="sysMaintain-userRoleMaintain">
+        <div class="dataList"></div>
+        <!-- Modal Begin-->
+        <form id="userRoleForm">
+            <div class="modal fade" id="userRoleModal" tabindex="-1" aria-labelledby="userRoleModalLable" aria-hidden="true" role="dialog">
+                <div class="modal-dialog w600">
+                    <div class="modal-dialog">
+                        <div class="modal-content pl12 pr12">
+                            <div class="modal-header">
+                                <button class="close" id="btnUserRoleClose" data-dismiss="modal" aria-hidden="true" type="button" title="关闭">&times;</button>
+                                <h5 class="modal-title bold" id="dicTypeModalLabel">新建用户角色</h5>
+                            </div>
+                            <div class="modal-body container-fluid pr15 pl15">
+                                <div class="row mt8">
+                                    <div class="col-sm-6 col-xs-6 col-lg-6 col-md-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon w100">角色</span>
+                                            <input class="form-control" id="txtUserRoleName" name="txtUserRoleName" type="text" placeholder="请输入角色名称" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-6 col-lg-6 col-md-6">
+                                        <div class="input-group floatRight">
+                                            <span class="input-group-addon w100">排序</span>
+                                            <input class="form-control" id="txtUserRoleSort" name="txtUserRoleSort" type="text" placeholder="请输入排序号" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt8">
+                                    <div class="col-sm-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon w100">备注</span>
+                                            <textarea class="form-control w445" id="txtUserRoleDetail" name="txtUserRoleDetail" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary btn-sm w90" id="btnSaveUserRole" data-loading-text="保存中..." type="button">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- Modal End-->
+        <!--排序弹出框-->
+        <div class="sortGroupModal">
+            <form id="sortGroupModalForm">
+                <div class="modal fade" id="sortGroupModal" tabindex="-1" role="dialog" aria-labelledby="sortGroupModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" id="btnCloseSortGroupModal" data-dismiss="modal" aria-hidden="true" title="关闭">&times;</button>
+                                <h5 class="modal-title bold" id="sortGroupModalLabel">排序</h5>
+                            </div>
+                            <div class="modal-body container-fluid">
+                                <ul id="myGroupList"></ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="btnSaveGroup" class="btn btn-primary btn-sm w90" data-loading-text="保存中...">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!--排序弹出框-->
+        <div class="none" id="btnList">
+            <button class="btn btn-default" type="button" id="btnCreateUserRole" onclick="createUserRole()"><span class="fa fa-plus"></span>&nbsp;新建</button>
+            <button class="btn btn-default" type="button" id="btnModifyUserRole" disabled="disabled" onclick="modifyUserRole()"><span class="fa fa-edit"></span>&nbsp;修改</button>
+            <button class="btn btn-default" type="button" id="btnDeleteUserRole" disabled="disabled" onclick="deleteUserRole()"><span class="fa fa-trash-o"></span>&nbsp;删除</button>
+            <button class="btn btn-default" type="button" id="btnSortData" onclick="sortUserRole()"><span class="fa fa-sort"></span>&nbsp;排序</button>
+        </div>
+    </div>
+
+
+    <!--[if lt IE 9]>
+    <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <!-- 应该先引用jQuery UI 再引用BootStrap -->
+    <!--base js-->
+    <script type="text/javascript" src="../../assets/vendors/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../../assets/js/jquery-tools-min.js"></script>
+    <script type="text/javascript" src="../../assets/js/config.min.js?v=1.0.0"></script>
+    <script type="text/javascript" src="../../assets/js/auth.min.js?v=1.0.0"></script>
+    <!--plugin js-->
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/core.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/widget.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/position.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/mouse.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/autocomplete.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/menu.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-ui-1.11.4/ui/sortable.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
+    <script src="../../assets/vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../../assets/vendors/select2/dist/js/select2.full.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+    <script type="text/javascript" src="../../assets/vendors/bootbox.js/bootbox.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/underscore/underscore-min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/json3/lib/json3.min.js"></script>
+    <script type="text/javascript" src="../../assets/js/common.min.js?v=1.0.3"></script>
+    <script type="text/javascript" src="../../assets/vendors/iCheck/icheck.min.js"></script>
+    <script type="text/javascript" src="../../assets/vendors/platform.js/platform.js"></script>
+    <script type="text/javascript">
+        /*
+        * 登录后通过回调函数执行函数
+        */
+        var isUpdate = false;
+        $(function () {
+            AuthUtility.Auth(function () {
+                bootbox.setLocale("zh_CN");
+                initDataList();
+                initValidator();
+                bindEvent();
+            });
+        });
+
+        //绑定用户数据
+        function initDataList() {
+            $('.dataList').css('height', parent.getParentHeight());
+            var option = {
+                tableTitle: '角色维护',
+                tableIcon: true,
+                checkbox: true,
+                toolbar: { 'selector': '#btnList' },
+                showLine: true,
+                columns: [
+                     {
+                         title: '角色名称', field: 'Role_Name', align: 'left',
+                         formatter: function (value, rowData, index) {
+                             return "<div  data-ID=" + rowData.Role_ID + ">" + value + "</div>";
+                         }
+                     },
+                    { title: '排序号', field: 'Role_Sort', align: 'center', width: '100' },
+                    { title: '备注', field: 'Role_Detail', align: 'left', width: '240' }
+                ],
+                dataUrl: dataServiceBaseUrl + 'api/UserRole/UserRole?sid=' + sid,
+                queryParams: function () {
+                },
+                pagination: false,
+                onLoadSuccess: function (table) {
+
+                },
+                onRowCheck: function (rowIndex, rowData) {
+                    $('.dataList #btnModifyUserRole').prop('disabled', false);
+                    $('.dataList #btnDeleteUserRole').prop('disabled', false);
+                },
+                onRowUnCheck: function (rowIndex, rowData) {
+                    $('.dataList #btnModifyUserRole').prop('disabled', true);
+                    $('.dataList #btnDeleteUserRole').prop('disabled', true);
+                }
+            };
+
+            $('.dataList').GWDataTable(option);
+            $('.table-content-container').css('top', '40px');
+        }
+
+        function bindEvent() {
+            //角色维护
+            $('#btnSaveUserRole').on('click', function () {
+                if ($('#userRoleForm').valid()) {
+                    $(this).button('loading');
+                    var RoleId = 0;
+                    var RoleName = $("#txtUserRoleName").val();
+                    var RoleDetail = $("#txtUserRoleDetail").val();
+                    var UserSort = $("#txtUserRoleSort").val();
+                    var strUrl = null;
+                    if (isUpdate) {
+                        var rows = $('.dataList').GWDataTable('getChecked');
+                        if (rows.length > 0) {
+                            RoleId = rows[0].Role_ID;
+                        }
+                        strUrl = 'api/UserRole/UserRole/UpdateUserRole?sid=' + sid + '&clientInfo=' + getClientInfo();
+                    } else {
+                        strUrl = 'api/UserRole/UserRole/AddUserRole?sid=' + sid + '&clientInfo=' + getClientInfo();
+                    }
+                    $.ajax({
+                        url: dataServiceBaseUrl + strUrl,
+                        type: "post",
+                        dataType: "json",
+                        async: true,
+                        data: {
+                            Role_ID: RoleId,
+                            Role_Name: RoleName,
+                            Role_Type: 1,
+                            Role_Detail: RoleDetail,
+                            Role_Sort: UserSort
+                        },
+                        success: function (data, textStatus) {
+                            $('#userRoleForm')[0].reset();
+                            if (data.Success == false) {
+                                if (data.Message == "InvalidUser") {
+                                    window.location.replace = '../Common/NoRight.html';
+                                } else {
+                                    bootbox.alert(data.Message);
+                                }
+                            }
+                            $('#btnSaveUserRole').button('reset');
+                            $('#btnUserRoleClose').click();
+                            // 重新加载字典
+                            $('.dataList').GWDataTable('load');
+                            formReset();
+                        },
+                        error: function () {
+                            $('#userRoleForm')[0].reset();
+                            $('#btnUserRoleClose').click();
+                            $('#btnSaveUserRole').button('保存失败！');
+                            $('#btnSaveUserRole').button('reset');
+                        }
+                    });
+                }
+            });
+            //关闭modal的事件
+            $('#userRoleModal').on('hidden.bs.modal', function () {
+                formReset();
+                $('body').focus();
+            });
+
+            $('#userRoleModal').on('shown.bs.modal', function () {
+                $('userRoleModal').focus();
+            });
+
+            // 排序保存
+            $('#btnSaveGroup').on('click', function () {
+                $('#btnSaveGroup').button('loading');
+                var orderIds = $('#myGroupList').sortable("toArray");
+                var models = [];
+                //var model = { ID: 0, Sn: 0 };
+                for (var i = 0, len = orderIds.length; i < len; i++) {
+                    var model = {};
+                    model["Role_ID"] = orderIds[i];
+                    model["Role_Sort"] = i + 1;
+                    models.push(model);
+                }
+                //请求后台
+                $.ajax({
+                    url: dataServiceBaseUrl + 'api/UserRole/UserRole/SortUserRole?sid=' + sid,
+                    type: "POST",
+                    dataType: "json",
+                    async: true,
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(models),
+                    success: function (data, textStatus) {
+                        if (data.Success == false) {
+                            if (data.Message == "InvalidUser") {
+                                window.location.replace = '../Common/NoRight.html'
+                            } else {
+                                bootbox.alert(data.Message);
+                            }
+                        }
+                        if (data.Success === true) {
+                            $('#btnSaveGroup').button(data.Data);
+                            $('#btnSaveGroup').button('reset');
+                            $('.dataList').GWDataTable('load');
+                            $('#btnCloseSortGroupModal').click();
+                        }
+                    },
+                    error: function () {
+                        $('#btnSaveGroup').button('排序失败！');
+                        $('#btnSaveGroup').button('reset');
+                        $('#btnCloseSortGroupModal').click();
+                    }
+                });
+            });
+        }
+
+        //表单验证
+        function initValidator() {
+            $('#userRoleForm').validate({
+                rules: {
+                    txtUserRoleName: { required: true },
+                    txtUserRoleSort: { required: true, digits: true }
+                },
+                messages: {
+                    txtUserRoleName: { required: "角色名称不能为空！" },
+                    txtUserRoleSort: { required: "角色排序号不能为空！", digits: "角色排序号为正整数！" },
+                },
+                showErrors: jqValidationShowErrors
+            });
+        }
+
+        //创建角色
+        function createUserRole() {
+            isUpdate = false;
+            $('#userRoleModalLable').text('新建用户角色');
+            $('#userRoleModal').modal({ backdrop: 'static', keyboard: false });
+        }
+        //修改角色
+        function modifyUserRole() {
+            isUpdate = true;
+            var rows = $('.dataList').GWDataTable('getChecked');
+            if (rows.length === 0) {
+                bootbox.alert({ message: "请选择要修改的行！", size: 'small' });
+            } else {
+                $("#txtUserRoleName").val(rows[0].Role_Name);
+                $("#txtUserRoleSort").val(rows[0].Role_Sort)
+                $("#txtUserRoleDetail").val(rows[0].Role_Detail)
+                $('#userRoleModalLable').text('修改用户角色权限');
+                $('#userRoleModal').modal({ backdrop: 'static', keyboard: false });
+            }
+        }
+        //删除角色
+        function deleteUserRole() {
+            var rows = $('.dataList').GWDataTable('getChecked');
+            if (rows.length === 0) {
+                bootbox.alert({ message: "请选择要删除的行！", size: 'small' });
+            } else {
+                var ID = rows[0].Role_ID;
+                bootbox.confirm({
+                    size: 'small',
+                    message: "确定要删除吗？",
+                    callback: function (result) {
+                        if (result === true) {
+                            $.ajax({
+                                url: dataServiceBaseUrl + 'api/UserRole/UserRole?sid=' + sid + "&id=" + ID + '&clientInfo=' + getClientInfo(),
+                                type: "DELETE",
+                                dataType: "json",
+                                async: true,
+                                success: function (data, textStatus) {
+                                    if (data.Success == false) {
+                                        if (data.Message == "InvalidUser") {
+                                            window.location.replace = '../Common/NoRight.html';
+                                        } else {
+                                            bootbox.alert(data.Message);
+                                        }
+                                    }
+                                    if (data.Success === true) {
+                                        bootbox.alert("删除成功！");
+                                    }
+                                    $('.dataList').GWDataTable('load');
+                                },
+                                error: function () {
+                                    bootbox.alert("删除失败！");
+                                }
+                            })
+                        }
+                    }
+                });
+            }
+        }
+        //角色排序
+        function sortUserRole() {
+            var data = $('.dataList').GWDataTable('getData');
+            var arrdata = [];
+            $.each(data, function (index, item) {
+                arrdata.push({ ID: item.Role_ID, DValue: item.Role_Name });
+            });
+            var html = "";
+            var len = arrdata.length;
+            for (var i = 0; i < len; i++) {
+                html += "<li class='group' id=\"" + arrdata[i].ID + "\">" + arrdata[i].DValue + "</li>";
+            }
+            $('#myGroupList').empty();
+            $('#myGroupList').append(html);
+            $('#sortGroupModal').modal();
+            $('#myGroupList').sortable({ delay: 5 });
+        }
+
+        /*重置表单
+         *保存和关闭modal时调用
+        */
+        function formReset() {
+            $('#txtUserRoleName').val('');
+            $('#txtUserRoleSort').val('');
+            $("#txtUserRoleDetail").val('');
+        }
+    </script>
+</body>
+</html>

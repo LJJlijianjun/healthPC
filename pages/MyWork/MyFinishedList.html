@@ -1,0 +1,278 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>已办列表</title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body>
+    <div class="myWork-finishedList">
+        <div class="searchArea">
+            <div class="btn-toolbar">
+                <div class="input-group w302">
+                    <span class="input-group-addon">名称</span>
+                    <input type="text" class="form-control w249" id="txtTitle" placeholder="名称" />
+                </div>
+                <div class="input-group w302">
+                    <span class="input-group-addon">类型</span>
+                    <select class="form-control w249" id="selModelType"></select>
+                </div>
+                <div class="input-group w269">
+                    <span class="input-group-addon">流程是否结束</span>
+                    <select class="form-control w160" id="selIsFinishedProcess">
+                        <option value="-1" selected="selected">全部</option>
+                        <option value="1">是</option>
+                        <option value="0">否</option>
+                    </select>
+                </div>
+            </div>
+            <div class="btn-toolbar">
+                <div class="input-group w434">
+                    <span class="input-group-addon">办理时间从</span>
+                    <input type="text" class="form-control w163" id="txtTaskUpdateStartTime" readonly="readonly" placeholder="开始时间" />
+                    <span class="input-group-addon">至</span>
+                    <input type="text" class="form-control w163" id="txtTaskUpdateEndTime" readonly="readonly" placeholder="结束时间" />
+                </div>
+                <div class="input-group">
+                    <div class="btn-group">
+                        <button class="btn btn-default" type="button" id="btnSearch" disabled="disabled">
+                            <span class="fa fa-search"></span> 检索
+                        </button>
+                        <button class="btn btn-default" type="button" id="btnReset" disabled="disabled">
+                            <span class="fa fa-repeat"></span> 重置
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dataList">
+        </div>
+    </div>
+    <!--[if lt IE 9]>
+    <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/jquery-tools-min.js" type="text/javascript"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../../assets/js/WorkFlow.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/vendors/select2/dist/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/LoadingUI/jquery.loadingui.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/twbs-pagination/jquery.twbsPagination.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+    <script src="../../assets/vendors/xss/dist/xss.min.js"></script>
+    <script src="../../assets/vendors/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $('#selModelType').select2({ width: 'resolve' });
+        $('#selIsFinishedProcess').select2({ width: 'resolve', minimumResultsForSearch: Infinity });
+    </script>
+    <script type="text/javascript">
+        var isFinishedProcess = $.url().param('f');
+        var dataListScModel = {
+            Title: '',
+            ModelType: 0,
+            IsFinishedProcess: -1,
+            TaskUpdateStartTime: '',
+            TaskUpdateEndTime: ''
+        };
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                initSearch();
+                initDataList();
+            });
+        });
+
+        function initSearch() {
+            if (isFinishedProcess != undefined && isFinishedProcess != "undefined") {
+                $('#selIsFinishedProcess').val(isFinishedProcess);
+                $('#selIsFinishedProcess').trigger('change.select2');
+                dataListScModel.IsFinishedProcess = isFinishedProcess;
+            }
+            initModelTypeSelector();
+            initDateTimeSelecter();
+
+            $("#btnSearch").click(function () {
+                dataListScModel.Title = filterXSS($('#txtTitle').val().trim());
+                dataListScModel.ModelType = $('#selModelType').val();
+                dataListScModel.IsFinishedProcess = $('#selIsFinishedProcess').val();
+                dataListScModel.TaskUpdateStartTime = filterXSS($('#txtTaskUpdateStartTime').val());
+                dataListScModel.TaskUpdateEndTime = filterXSS($('#txtTaskUpdateEndTime').val());
+                $('.dataList').GWDataTable('load', dataListScModel);
+            }).prop('disabled', false);
+
+            $("#btnReset").click(function () {
+                $('#txtTitle').val('');
+                $('#selModelType').val('0');
+                $('#selModelType').trigger('change.select2');
+                $('#selIsFinishedProcess').val(-1);
+                $('#selIsFinishedProcess').trigger('change.select2');
+                $('#txtTaskUpdateStartTime').val('');
+                $('#txtTaskUpdateEndTime').val('');
+                dataListScModel.Title = '';
+                dataListScModel.ModelType = 0;
+                dataListScModel.IsFinishedProcess = -1;
+                dataListScModel.TaskUpdateStartTime = '';
+                dataListScModel.TaskUpdateEndTime = '';
+                $('.dataList').GWDataTable('load', dataListScModel);
+            }).prop('disabled', false);
+
+            $('#txtTitle').on('keydown', function (e) {
+                if (e.keyCode === 13 && $(this).val().trim() != "") {
+                    $("#btnSearch").click();
+                }
+            });
+        }
+
+        function initModelTypeSelector() {
+            var sel = $("#selModelType");
+            var url = dataServiceBaseUrl + 'api/SysMaintain/Dictionary?sid=' + sid;
+            var data = {
+                searchModel: {
+                    TypeId: 1,
+                    PageNum: 1,
+                    PageSize: 0,
+                    IsActive: 1
+                }
+            };
+            bindSelector(sel, url, data);
+        }
+
+        //select2绑定数据
+        function bindSelector(sel, url, data, val) {
+            sel.select2({
+                selectOnClose: false,
+                allowClear: false,
+                minimumResultsForSearch: Infinity
+            });
+
+            $.ajax({
+                url: url,
+                data: data,
+                type: 'get',
+                async: false,
+                cache: false,
+                success: function (result) {
+                    if (result && result.Success === true && result.Data) {
+                        sel.empty();
+                        sel.append("<option value='0'>全部</option>");
+                        $.each(result.Data.rows, function (i, item) {
+                            if (item.Dkey !== 6) {
+                                sel.append("<option value='" + item.Dkey + "'>" + item.DValue + "</option>");
+                            }
+                        });
+                        sel.val(sel[0][0].value);
+                        sel.trigger('change.select2');
+                        $('#btnSearch,#btnReset').prop('disabled', false);
+                    }
+                }
+            });
+        }
+
+        function initDateTimeSelecter() {
+            var option = {
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 0,
+                autoclose: 1,
+                forceParse: true,
+                pickerPosition: "bottom-right"
+            }
+            $('#txtTaskUpdateStartTime').datetimepicker(option);
+            $('#txtTaskUpdateEndTime').datetimepicker(option);
+        }
+
+        function initDataList() {
+            $('.dataList').css('height', $('.myWork-finishedList').height() - $('.searchArea').outerHeight(true));
+
+            var option = {
+                tableTitle: '已办',
+                tableIcon: true,
+                showLine: true,
+                columns:
+                [
+                    {
+                        title: '标题',
+                        field: 'Title',
+                        align: 'left',
+                        formatter: function (value, rowData) {
+                            var title = value;
+                            switch (rowData.ModuleTypeKV) {
+                                case 4:
+                                    title = value + '（咨询信息）';
+                                    break;
+                                case 5:
+                                    title = value + '（定制信息）';
+                                    break;
+                                case 6:
+                                    title = value + '（用户注册审核）';
+                                    break;
+                                default:
+                                    break;
+                            }
+                            return '<a href="javascript: void(0);" title="' + title + '" onclick="javascript: WorkflowEngine.ViewForm(' + rowData.ProcessId + ',' + rowData.CurrentInstanceId + ');">' + title + '</a>';
+                        }
+                    },
+                    { title: '类型', field: 'ModuleType', align: 'left', width: '160' },
+                    {
+                        title: '当前状态', field: 'CurrentTaskName', align: 'left', width: '200', formatter: function (value, rowData) {
+                
+                                return '<a href="javascript:void(0);" title="' + value + '" onclick="javascript: WorkflowEngine.ShowProcessDetail(' + rowData.ProcessId + ');">' + value + '</a>';
+                            
+                        }
+                    },
+                    {
+                        title: '已办操作', field: 'TaskName', align: 'left', width: '250', formatter: function (value, rowData) {
+                            if (rowData.ModuleTypeKV == 6) {
+                                return '平台运维管理员审核用户注册信息';
+                            } else {
+                                return value;
+                            }
+                        }
+                    },
+                    {
+                        title: '办理时间', field: 'UpdatedTime', align: 'left', width: '140', formatter: function (value) {
+                            return new Date(value.replace(/-/g, '/')).Format('yyyy-MM-dd HH:mm');
+                        }
+                    }
+                ],
+                dataUrl: dataServiceBaseUrl + 'api/Common/Common/GetMyFinishedListBySC?sid=' + sid + '&t=' + new Date().getMilliseconds(),
+                queryParams: function (pageNumber, pageSize) {
+                    dataListScModel.PageNum = pageNumber;
+                    dataListScModel.PageSize = pageSize;
+                    return { scModel: dataListScModel };
+                },
+                pagination: true,
+                onLoadSuccess: function (table) {
+                    $(table).find('.table-content-container .table-body .Title a').each(function () {
+                        var txtTitle = $('#txtTitle').val().trim();
+                        if (txtTitle != '' && txtTitle != '+') {
+                            var html = $(this).html().replace(new RegExp(txtTitle, 'gi'), '<label class="highlight">' + txtTitle + '</label>');
+                            $(this).html(html);
+                        }
+                    });
+                }
+            };
+
+            $('.dataList').GWDataTable(option);
+        }
+
+    </script>
+</body>
+</html>

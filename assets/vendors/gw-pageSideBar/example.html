@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>gw-pageSideBar</title>
+    <link href="../../../assets/css/base.css" rel="stylesheet" /> 
+    <link href="../../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" /> 
+    <link href="../gw-pageSideBar/src/gw-pageSideBar.css" rel="stylesheet" /> 
+    <link href="../../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+    <script type="text/javascript">
+        try {
+            window.moveTo(0, 0);
+            window.resizeTo(window.screen.availWidth, window.screen.availHeight);
+        } catch (e) {
+        }
+    </script>
+     
+</head>
+<body>
+    <div class="projectInfo-readView">
+        <div style="width:100px; height:20px; top:0px;left:20px; background-color:red;"></div>
+        <div style="width:100px; height:1000px; margin-top:0px; background-color:aquamarine;"></div>
+        <div style="width:100px; height:200px; top:0px;left:20px; background-color:red;" id="aaabc"></div>
+        <div style="width:100px; height:1000px; top:0px;left:20px; background-color:aquamarine;"></div>
+ 
+        <div id="testSideBar" style=" position:fixed;"></div>
+        <!--<a id="totop" href="#" title="回到顶部"><i class="fa fa-angle-up"></i></a>-->
+    </div>
+    <!--[if lt IE 9]>
+    <script src="../html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../jquery/dist/jquery.min.js"></script>     
+    <script src="../gw-pageSideBar/src/gw-pageSideBar.js"></script>
+    <script type="text/javascript"> 
+        $('#testSideBar').GWPageSideBar({
+            sideBarFunction: ['home','quiz', 'favorite', 'toTop'], 
+            isFavorite: true,
+            quizContainer: '#aaabc',
+            bottom: 113,
+            right: 30,
+            homePath:'./../../../app/pages/Login.html',
+            onBeforeAddFavorite: function () {
+
+            },
+            onAddFavorite: function () {
+
+            },
+            onBeforeRemoveFavorite: function () {
+
+            },
+            onRemoveFavorite: function () {
+
+            },
+            onBeforeToTop: function () {
+
+            },
+            onToTop: function () {
+
+            },
+            onBeforeQuiz: function () {
+
+            },
+            onQuiz: function () {
+
+            }
+        });
+        //$('#testSideBar').GWPageSideBar('addFavorite');
+        //$('#testSideBar').GWPageSideBar('removeFavorite');
+    </script>
+</body>
+</html>

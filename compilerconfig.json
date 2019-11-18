@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "assets/css/page.css",
+    "inputFile": "assets/less/page.less"
+  },
+  {
+    "outputFile": "assets/css/userProfile.css",
+    "inputFile": "assets/less/userProfile.less"
+  },
+  {
+    "outputFile": "assets/css/statAnalysis.css",
+    "inputFile": "assets/less/statAnalysis.less"
+  }
+]

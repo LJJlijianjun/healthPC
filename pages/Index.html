@@ -1,0 +1,702 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>资产资金对接平台</title>
+    <link href="../favicon.ico" rel="Bookmark" />
+    <link href="../favicon.ico" rel="Shortcut Icon" />
+    <link href="../assets/css/base.css" rel="stylesheet" />
+    <link href="../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../assets/vendors/gw-activebar/dist/gw-activebar.min.css?v=1.0.0" rel="stylesheet" />
+    <link href="../assets/vendors/gw-pageSlideBar/dist/gw-pageSlideBar.min.css?v=1.0.0" rel="stylesheet" />
+    <link href="../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+    <style type="text/css">
+        .bootbox .modal-dialog {
+            margin-top: 200px;
+        }
+    </style>
+    <script type="text/javascript">
+        try {
+            window.moveTo(0, 0);
+            window.resizeTo(window.screen.availWidth, window.screen.availHeight);
+        } catch (e) {
+        }
+    </script>
+</head>
+<body style="overflow-y:hidden">
+    <div class="index">
+        <div class="header">
+            <div class="banner-left"></div>
+            <div class="banner-right"></div>
+            <div class="banner-info">
+                <div class="toplink">
+                    <ul>
+                        <li id="modifyPassword"><a href="javascript:;">修改密码</a></li>
+                        <!--<li id="searchPlatform"><a href="javascript:;">检索平台</a></li>-->
+                    </ul>
+                </div>
+                <div class="userImg">
+                    <img src="../assets/img/Index/user.png" alt="" />
+                </div>
+                <div class="userName"></div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="menutree">
+                <ul class="side-menu nav hidden" id="side-menu"></ul>
+            </div>
+            <div class="open" id="splitter"></div>
+            <div class="content">
+                <div class="contentContainer">
+                    <!--<div class="homeNews productInfo mt10" id="productList">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span class="fa fa-cubes panel-headIcon"></span>
+                                <h3 class="panel-title" data-linkid="productInfo" title="产品中心">
+                                    产品中心
+                                </h3>
+                                <span class="panel-title-more" data-linkid="productInfo" title="更多">更多&gt;</span>
+                            </div>
+                            <div class="panel-body">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="homeNews newsInfo" id="newsList">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span class="fa fa-clipboard panel-headIcon"></span>
+                                <h3 class="panel-title" data-linkid="newsInfo" title="业务动态">
+                                    业务动态
+                                </h3>
+                                <span class="panel-title-more" data-linkid="newsInfo" title="更多">更多&gt;</span>
+                            </div>
+                            <div class="panel-body">
+                            </div>
+                        </div>
+                    </div>-->
+                    
+                    <!--<div class="homeNews projectInfo mt10 mb5" id="projectList">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span class="fa fa-file-text-o panel-headIcon"></span>
+                                <h3 class="panel-title" data-linkid="projectInfo" title="">
+                                    政策法规
+                                </h3>
+                                <span class="panel-title-more" data-linkid="projectInfo" title="更多">更多&gt;</span>
+                            </div>
+                            <div class="panel-body">
+                            </div>
+                        </div>
+                    </div>-->
+                    <iframe class="contentFrame" name="contentFrame" id="contentFrame" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+        <div id="pageSlideBar"></div>
+        <a id="link" target="_blank" href="#"></a>
+        <input id="hidUserAccountId" type="hidden" />
+    </div>
+    <!--[if lt IE 9]>
+        <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+        <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="../assets/js/jquery-tools-min.js" type="text/javascript"></script>
+    <script src="../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../assets/vendors/metisMenu/metisMenu.js" type="text/javascript"></script>
+    <script src="../assets/vendors/LoadingUI/jquery.loadingui.js" type="text/javascript"></script>
+    <script src="../assets/vendors/platform.js/platform.js"></script>
+    <script src="../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1" type="text/javascript"></script>
+    <script src="../assets/vendors/gw-activebar/dist/gw-activebar.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../assets/vendors/gw-pageSlideBar/dist/gw-pageSlideBar.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../assets/vendors/bootbox.js/bootbox.js"></script>
+    <script type="text/javascript">
+        var isIE8 = false;
+        var nid = $.url().param('nid');
+        var f = $.url().param('f');
+        var m = $.url().param('m');
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                loadMenuTree();
+                loadUserInfo();
+                initEvents();
+                
+                //initHomeNews();
+                initActivebar();
+                //pageVisited();
+            });
+        });
+
+        // 加载菜单树
+        function loadMenuTree() {
+            if ($.browser && $.browser.msie && parseInt($.browser.version) < 9)
+                isIE8 = true;
+
+            $.ajax({
+                type: 'get',
+                url: dataServiceBaseUrl + 'api/Index/Index/GetIndexMenuTree?sid=' + sid,
+                success: function (data) {
+                    if (data && data.Success === true && data.Data) {
+                        var arrTreeInfo = data.Data;
+                        // 默认添加首页
+                        var strMenuHtml = '';
+                        for (var i = 0; i < data.Data.length; i++) {
+                            if (arrTreeInfo[i].HasChildren == 1) {
+                                // 若存在子节点
+                                if (arrTreeInfo[i].ElementID === 'myWork') {
+                                    strMenuHtml += '<li class="active">';
+                                } else {
+                                    strMenuHtml += '<li>';
+                                }
+                                strMenuHtml += '<a id="' + arrTreeInfo[i].ElementID + '" data-id="' + arrTreeInfo[i].ID + '" href="#" data-parent="1">';
+                                strMenuHtml += '<i class="fa ' + arrTreeInfo[i].IconClass + '" style="font-size: 18px; padding-top: 1px;"></i><span class="menu-title">' + arrTreeInfo[i].Title + '</span><span class="fa arrow"></span>';
+                                strMenuHtml += '</a>';
+                                strMenuHtml += '<ul class="nav">';
+
+                                for (var j = 0; j < arrTreeInfo[i].Children.length; j++) {
+                                    strMenuHtml += '<li>';
+                                    strMenuHtml += '<a id="' + arrTreeInfo[i].Children[j].ElementID + '" data-id="' + arrTreeInfo[i].Children[j].ID + '" href="#" data-url="' + arrTreeInfo[i].Children[j].DataUrl + '">';
+                                    strMenuHtml += '<i class="fa ' + arrTreeInfo[i].Children[j].IconClass + '"></i><span class="menu-title">' + arrTreeInfo[i].Children[j].Title;
+                                    if (arrTreeInfo[i].Children[j].HasBadge == 1) {
+                                        strMenuHtml += '<span class="badge"></span>';
+                                    }
+                                    strMenuHtml += '</span>';
+                                    strMenuHtml += '</a>';
+                                    strMenuHtml += '</li>';
+                                }
+                                strMenuHtml += '</ul></li>';
+
+                            } else {
+                                // 没有子节点
+                                strMenuHtml += '<li>';
+                                strMenuHtml += '<a id="' + arrTreeInfo[i].ElementID + '" data-id="' + arrTreeInfo[i].ID + '" href="#" data-url="' + arrTreeInfo[i].DataUrl + '">';
+                                strMenuHtml += '<i class="fa ' + arrTreeInfo[i].IconClass + '" style="font-size: 18px; padding-top: 2px;"></i><span class="menu-title">' + arrTreeInfo[i].Title + '</span>';
+                                strMenuHtml += '</a>';
+                                strMenuHtml += '</li>';
+                            }
+                        }
+                        $('.side-menu').html(strMenuHtml);
+                        $('.side-menu').metisMenu();
+                        $('#myWork .menu-title').addClass('bold');
+                        $('.side-menu').on('click', 'li a', function () {
+                            if ($(this).data('id') == '21') {
+                                $('#link').attr('href', 'HelpHandbook/PDFJS/web/viewer.html').get(0).click();
+                            } else {
+                                var node = $(this);
+                                if (node.data('parent') != "1") {
+                                    doClick(node);
+                                    if (node.data('id') == '12') {
+                                        getToDoCount();
+                                    }
+                                    if (node.data('id') == '24') {
+                                        getApproveCustomerToDoCount();
+                                    }
+                                    //var childFrame = document.getElementById("contentFrame").contentWindow;
+                                    //if ("checkFormModified" in childFrame) {
+                                    //    if (childFrame.checkFormModified() === true) {
+                                    //        bootbox.confirm({
+                                    //            size: 'small',
+                                    //            message: "表单还未保存，确定要离开吗？",
+                                    //            callback: function (s) {
+                                    //                if (s === true) {
+                                    //                    doClick(node);
+                                    //                }
+                                    //            }
+                                    //        });
+                                    //    } else {
+                                    //        doClick(node);
+                                    //    }
+                                    //    getToDoCount();
+                                    //} else {
+                                    //    doClick(node);
+                                    //}
+                                }
+                            }
+                            return false;
+                        });
+                        // 菜单选中
+                        //$('#todoList').click();
+                        clickNode('todoList');
+                    }
+                }
+            });
+        }
+
+        // 菜单节点点击
+        function doClick(node) {
+            $('.side-menu li a.active').removeClass('active');
+            node.addClass('active');
+            if (node.attr('id') == 'home') {
+                $('.contentFrame').hide();
+                $('.homeNews').show();
+                loadHomeNews();
+                $('#pageSlideBar').show();
+            } else {
+                $('.homeNews').hide();
+                $('#pageSlideBar').hide();
+                $('.contentFrame').attr('src', 'about:blank').empty().show();
+                if (node.data('id') == '702') {
+                    $('.contentFrame').attr('src', node.data('url') + '?f=' + f + '&t=' + new Date().getMilliseconds());
+                    f = -1;  // 重置
+                }
+                else if (node.data('id') == '703') {
+                    $('.contentFrame').attr('src', node.data('url') + '?m=' + m + '&t=' + new Date().getMilliseconds());
+                    m = 1; // 重置
+                }
+                else {
+                    $('.contentFrame').attr('src', node.data('url') + '?t=' + new Date().getMilliseconds());
+                }
+            }
+        }
+
+        // 加载用户信息
+        function loadUserInfo() {
+            $.ajax({
+                type: 'get',
+                url: dataServiceBaseUrl + 'api/UserOrg/User/GetUserName?sid=' + sid,
+                success: function (data) {
+                    if (data && data.Success === true && data.Data) {
+                        $('.banner-info .userName').text(data.Data.UserName + "，欢迎你！");
+                        if (data.Data.UserAccount && data.Data.UserAccount.length > 3 && data.Data.UserAccount.toLowerCase().substr(0, 3) == 'sc-') {
+                            $('#hidUserAccountId').val(data.Data.UserAccount);
+                            $('#modifyPassword').css('display', 'inline-block');
+                        }
+                        $('.banner-info').show();
+                    }
+                }
+            });
+        }
+
+        // 绑定事件
+        function initEvents() {
+            // 分割区域事件
+            $('#splitter').on('click', function () {
+                $(this).toggleClass('active');
+                if ($(this).hasClass('active')) {
+                    $('.menutree').hide(200);
+                } else {
+                    $('.menutree').show(200);
+                }
+            });
+
+            // 点击标题跳转到列表
+            //$('.homeNews .panel-title').on('click', function () {
+            //    $('#' + $(this).data('linkid')).click();
+            //});
+
+            //// 更多
+            //$('.homeNews span.panel-title-more').on('click', function () {
+            //    $('#' + $(this).data('linkid')).click();
+            //});
+
+            // 修改密码
+            //$('#modifyPassword').on('click', function () {
+            //    var userAccountId = $('#hidUserAccountId').val();
+            //    if (userAccountId) {
+            //        var width = 500;
+            //        var height = 400;
+            //        var lPos = (screen.width) ? (screen.width - width) / 2 : 0;
+            //        var tPos = (screen.height) > height ? (screen.height - height) / 3 : 0;
+            //        window.open(modifyPasswordFormatURL.format(userAccountId), "modifyPassword", "width=" + width + ",height=" + height + ",top=" + tPos + ",left=" + lPos + ",toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=1,resizable=0");
+            //    }
+            //});
+
+            // 检索平台
+            //$('#searchPlatform').on('click', function () {
+            //    $('.homeNews').hide();
+            //    $('.contentFrame').attr('src', 'SearchPlatform/Index.html?t=' + new Date().getMilliseconds()).show();
+            //    $('#pageSlideBar').hide();
+            //    $('a.active').removeClass('active');
+            //});
+        }
+
+        // 初始化加载首页新闻数据
+        //function initHomeNews() {
+        //    initNewsInfo();
+        //    initProductInfo();
+        //    initProjectInfo();
+
+        //    // 初始化滚动定位控件
+        //    $('#pageSlideBar').GWPageSlideBar({
+        //        regions: ['newsList', 'productList', 'projectList'],
+        //        scrollContainer: '.contentContainer',
+        //        bottom: 20,
+        //        right: 17
+        //    });
+        //}
+
+        // 初始化加载首页新闻 - 业务动态模块
+        function initNewsInfo() {
+            $('.newsInfo .panel-body').GWDataTable({
+                dataUrl: dataServiceBaseUrl + 'api/NewsInfo/NewsInfo/GetNewsInfoBySC?sid=' + sid + '&t=' + new Date().getMilliseconds(),
+                queryParams: function () {
+                    return { scModel: { PageNum: 1, PageSize: 4 } };
+                },
+                tableOverflowY: 'visible',
+                showLine: false,
+                loadMsg: '',
+                idField: 'ID',
+                rowAttr: function () {
+                    return 'data-moduletype="1"';
+                },
+                columns:
+                [
+                    {
+                        title: '',
+                        field: 'ReadFlag',
+                        width: '23',
+                        align: 'left',
+                        hidden: function (rows) {
+                            for (var i = 0; i < rows.length; i++) {
+                                if (rows[i].ReadFlag === 0) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        },
+                        styler: function () {
+                            return 'padding-right: 0px; padding-bottom: 2px; font-size: 14px;';
+                        },
+                        formatter: function (value) {
+                            return value === 0 ? '<span class="fa fa-envelope-o cp"></span>' : '';
+                        }
+                    },
+                    {
+                        title: '动态名称',
+                        field: 'Title',
+                        align: 'left',
+                        nowrap: false,
+                        formatter: function (value, rowData) {
+                            var titleClass = '';
+                            if (rowData.IsNew === 1) {
+                                if (rowData.IsSetTop === 1) {
+                                    titleClass = 'NewTop';
+                                } else {
+                                    titleClass = 'New';
+                                }
+                            } else if (rowData.IsSetTop === 1) {
+                                titleClass = 'Top';
+                            }
+                            return '<a href="NewsInfo/Read.html#id=' + rowData.ID + '" target="_blank" title="' + value + '" class="' + titleClass + '">' + value + '</a>';
+                        }
+                    },
+                    { title: '发布单位', field: 'PublishOrgName', nowrap: false, align: 'left', width: '150' },
+                    {
+                        title: '发布时间', field: 'PublishTime', align: 'center', width: '100', formatter: function (value) {
+                            return new Date(value.replace(/-/g, '/')).Format('yyyy-MM-dd');
+                        }
+                    },
+                    { title: '动态类型', field: 'NewsType', align: 'left', width: '100' }
+                ]
+            });
+        }
+
+        // 初始化加载首页新闻 - 产品模块
+        function initProductInfo() {
+            $('.productInfo .panel-body').GWDataTable({
+                dataUrl: dataServiceBaseUrl + 'api/ProductInfo/ProductInfo/GetProductInfoBySC?sid=' + sid + '&t=' + new Date().getMilliseconds(),
+                queryParams: function () {
+                    return { scModel: { PageNum: 1, PageSize: 4 } };
+                },
+                tableOverflowY: 'visible',
+                showLine: false,
+                loadMsg: '',
+                idField: 'ID',
+                rowAttr: function () {
+                    return 'data-moduletype="2"';
+                },
+                columns:
+                [
+                    {
+                        title: '',
+                        field: 'ReadFlag',
+                        width: '23',
+                        align: 'left',
+                        hidden: function (rows) {
+                            for (var i = 0; i < rows.length; i++) {
+                                if (rows[i].ReadFlag === 0) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        },
+                        styler: function () {
+                            return 'padding-right: 0px; padding-bottom: 2px; font-size: 14px;';
+                        },
+                        formatter: function (value) {
+                            return value === 0 ? '<span class="fa fa-envelope-o cp"></span>' : '';
+                        }
+                    },
+                    {
+                        title: '产品名称',
+                        field: 'Title',
+                        align: 'left',
+                        nowrap: false,
+                        formatter: function (value, rowData) {
+                            var titleClass = '';
+                            if (rowData.IsNew === 1) {
+                                if (rowData.IsSetTop === 1) {
+                                    titleClass = 'NewTop';
+                                } else {
+                                    titleClass = 'New';
+                                }
+                            } else if (rowData.IsSetTop === 1) {
+                                titleClass = 'Top';
+                            }
+                            return '<a href="ProductInfo/Read.html#id=' + rowData.ID + '" target="_blank" title="' + value + '" class="' + titleClass + '">' + value + '</a>';
+                        }
+                    },
+                    { title: '发布单位', field: 'PublishOrgName', nowrap: false, align: 'left', width: '150' },
+                    {
+                        title: '发布时间', field: 'PublishTime', align: 'center', width: '100', formatter: function (value) {
+                            return new Date(value.replace(/-/g, '/')).Format('yyyy-MM-dd');
+                        }
+                    },
+                    { title: '业务类型', field: 'BusinessType', align: 'left', width: '110' },
+                    { title: '发布方提供服务类型', field: 'ProvideServiceType', align: 'left', width: '160' },
+                    {
+                        title: '你单位提供服务类型', field: 'CooperativeOrgProvideServiceType', align: 'center', width: '160',
+                        formatter: function (value) {
+                            if (value) {
+                                return '<span>' + value + '</span>';
+                            } else {
+                                return '<span>-</span>';
+                            }
+                        }
+                    }
+                ]
+            });
+        }
+
+        // 初始化加载首页新闻 - 项目供需信息模块
+        function initProjectInfo() {
+            $('.projectInfo .panel-body').GWDataTable({
+                dataUrl: dataServiceBaseUrl + 'api/ProjectInfo/ProjectInfo/GetProjectInfoBySC?sid=' + sid + '&t=' + new Date().getMilliseconds(),
+                queryParams: function () {
+                    return { scModel: { PageNum: 1, PageSize: 12, ProjectPeriodYearBegin: -1, ProjectPeriodMonthBegin: -1, ProjectPeriodYearEnd: -1, ProjectPeriodMonthEnd: -1, IsComplete: 0 } };
+                },
+                tableOverflowY: 'visible',
+                showLine: false,
+                loadMsg: '',
+                idField: 'ID',
+                rowAttr: function () {
+                    return 'data-moduletype="3"';
+                },
+                columns:
+                [
+                    {
+                        title: '',
+                        field: 'ReadFlag',
+                        width: '23',
+                        align: 'left',
+                        hidden: function (rows) {
+                            for (var i = 0; i < rows.length; i++) {
+                                if (rows[i].ReadFlag === 0) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        },
+                        styler: function () {
+                            return 'padding-right: 0px; padding-bottom: 2px; font-size: 14px;';
+                        },
+                        formatter: function (value) {
+                            return value === 0 ? '<span class="fa fa-envelope-o cp"></span>' : '';
+                        }
+                    },
+                    {
+                        title: '项目名称',
+                        field: 'Title',
+                        align: 'left',
+                        nowrap: false,
+                        formatter: function (value, rowData) {
+                            var titleClass = '';
+                            if (rowData.IsNew === 1) {
+                                if (rowData.IsSetTop === 1) {
+                                    titleClass = 'NewTop';
+                                } else {
+                                    titleClass = 'New';
+                                }
+                            } else if (rowData.IsSetTop === 1) {
+                                titleClass = 'Top';
+                            }
+                            return '<a href="ProjectInfo/Read.html#id=' + rowData.ID + '" target="_blank" title="' + value + '" class="' + titleClass + '">' + value + '</a>';
+                        }
+                    },
+                    {
+                        title: '发布单位', field: 'PublishOrgName', nowrap: false, align: 'left', width: '150'
+                    },
+                    {
+                        title: '发布时间', field: 'PublishTime', align: 'center', width: '100', formatter: function (value) {
+                            return new Date(value.replace(/-/g, '/')).Format('yyyy-MM-dd');
+                        }
+                    },
+                    {
+                        title: '预期你单位年化收益率',
+                        field: 'CooperativeOrgAnnualReturn',
+                        align: 'center',
+                        width: '100',
+                        formatter: function (value) {
+                            if (value) {
+                                return '<span>' + value + '%</span>';
+                            } else {
+                                return '<span>-</span>';
+                            }
+                        }
+                    },
+                    {
+                        title: '预计项目周期', align: 'center', width: '145', formatter: function (value, rowData) {
+                            return '<span>' + (rowData.ProjectPeriodYear > 0 ? rowData.ProjectPeriodYear + '年' : '') + (rowData.ProjectPeriodMonth > 0 ? rowData.ProjectPeriodMonth + '个月' : '') + '</span>';
+                        }
+                    },
+                    {
+                        title: '预期你单位回报获取周期',
+                        field: 'CooperativeOrgReturnPeriod',
+                        align: 'center',
+                        width: '185',
+                        formatter: function (value) {
+                            if (value) {
+                                return '<span>' + value + '</span>';
+                            } else {
+                                return '<span>-</span>';
+                            }
+                        }
+                    }
+                ]
+            });
+        }
+
+        // 重新加载首页新闻数据
+        function loadHomeNews() {
+            $('.newsInfo .panel-body').css('min-height', 200).GWDataTable('load');
+            $('.productInfo .panel-body').css('min-height', 200).GWDataTable('load');
+            $('.projectInfo .panel-body').css('min-height', 200).GWDataTable('load');
+        }
+
+        // 点击菜单
+        function clickNode(nodeElId, nodeId, discussMode) {
+            try {
+                var $node;
+                if (nodeElId) {
+                    $node = $('#' + nodeElId);
+                    if (nodeElId == 'myDiscussList') {
+                        m = discussMode;
+                    }
+                } else {
+                    $node = $('#side-menu a[data-id="' + nodeId + '"]');
+                }
+                var $parentNode = $node.parent().parent().prev();
+                if ($parentNode && $parentNode.length > 0 && $parentNode.data('parent') == '1') {
+                    if (!$parentNode.parent().hasClass('active')) {
+                        $parentNode.click();
+                    }
+                }
+                $node.click();
+                $('#ActivebarAlert button[class="close"]').click();
+            } catch (e) {
+            }
+        }
+
+        // 初始化Activebar
+        function initActivebar() {
+            $.ajax({
+                type: 'get',
+                url: dataServiceBaseUrl + 'api/Index/Index/GetActivebarInfo?sid=' + sid,
+                success: function (data) {
+                    if (data && data.Success === true && data.Data) {
+                        var alertInfo = {
+                            alerts: []
+                        };
+
+                        if (data.Data.ToDoCount > 0) {
+                            alertInfo.alerts.push({ titleBegin: '您有', titleNum: data.Data.ToDoCount, titleEnd: '条待办需要办理', onclick: "clickNode('todoList');" });
+                        }
+
+                        if (data.Data.ApproveCount > 0) {
+                            alertInfo.alerts.push({ titleBegin: '您有', titleNum: data.Data.ApproveCount, titleEnd: '条用户审核需要办理', onclick: "clickNode('approveCustomer');" });
+                        }
+
+                        if (alertInfo.alerts.length > 0) {
+                            $('#activebar').GWActivebar({
+                                'data': alertInfo,
+                                'border': '#c8c8c8',
+                                'font': 'Microsoft YaHei',
+                                'fontSize': '13px',
+                                'url': null
+                            });
+                            setTimeout(function () {
+                                if ($('.GWActivebar-container').is(':visible')) {
+                                    $('#ActivebarAlert button[class="close"]').click();
+                                }
+                            }, 60000);
+                        }
+
+                        setMenuTreeToDoCount(data.Data.ToDoCount);
+                        setApproveCustomerToDoCount(data.Data.ApproveCount);
+                    }
+                }
+            });
+        }
+
+        // 刷新待办数量（阅览页面调用）
+        function refreshToDoCount() {
+            getToDoCount();
+        }
+
+        // 获取待办数量并更新菜单中的待办badge
+        function getToDoCount(callback) {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/Common/Common/GetMyToDoCount?sid=' + sid,
+                type: 'get',
+                success: function (data) {
+                    if (data && data.Success === true) {
+                        setMenuTreeToDoCount(data.Data, callback);
+                    }
+                }
+            });
+        }
+
+        // 获取待审核用户数量并更新菜单中的注册审核badge
+        function getApproveCustomerToDoCount() {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/Common/Common/GetApproveCustomerToDoCount?sid=' + sid,
+                type: 'get',
+                success: function (data) {
+                    if (data && data.Success === true) {
+                        setApproveCustomerToDoCount(data.Data);
+                    }
+                }
+            });
+        }
+
+        // 设置菜单中待办的数量
+        function setMenuTreeToDoCount(toDoCount, callback) {
+            if (toDoCount > 0) {
+                $('#todoList').find('.badge').text(toDoCount > 99 ? '99+' : toDoCount).show();
+            } else {
+                $('#todoList').find('.badge').hide();
+            }
+            if ($.isFunction(callback)) callback();
+        }
+
+        // 设置注册审核中的的数量
+        function setApproveCustomerToDoCount(toDoCount) {
+            if (toDoCount > 0) {
+                $('#approveCustomer').find('.badge').text(toDoCount > 99 ? '99+' : toDoCount).show();
+            } else {
+                $('#approveCustomer').find('.badge').hide();
+            }
+        }
+    </script>
+</body>
+</html>

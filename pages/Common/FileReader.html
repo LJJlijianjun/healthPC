@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #flexPaperViewer,
+        #pdfjsReaderViewer {
+            display: none;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="flexPaperViewer"></div>
+    <div id="pdfjsReaderViewer">
+        <iframe frameborder="0" src=""></iframe>
+    </div>
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../../assets/js/jquery-tools-min.js"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <!--[if lt IE 9]>
+    <script src="../../../assets/vendors/FlexPaper/js/flexpaper.js"></script>
+    <script type="text/javascript">
+        if (window.addEventListener) {
+            window.addEventListener('DOMMouseScroll', deltaDispatcher, false);
+        }
+        document.body.onmousewheel = deltaDispatcher;
+
+        //监听鼠标滚动事件，阻止默认事件，将滚动值传递给flexpaper对象的externalMouseEvent事件
+        function deltaDispatcher(event) {
+            event = window.event || event;
+            event.cancelBubble = true;
+            event.returnValue = false;
+            var delta = 0;
+            if (event.wheelDelta) {
+                delta = event.wheelDelta / 120;
+            }
+            var obj = $('#flexPaperViewer object');
+
+            if (typeof (obj[0].externalMouseEvent) == 'function') {
+                obj[0].externalMouseEvent(delta);
+            }
+        }
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        var fileId = $.url().param('fileId');
+        var fileName = $.url().param('fileName');
+        var isIE8 = false;
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                if ($.browser.msie && parseInt($.browser.version) < 9)
+                    isIE8 = true;
+
+                if (isIE8) {
+                    initFlexPaperViewer(dataServiceBaseUrl + "api/Common/FileManage?ids=" + fileId + "&sid=" + sid);
+                } else {
+                    $('#pdfjsReaderViewer').show();
+                    $('#pdfjsReaderViewer iframe').attr('src', "../../../assets/vendors/pdf.js/web/viewer.html?fileId=" + fileId + '&fileName=' + encodeURIComponent(fileName));
+                }
+            });
+        });
+
+        function initFlexPaperViewer(fileUrl) {
+            $('#flexPaperViewer').show().FlexPaperViewer({
+                config: {
+                    jsDirectory: '../../../assets/vendors/FlexPaper/js/',
+                    SwfFile: encodeURIComponent(fileUrl),
+                    Scale: 1.5,
+                    ZoomTransition: 'easeOut',
+                    ZoomTime: 0.5,
+                    ZoomInterval: 0.2,
+                    FitPageOnLoad: true,
+                    FitWidthOnLoad: true,
+                    PrintEnabled: false,
+                    FullScreenAsMaxWindow: false,
+                    ProgressiveLoading: true,
+                    MinZoomSize: 0.2,
+                    MaxZoomSize: 5,
+                    SearchMatchAll: false,
+                    InitViewMode: 'Portrait',
+                    ViewModeToolsVisible: false,
+                    WMode: 'opaque',
+                    ZoomToolsVisible: false,
+                    NavToolsVisible: false,
+                    CursorToolsVisible: false,
+                    SearchToolsVisible: false,
+                    localeChain: 'zh_CN'
+                }
+            });
+        }
+    </script>
+</body>
+</html>

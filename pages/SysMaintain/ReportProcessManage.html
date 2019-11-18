@@ -1,0 +1,550 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>报表项目流程维护</title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-selectOrg/dist/gw-selectOrg.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-selectSeason/src/gw-selectSeason.css" rel="stylesheet" />
+    <link href="../../assets/vendors/iCheck/skins/square/blue.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body>
+    <div class="sysMaintain-ReportProcessManage">
+        <div class="searchArea" id="reportInfoSearchArea">
+            <div class="btn-toolbar">
+                <div class="input-group w365">
+                    <span class="input-group-addon">发布单位</span>
+                    <div class="GWSelectOrg w285" id="selPublishOrg"></div>
+                </div>
+                <div class="input-group w231">
+                    <span class="input-group-addon">期间种类</span>
+                    <select class="form-control w150" id="periodTypeSelector"></select>
+                </div>
+                <div class="input-group w202">
+                    <span class="input-group-addon">状态</span>
+                    <select class="form-control w150" id="reportStatusSelector">
+                        <option value="-1">全部</option>
+                        <option value="0" selected="selected">未发布</option>
+                        <option value="1">已发布</option>
+                    </select>
+                </div>
+            </div>
+            <div class="btn-toolbar">
+                <div class="input-group none w365" id="monthSelector">
+                    <span class="input-group-addon">期次从</span>
+                    <input type="text" class="form-control w130" id="txtPeriodTimeStart" readonly="readonly" placeholder="开始" />
+                    <span class="input-group-addon">至</span>
+                    <input type="text" class="form-control w130" id="txtPeriodTimeEnd" readonly="readonly" placeholder="结束" />
+                </div>
+                <div class="input-group none w365" id="yearSelector">
+                    <span class="input-group-addon">期次从</span>
+                    <input type="text" class="form-control w130" id="txtYearStart" readonly="readonly" placeholder="开始" />
+                    <span class="input-group-addon">至</span>
+                    <input type="text" class="form-control w130" id="txtYearEnd" readonly="readonly" placeholder="结束" />
+                </div>
+                <div class="input-group w365" id="seasonSelector">
+                    <span class="input-group-addon">期次从</span>
+                    <div class="gwSelectSeason w130" id="selSeasonStart"></div>
+                    <span class="input-group-addon">至</span>
+                    <div class="gwSelectSeason w130" id="selSeasonEnd"></div>
+                </div>
+                <div class="input-group">
+                    <div class="btn-group">
+                        <button class="btn btn-default" type="button" id="btnSearchReportInfo">
+                            <span class="fa fa-search"></span> 检索
+                        </button>
+                        <button class="btn btn-default" type="button" id="btnResetReportInfo">
+                            <span class="fa fa-repeat"></span> 重置
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="searchArea none" id="reportInfoItemSearchArea">
+            <div class="btn-toolbar">
+                <div class="input-group w302">
+                    <span class="input-group-addon">名称</span>
+                    <input class="form-control w249" id="txtProjectName" type="text" placeholder="项目名称" />
+                </div>
+                <div class="input-group w300">
+                    <span class="input-group-addon">名称</span>
+                    <div class="GWSelectOrg w250" id="selCollaborateOrgName" name="selCollaborateOrgName"></div>
+                </div>
+                <div class="input-group w190">
+                    <span class="input-group-addon">类型</span>
+                    <select class="form-control w100" id="selCollaborateTypeKV">
+                        <option selected="selected" value="0">全部</option>
+                        <option value="1">总公司</option>
+                        <option value="2">分公司</option>
+                        <option value="3">子公司</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <div class="btn-group">
+                        <button class="btn btn-default" type="button" id="btnSearchReportInfoItem">
+                            <span class="fa fa-search"></span> 检索
+                        </button>
+                        <button class="btn btn-default" type="button" id="btnResetReportInfoItem">
+                            <span class="fa fa-repeat"></span> 重置
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="reportInfoItem-listTitle">
+            <span class="reportInfo-center-title"></span>
+        </div>
+        <div class="dataList">
+        </div>
+    </div>
+    <!--[if lt IE 9]>
+        <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+        <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../../assets/js/jquery-tools-min.js"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../../assets/vendors/gw-selectOrg/dist/gw-selectOrg.min.js?v=1.0.1" type="text/javascript"></script>
+    <script src="../../assets/vendors/select2/dist/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/gw-selectSeason/src/gw-selectSeason.js"></script>
+    <script src="../../assets/vendors/iCheck/icheck.min.js"></script>
+    <script src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script src="../../assets/vendors/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+    <script src="../../assets/vendors/xss/dist/xss.min.js"></script>
+    <script src="../../assets/vendors/platform.js/platform.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootbox.js/bootbox.js"></script>
+    <script type="text/javascript">
+        $('select').select2({ width: '100%' });
+    </script>
+    <script type="text/javascript">
+        var reportInfoListPageNum = 1;
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                initSearch(function () {
+                    bindEvent();
+                    loadReportInfoList();
+                });
+            });
+        });
+
+        function initSearch(callback) {
+            initOrgSelector(function () {
+                initPeriodTypeSelector();
+                initDateSelecter();
+                // 类型选择初始化
+                $('#selCollaborateTypeKV').select2({
+                    width: 'resolve',
+                    minimumResultsForSearch: Infinity
+                });
+                // 名称选择初始化
+                $('#selCollaborateOrgName').GWSelectOrg({
+                    dataUrl: dataServiceBaseUrl + 'api/UserOrg/Org/GetOrgDeptList?sid=' + sid,
+                    singleSelect: false
+                });
+                callback();
+            });
+        }
+
+        function initOrgSelector(callback) {
+            $('#selPublishOrg').GWSelectOrg({
+                dataUrl: dataServiceBaseUrl + 'api/UserOrg/Org/GetOrgDeptList?sid=' + sid,
+                singleSelect: false,
+                onDataLoadCompleted: function () {
+                    callback();
+                }
+            });
+        }
+
+        function initPeriodTypeSelector() {
+            var sel = $('#periodTypeSelector');
+            var url = dataServiceBaseUrl + 'api/SysMaintain/Dictionary?sid=' + sid;
+            var data = {
+                searchModel: {
+                    TypeId: 7,
+                    PageNum: 1,
+                    PageSize: 0,
+                    IsActive: 1
+                }
+            };
+
+            $.ajax({
+                url: url,
+                data: data,
+                type: 'get',
+                async: true,
+                cache: false,
+                success: function (result) {
+                    if (result && result.Success === true && result.Data) {
+                        sel.empty();
+                        sel.append('<option value="0">全部</option>');
+                        $.each(result.Data.rows, function (i, item) {
+                            sel.append("<option value='" + item.Dkey + "'>" + item.DValue + "</option>");
+                        });
+                        sel.select2({
+                            selectOnClose: false,
+                            allowClear: false,
+                            minimumResultsForSearch: Infinity,
+                            width: '99.9%'
+                        }).change(function () {
+                            if ($(this).val() == '1') {  // 月报
+                                $('#yearSelector').addClass('none');
+                                $('#seasonSelector').addClass('none');
+                                $('#monthSelector').removeClass('none');
+                            } else if ($(this).val() == '2') {  // 季报
+                                $('#yearSelector').addClass('none');
+                                $('#monthSelector').addClass('none');
+                                $('#seasonSelector').removeClass('none');
+                            } else if ($(this).val() == '3') {  // 年报
+                                $('#seasonSelector').addClass('none');
+                                $('#monthSelector').addClass('none');
+                                $('#yearSelector').removeClass('none');
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        function initDateSelecter() {
+            $('#reportStatusSelector').select2({
+                width: '100%',
+                minimumResultsForSearch: Infinity
+            });
+
+            var option = {
+                language: 'zh-CN',
+                startView: 3,
+                minView: 3,
+                autoclose: 1,
+                format: 'yyyy-mm',
+                pickerPosition: "bottom-right"
+            }
+
+            $('#txtPeriodTimeStart').datetimepicker(option);
+            $('#txtPeriodTimeEnd').datetimepicker(option);
+
+            var option2 = {
+                language: 'zh-CN',
+                startView: 4,
+                minView: 4,
+                autoclose: 1,
+                format: 'yyyy',
+                pickerPosition: "bottom-right"
+            }
+            $('#txtYearStart').datetimepicker(option2);
+            $('#txtYearEnd').datetimepicker(option2);
+
+            $('#selSeasonStart').GWSelectSeason({
+                width: 130,
+                valueYear: '',// 设置初始年份，如无则为当前年
+                valueSeason: 1, // 设置初始季度，如无则为第一季度
+                addOnPosition: 'mid'
+            });
+
+            $('#selSeasonEnd').GWSelectSeason({
+                width: 130,
+                valueYear: '',// 设置初始年份，如无则为当前年
+                valueSeason: 1 // 设置初始季度，如无则为第一季度
+            });
+        }
+
+        function bindEvent() {
+            $("#btnSearchReportInfo").click(function () {
+                loadReportInfoList();
+            });
+
+            $("#btnSearchReportInfoItem").click(function () {
+                loadReportInfoItemList();
+            });
+
+            $("#btnResetReportInfo").click(function () {
+                $('#yearSelector').addClass('none');
+                $('#monthSelector').addClass('none');
+                $('#seasonSelector').removeClass('none');
+                $('#periodTypeSelector').val(0);
+                $('#periodTypeSelector').trigger('change.select2');
+                $('#selPublishOrg').GWSelectOrg('reSetSelected');
+                $('#txtPeriodTimeStart').val('');
+                $('#txtPeriodTimeEnd').val('');
+                $('#txtYearStart').val('');
+                $('#txtYearEnd').val('');
+                $('#selSeasonStart').GWSelectSeason('setDefaultSeason');
+                $('#selSeasonEnd').GWSelectSeason('setDefaultSeason');
+                $('#reportStatusSelector').val(0);
+                $('#reportStatusSelector').trigger('change.select2');
+                loadReportInfoList();
+            });
+
+            $("#btnResetReportInfoItem").click(function () {
+                $('#txtProjectName').val('');
+                $('#selCollaborateOrgName').GWSelectOrg('reSetSelected');
+                $('#selCollaborateTypeKV').val(0);
+                $('#selCollaborateTypeKV').trigger('change.select2');
+                loadReportInfoItemList();
+            });
+        }
+
+        // 加载报表列表
+        var scReportInfoModel = new Object();
+        function loadReportInfoList() {
+            $('#reportInfoItemSearchArea').hide();
+            $('.reportInfoItem-listTitle').hide();
+            $('#reportInfoSearchArea').show();
+            $('.dataList').css('height', $('.sysMaintain-ReportProcessManage').height() - $('#reportInfoSearchArea').outerHeight(true));
+
+            scReportInfoModel.PublishOrgIDs = $('#selPublishOrg').GWSelectOrg('getSelectedOrgIDs').toString();
+            scReportInfoModel.ReportTypeKV = $('#periodTypeSelector').val();
+            scReportInfoModel.Status = $('#reportStatusSelector').val();
+            var dateStart;
+            var dateEnd;
+            if (scReportInfoModel.ReportTypeKV == '1') {
+                dateStart = $('#txtPeriodTimeStart').val() ? $('#txtPeriodTimeStart').val().split('-') : [];
+                dateEnd = $('#txtPeriodTimeEnd').val() ? $('#txtPeriodTimeEnd').val().split('-') : [];
+                scReportInfoModel.YearStart = dateStart[0];
+                scReportInfoModel.MonthStart = dateStart[1];
+                scReportInfoModel.YearEnd = dateEnd[0];
+                scReportInfoModel.MonthEnd = dateEnd[1];
+            } else if (scReportInfoModel.ReportTypeKV == '2') {
+                dateStart = $('#selSeasonStart').GWSelectSeason('getSelectSeason');
+                dateEnd = $('#selSeasonEnd').GWSelectSeason('getSelectSeason');
+                scReportInfoModel.YearStart = dateStart.year ? dateStart.year : '';
+                scReportInfoModel.SeasonStart = dateStart.season ? dateStart.season : '';
+                scReportInfoModel.YearEnd = dateEnd.year ? dateEnd.year : '';
+                scReportInfoModel.SeasonEnd = dateEnd.season ? dateEnd.season : '';
+            } else if (scReportInfoModel.ReportTypeKV == '3') {
+                scReportInfoModel.YearStart = $('#txtYearStart').val() ? $('#txtYearStart').val() : '';
+                scReportInfoModel.YearEnd = $('#txtYearEnd').val() ? $('#txtYearStart').val() : '';
+            }
+
+            $('.dataList').GWDataTable({
+                dataUrl: dataServiceBaseUrl + 'api/ReportInfo/ReportInfo/GetReportInfoBySC?sid=' + sid,
+                tableTitle: '报表',
+                tableIcon: true,
+                pagination: true,
+                pageNumber: reportInfoListPageNum > 0 ? reportInfoListPageNum : 1,
+                queryParams: function (pageNumber, pageSize) {
+                    scReportInfoModel.PageNum = pageNumber;
+                    scReportInfoModel.PageSize = pageSize;
+                    return scReportInfoModel;
+                },
+                dataType: 'json',
+                columns:
+                [
+                    {
+                        title: '报表名称',
+                        field: 'Title',
+                        align: 'left',
+                        formatter: function (value, row) {
+                            if (row.Status === 0) {
+                                return '<a data-id="' + row.ID + '" data-publishorgid="' + row.PublishOrgID + '" href="#" title="' + row.Title + '" onclick="loadReportInfoItemList(this);">' + row.Title + '</a>';
+                            } else {
+                                return '<span title="' + row.Title + '">' + row.Title + '</span>';
+                            }
+                        }
+                    },
+                    { title: '发布单位', field: 'PublishOrgName', align: 'center', width: '240' },
+                    { title: '期间种类', field: 'ReportType', align: 'center', width: '100' },
+                    { title: '期次', field: 'PeriodName', align: 'center', width: '120' },
+                    {
+                        title: '发布时间',
+                        field: 'PublishTime',
+                        align: 'center',
+                        width: '110',
+                        formatter: function (value, row) {
+                            if (row.Status == 1) {
+                                return '<span>' + new Date(value.replace(/-/g, '/')).Format('yyyy-MM-dd') + '</span>';
+                            } else {
+                                return '<span>-</span>';
+                            }
+                        }
+                    },
+                    {
+                        title: '状态',
+                        field: 'Status',
+                        align: 'center',
+                        width: '70',
+                        formatter: function (value) {
+                            if (value == 1) {
+                                return '已发布';
+                            } else {
+                                return '未发布';
+                            }
+                        }
+                    }
+                ]
+            }, 'refresh');
+        }
+
+        // 加载报表项目列表
+        var scReportInfoItemModel = new Object();
+        var reportInfoID;
+        var reportName;
+        var publishOrgId;
+        function loadReportInfoItemList(e) {
+            $('#reportInfoSearchArea').hide();
+            $('#reportInfoItemSearchArea').show();
+            if (e) {
+                reportInfoID = $(e).data('id');
+                reportName = $(e).text();
+                publishOrgId = $(e).data('publishorgid');
+                $('.reportInfo-center-title').text(reportName);
+                $('.reportInfoItem-listTitle').show();
+            }
+            $('.dataList').css('height', $('.sysMaintain-ReportProcessManage').height() - $('#reportInfoItemSearchArea').outerHeight(true) - $('.reportInfoItem-listTitle').outerHeight(true));
+
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/UserOrg/Org/GetOrganizeInfoByOrgID?orgId=' + publishOrgId + '&sid=' + sid,
+                type: 'get',
+                success: function (data) {
+                    if (data && data.Success === true) {
+                        reportInfoListPageNum = parseInt($('.GWDataTable .twbs-pagination-container:first .pagination .active a').text());
+
+                        scReportInfoItemModel.SourceType = 2;
+                        scReportInfoItemModel.IsFinishedProcess = 1;
+                        scReportInfoItemModel.ProjectName = $('#txtProjectName').val();
+                        scReportInfoItemModel.CollaborateOrgName = $('#selCollaborateOrgName').GWSelectOrg('getSelectedOrgIDs').join(',');
+                        scReportInfoItemModel.CollaborateTypeKV = $('#selCollaborateTypeKV').val();
+                        scReportInfoItemModel.ReportInfoID = reportInfoID;
+
+                        $('.dataList').GWDataTable({
+                            dataUrl: dataServiceBaseUrl + 'api/ReportInfo/ReportInfo/GetReportInfoItemListBySC?sid=' + sid,
+                            tableTitle: '报表项目',
+                            tableIcon: true,
+                            pagination: true,
+                            checkbox: true,
+                            multiCheck: true,
+                            queryParams: function (pageNumber, pageSize) {
+                                scReportInfoItemModel.PageNum = pageNumber;
+                                scReportInfoItemModel.PageSize = pageSize;
+                                return { scModel: scReportInfoItemModel };
+                            },
+                            toolbar: {
+                                'btn':
+                                [
+                                    { id: "btnGoBack", faClass: "mail-reply", text: "返回", onclick: "loadReportInfoList();" },
+                                    { id: "btnRollBack", faClass: "recycle", text: "撤回", onclick: "rollBackItemProcess();" },
+                                    { id: "btnRollBackAll", faClass: "recycle", text: "全部撤回", onclick: "rollBackAllItemProcess();" }
+                                ]
+                            },
+                            dataType: 'json',
+                            columns:
+                            [
+                                {
+                                    title: '项目名称',
+                                    field: 'ProjectName',
+                                    align: 'left',
+                                    formatter: function (value, row) {
+                                        return '<span title="{0}">{0}</span>'.format(row.ProjectName);
+                                    }
+                                },
+                                { title: '名称', field: 'CollaborateOrgName', align: 'left', width: '220' },
+                                { title: '类型', field: 'CollaborateType', align: 'center', width: '100' }
+                            ],
+                            onLoadSuccess: function (table) {
+                                $(table).find('.table-content-container .table-body .ProjectName a').each(function () {
+                                    var txtTitle = $('#txtProjectName').val().trim();
+                                    if (txtTitle != '' && txtTitle != '+') {
+                                        var html = $(this).html().replace(new RegExp(txtTitle, 'gi'), '<label class="highlight">' + txtTitle + '</label>');
+                                        $(this).html(html);
+                                    }
+                                });
+                            }
+                        }, 'refresh');
+                    }
+                }
+            });
+        }
+
+        // 撤回
+        function rollBackItemProcess() {
+            var selectedItem = $('.dataList').GWDataTable('getChecked');
+            if (selectedItem && selectedItem.length > 0) {
+                bootbox.confirm({
+                    message: '确定要撤回所选流程吗？',
+                    callback: function (result) {
+                        if (result === true) {
+                            var reportInfoItemProcessIDs = '';
+                            for (var i = 0; i < selectedItem.length; i++) {
+                                reportInfoItemProcessIDs += selectedItem[i].ProcessID + ',';
+                            }
+                            rollBackProcess('', reportInfoItemProcessIDs);
+                        }
+                    }
+                });
+            }
+        }
+
+        // 全部撤回
+        function rollBackAllItemProcess() {
+            var items = $('.dataList').GWDataTable('getData');
+            if (items && items.length > 0) {
+                bootbox.confirm({
+                    message: '确定要撤回所有流程吗？',
+                    callback: function (result) {
+                        if (result === true) {
+                            scReportInfoItemModel.PageNum = 1;
+                            scReportInfoItemModel.PageSize = 0;
+                            rollBackProcess(scReportInfoItemModel, '');
+                        }
+                    }
+                });
+            }
+        }
+
+        // 流程撤回
+        function rollBackProcess(scModel, reportInfoItemProcessIDs) {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/ReportInfo/ReportInfo/RollBackReportInfoItem?reportInfoItemProcessIDs=' + reportInfoItemProcessIDs + '&sid=' + sid,
+                type: 'put',
+                data: scModel,
+                beforeSend: function () {
+                    $('body').loadingUI({ 'text': '执行中...' });
+                },
+                success: function (data) {
+                    $('body').loadingUI('hide');
+                    if (data && data.Success === true && data.Data === 0) {
+                        bootbox.alert({
+                            message: '撤回成功！',
+                            callback: function () {
+                                $('.dataList').GWDataTable('load');
+                            }
+                        });
+                    } else {
+                        bootbox.alert({
+                            message: '撤回失败',
+                            callback: function () {
+                                $('.dataList').GWDataTable('load');
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    $('body').loadingUI('hide');
+                    bootbox.alert({
+                        message: '撤回失败',
+                        callback: function () {
+                            $('.dataList').GWDataTable('load');
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>被推介人员管理</title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-selectOrg/dist/gw-selectOrg.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/iCheck/skins/square/blue.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-userOrgSelector/dist/gw-userOrgSelector.min.css?v=1.0.0" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body>
+    <div class="sysMaintain-RecommendedUserManage">
+        <div class="searchArea">
+            <div class="btn-toolbar">
+                <div class="input-group w200">
+                    <span class="input-group-addon">机构名称</span>
+                    <div class="GWSelectOrg w200" id="selPublishOrg" name="selPublishOrg"></div>
+                </div>
+                <div class="input-group w200">
+                    <span class="input-group-addon">姓名</span>
+                    <input class="form-control w200" id="txtUserName" type="text" maxlength="500" placeholder="姓名" />
+                </div>
+                <div class="input-group">
+                    <div class="btn-group">
+                        <button class="btn btn-default" id="btnSearch" type="button" disabled="disabled">
+                            <span class="fa fa-search"></span> 检索
+                        </button>
+                        <button class="btn btn-default" id="btnReset" type="button" disabled="disabled">
+                            <span class="fa fa-repeat"></span> 重置
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dataList">
+        </div>
+        <a id="totop" href="#" title="回到顶部"><i class="fa fa-angle-up"></i></a>
+        <!--选人模态框beging-->
+        <div class="modal fade" id="userSelectModal" tabindex="-1" role="dialog" aria-labelledby="userSelectModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button class="close" id="btnCloseUserSelectModal" data-dismiss="modal" type="button" aria-hidden="true" title="关闭">&times;</button>
+                        <iframe id="userSelectFrame" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--选人模态框end-->
+    </div>
+    <!--[if lt IE 9]>
+    <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../../assets/js/jquery-tools-min.js"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../../assets/vendors/gw-selectOrg/dist/gw-selectOrg.min.js?v=1.0.1"></script>
+    <script src="../../assets/vendors/iCheck/icheck.min.js"></script>
+    <script src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script src="../../assets/vendors/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+    <script src="../../assets/vendors/gw-userOrgSelector/dist/gw-userOrgSelector.min.js?v=1.0.0"></script>
+    <script src="../../assets/vendors/underscore/underscore-min.js"></script>
+    <script src="../../assets/vendors/xss/dist/xss.min.js"></script>
+    <script src="../../assets/vendors/platform.js/platform.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootbox.js/bootbox.js"></script>
+    <script type="text/javascript">
+        var pageInfo;
+        var maxRecommendUserCountLimit = 6;  // 最大被推介人员数量限制
+        var dataListScModel = {
+            OrgID: 0,
+            UserName: '',
+            PageNum: 1,
+            PageSize: 0
+        };
+
+        $(function () {
+            AuthUtility.Auth(function () {
+                getPageInfo(function () {
+                    initSearch();
+                    initDataList();
+                });
+            });
+        });
+
+        function getPageInfo(callback) {
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/SysMaintain/RecommendedUser/GetPageInfo?sid=' + sid,
+                type: "GET",
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    if (data && data.Success === true && data.Data) {
+                        pageInfo = data.Data;
+                        callback();
+                    }
+                }
+            });
+        }
+
+        function initSearch() {
+            dataListScModel.OrgID = pageInfo.OrgID;
+
+            if (pageInfo.IsAdmin === true) {
+                dataListScModel.OrgID = 0;
+
+                $('#selPublishOrg').GWSelectOrg({
+                    dataUrl: dataServiceBaseUrl + 'api/UserOrg/Org/GetOrgDeptList?sid=' + sid,
+                    singleSelect: false,
+                    onDataLoadCompleted: function () {
+                        $('#btnSearch,#btnReset').prop('disabled', false);
+                    }
+                });
+
+                $("#btnSearch").click(function () {
+                    dataListScModel.OrgID = $('#selPublishOrg').GWSelectOrg('getSelectedOrgIDs').join(',');
+                    dataListScModel.UserName = filterXSS($('#txtUserName').val());
+                    $('.dataList').GWDataTable('load', dataListScModel);
+                });
+
+                $("#btnReset").click(function () {
+                    $('#selPublishOrg').GWSelectOrg('reSetSelected');
+                    $('#txtUserName').val('');
+                    dataListScModel.OrgID = 0;
+                    dataListScModel.UserName = '';
+                    $('.dataList').GWDataTable('load', dataListScModel);
+                });
+
+                $('#txtUserName').on('keydown', function (e) {
+                    if (e.keyCode === 13 && $(this).val().trim() != "") {
+                        $("#btnSearch").click();
+                    }
+                });
+
+                $('.searchArea').show();
+            }
+        }
+
+        function initDataList() {
+            $('.dataList').css('height', $('.sysMaintain-RecommendedUserManage').height() - (pageInfo.IsAdmin ? $('.searchArea').outerHeight(true) : 0));
+            var option = {
+                tableTitle: '被推介人员',
+                tableIcon: true,
+                checkbox: true,
+                multiCheck: true,
+                idField: 'ID',
+                toolbar: { 'btn': pageInfo.BtnList },
+                showLine: true,
+                columns:
+                [
+                    {
+                        title: '姓名', field: 'UserName', align: 'left', width: '130', formatter: function (value, rowData) {
+                            return '<a href="javascript:void(0);" onclick="openUserProfile(\'' + rowData.UserAccount + '\');">' + value + '</a>';
+                        }
+                    },
+                    { title: '所属机构', field: 'OrgName', align: 'left', width: '130' },
+                    { title: '所属部门', field: 'DeptName', align: 'left', width: '130' }
+                ],
+                dataUrl: dataServiceBaseUrl + 'api/SysMaintain/RecommendedUser/GetRecommendedUserBySC?sid=' + sid + '&t=' + new Date().getMilliseconds(),
+                queryParams: function (pageNumber, pageSize) {
+                    if (pageInfo.IsAdmin === true) {
+                        dataListScModel.PageNum = pageNumber;
+                        dataListScModel.PageSize = pageSize;
+                    }
+                    return { scModel: dataListScModel };
+                },
+                pagination: pageInfo.IsAdmin,
+                onLoadSuccess: function (table, data) {
+                    var count = 0;
+                    if (pageInfo.IsAdmin === true) {
+                        count = data.totalcount;
+                    } else {
+                        count = data.rows.length;
+                    }
+                    if (count > 0) {
+                        $(table).find('.table-toolbar .table-title-text').text('被推介人员（' + count + '人）');
+                    } else {
+                        $(table).find('.table-toolbar .table-title-text').text('被推介人员');
+                    }
+
+                    $(table).find('.table-content-container .table-body .UserName').each(function () {
+                        var txtTitle = $('#txtUserName').val().trim();
+                        if (txtTitle != '' && txtTitle != '+') {
+                            var html = $(this).html().replace(new RegExp(txtTitle, 'gi'), '<label class="highlight">' + txtTitle + '</label>');
+                            $(this).html(html);
+                        }
+                    });
+                }
+            };
+
+            $('.dataList').GWDataTable(option);
+        }
+
+        function openRecommendedUserSelector() {
+            $('#userSelectFrame').attr('src', '../../assets/vendors/gw-userOrgSelector/src/UserOrgSelector.html?' +
+                 // 关闭按钮名
+                'inputId=UserSelect' +
+                // 选择人员
+                '&selectOrgOrUser=1' +
+                // 是否允许多选
+                '&isMultiSelect=2' +
+                // 机构id
+                '&orgRootId=' + (pageInfo.IsAdmin ? 0 : pageInfo.OrgID) + '&g=' + newGuid());
+            $('#userSelectModal').modal({ backdrop: 'static', keyboard: false });
+        }
+
+        function addUserOrgToList() {
+            var selectedUserArr = document.getElementById('userSelectFrame').contentWindow.getSelectedItems();
+            if (selectedUserArr && selectedUserArr.length > 0) {
+                if (!pageInfo.IsAdmin) {
+                    var count = selectedUserArr.length;
+                    var recommendedUser = $('.dataList').GWDataTable('getData');
+                    if (recommendedUser && recommendedUser.length > 0) {
+                        count = recommendedUser.length;
+                        for (var i = 0; i < selectedUserArr.length; i++) {
+                            if (_.where(recommendedUser, { OrgEmpID: selectedUserArr[i].OrgEmpId }).length === 0) {
+                                count += 1;
+                            }
+                        }
+                    }
+                    if (count > maxRecommendUserCountLimit) {
+                        bootbox.alert({ message: '最多只能添加' + maxRecommendUserCountLimit + '个人！' });
+                    } else {
+                        $('#btnCloseUserSelectModal').click();
+                        addRecommendedUser(selectedUserArr);
+                    }
+                } else {
+                    $('#btnCloseUserSelectModal').click();
+                    addRecommendedUser(selectedUserArr);
+                }
+            } else {
+                $('#btnCloseUserSelectModal').click();
+            }
+        }
+
+        function addRecommendedUser(selectedUserArr) {
+            var lst = [];
+            for (var i = 0; i < selectedUserArr.length; i++) {
+                lst.push({
+                    OrgEmpID: selectedUserArr[i].OrgEmpId,
+                    UserAccountID: selectedUserArr[i].UserAccountID,
+                    UserName: selectedUserArr[i].UserName
+                });
+            }
+
+            $.ajax({
+                url: dataServiceBaseUrl + 'api/SysMaintain/RecommendedUser/AddRecommendedUser?sid=' + sid + '&clientInfo=' + getClientInfo(),
+                type: 'post',
+                data: JSON.stringify(lst),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                beforeSend: function () {
+                    $('body').loadingUI({ text: '保存中...' });
+                },
+                async: true,
+                cache: false,
+                success: function (data) {
+                    if (data && data.Success === true && data.Data === 0) {
+                        $('body').loadingUI('hide');
+                        bootbox.alert({
+                            message: '添加成功！', callback: function () {
+                                if (pageInfo.IsAdmin === true) {
+                                    dataListScModel.OrgID = $('#selPublishOrg').GWSelectOrg('getSelectedOrgIDs').join(',');
+                                } else {
+                                    dataListScModel.OrgID = pageInfo.OrgID;
+                                }
+                                dataListScModel.UserName = filterXSS($('#txtUserName').val());
+                                $('.dataList').GWDataTable('load', dataListScModel);
+                            }
+                        });
+                    } else {
+                        $('body').loadingUI('hide');
+                        bootbox.alert({ message: '添加失败！' });
+                    }
+                },
+                error: function () {
+                    $('body').loadingUI('hide');
+                    bootbox.alert({ message: '添加失败！' });
+                }
+            });
+        }
+
+        function deleteRecommendedUser() {
+            var checkedUserArr = $('.dataList').GWDataTable('getChecked');
+            if (checkedUserArr && checkedUserArr.length > 0) {
+                bootbox.confirm({
+                    message: '确定要删除所选人员吗？', callback: function (result) {
+                        if (result === true) {
+                            var ids = '';
+                            for (var i = 0; i < checkedUserArr.length; i++) {
+                                ids += checkedUserArr[i].ID + ',';
+                            }
+                            ids = ids.substr(0, ids.length - 1);
+                            $.ajax({
+                                url: dataServiceBaseUrl + 'api/SysMaintain/RecommendedUser/DeleteRecommendedUserByIds?ids=' + ids + '&sid=' + sid + '&clientInfo=' + getClientInfo(),
+                                type: 'delete',
+                                beforeSend: function () {
+                                    $('body').loadingUI({ text: '删除中...' });
+                                },
+                                async: true,
+                                cache: false,
+                                success: function (data) {
+                                    if (data && data.Success === true && data.Data === 0) {
+                                        $('body').loadingUI('hide');
+                                        bootbox.alert({
+                                            message: '删除成功！', callback: function () {
+                                                if (pageInfo.IsAdmin === true) {
+                                                    dataListScModel.OrgID = $('#selPublishOrg').GWSelectOrg('getSelectedOrgIDs').join(',');
+                                                } else {
+                                                    dataListScModel.OrgID = pageInfo.OrgID;
+                                                }
+                                                dataListScModel.UserName = filterXSS($('#txtUserName').val());
+                                                $('.dataList').GWDataTable('load', dataListScModel);
+                                            }
+                                        });
+                                    } else {
+                                        $('body').loadingUI('hide');
+                                        bootbox.alert({ message: '删除失败！' });
+                                    }
+                                },
+                                error: function () {
+                                    $('body').loadingUI('hide');
+                                    bootbox.alert({ message: '删除失败！' });
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

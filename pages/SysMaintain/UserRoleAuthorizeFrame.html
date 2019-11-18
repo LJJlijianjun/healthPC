@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>用户角色权限管理</title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <style type="text/css">
+        .sysMaintain-userRoleAuthorize {
+            height: 100%;
+        }
+    </style>
+</head>
+<body style="overflow-y: hidden;">
+    <div class="sysMaintain-userRoleAuthorize">
+        <div id="myTab">
+            <ul class="nav nav-tabs"></ul>
+        </div>
+        <div id="content">
+            <div class="tab-content" style="min-height:625px;">
+            </div>
+        </div>
+    </div>
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="../../assets/js/jquery-tools-min.js" type="text/javascript"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootbox.js/bootbox.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            AuthUtility.Auth(function () {
+                initTab();
+            });
+        });
+
+        function initTab() {
+            var contentHeight = getParentHeight();
+            $('#content .tab-content').css('height', contentHeight + 'px');
+            $.ajax({
+                type: 'get',
+                url: dataServiceBaseUrl + 'api/UserRole/UserRoleAuthorizeFrame?sid=' + sid,
+                success: function (data) {
+                    var lstElement = null;
+                    if (data && data.Success === true && data.Data) {
+                        lstElement = data.Data;
+
+                        for (var i = 0; i < lstElement.length; i++) {
+                            $('#myTab .nav-tabs').append($('<li class="' + lstElement[i].Tab.liClass + '"  role="' + lstElement[i].Tab.liRole + '"><a data-toggle="' + lstElement[i].Tab.li_aDatatoggle + '" href="' + lstElement[i].Tab.li_ahref + '" role="' + lstElement[i].Tab.li_aRole + '" >' + lstElement[i].Tab.li_aContent + '</a></li>'));
+                            $('#content .tab-content').append($('<div class="' + lstElement[i].Content.divClass +
+                                                                '" id="' + lstElement[i].Content.divId +
+                                                                '" role="' + lstElement[i].Content.divRole + '">' +
+                                                                '<iframe style="min-height:' + contentHeight + 'px;" class="' + lstElement[i].Content.divRole + '" data-url="' + lstElement[i].Content.div_iframeSrc + '" frameborder="' + lstElement[i].Content.div_iframeFrameborder + '" src=""></iframe>' +
+                                                                 +' </div>'));
+                        }
+                        tabEventBind();
+                        $('#myTab .nav-tabs li a').first().trigger("click");
+                    }
+                }
+            });
+        }
+
+        //Tab切换事件绑定
+        function tabEventBind() {
+            $('#myTab .nav-tabs li a').on('click', function () {
+                if ($(this).attr('href') == "#UserAuthorize") {
+                    $('#UserAuthorize iframe').attr('src', $('#UserAuthorize iframe').data('url'));
+                }
+                else if ($(this).attr('href') == "#UserRole") {
+                    $('#UserRole iframe').attr('src', $('#UserRole iframe').data('url'));
+                }
+            });
+        }
+
+        function getParentHeight() {
+            return $('.sysMaintain-userRoleAuthorize').height() - 40;
+        }
+    </script>
+</body>
+</html>

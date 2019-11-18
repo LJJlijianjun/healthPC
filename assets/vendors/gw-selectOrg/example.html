@@ -1,0 +1,442 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>项目供需信息</title>
+    <link href="../../css/base.css" rel="stylesheet" />
+    <link href="../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../iCheck/skins/square/blue.css" rel="stylesheet" />
+    <link href="../LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="gw-selectOrg.css" rel="stylesheet" />
+    <link href="../gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="../../css/common.min.css?v=1.0.0" rel="stylesheet" />
+    <link href="../../css/page.min.css?v=1.0.0" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="projectInfo-listView">
+        <div class="searchArea">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 p0">
+                    <div class="input-group">
+                        <span class="input-group-addon">名称</span>
+                        <input class="form-control" id="txtTitle" type="text" maxlength="500" placeholder="名称" />
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pl10-pro">
+                    <div class="input-group">
+                        <span class="input-group-addon">发布单位</span>
+                        <div class="GWSelectOrg" id="selPublishOrg" name="selPublishOrg"></div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pl10-pro">
+                    <div class="input-group">
+                        <span class="input-group-addon ">发布时间从</span>
+                        <input class="form-control" id="txtPublishTimeStart" type="text" placeholder="开始时间" />
+                        <span class="input-group-addon clear-border-left clear-border-right">至</span>
+                        <input class="form-control" id="txtPublishTimeEnd" type="text" placeholder="结束时间" />
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 pl10-pro">
+                    <div class="input-group">
+                        <div class="btn-group">
+                            <button class="btn btn-default" id="btnSearch" type="button" disabled="disabled">
+                                <span class="fa fa-search"></span> 检索
+                            </button>
+                            <button class="btn btn-default" id="btnReset" type="button" disabled="disabled">
+                                <span class="fa fa-repeat"></span> 重置
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div style="position:absolute;top:100px;left:10px; display:none;">
+            <div class="GWSelectOrg  GWSelectOrg-container GWSelectOrg-container--default GWSelectOrg-container--below" id="branchSelector" style="width: 198px;">
+                <div class="GWSelectOrg-dropdown-wrapper GWSelectOrg-dropdown-menu ">
+                    <div class="orgSelector">
+                        <div class="group">
+                            <div class="list-inline">
+                                <div class="orgItem">
+                                    <div class="tags-label" data-orgid="0">
+                                        <div class="icheckbox_square-blue-16" style="position: relative;">
+                                            <input class="selectAll" style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                        </div><div class="fw">全选</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <div class="list-inline exp-e" div class="expander showList" data-itemlistid="itemList0">
+                                <div class="orgItem">
+                                    <div class="tags-label" data-orgid="1" data-collaboratetypename="总公司" data-collaboratetype="1">
+                                        <div class="icheckbox_square-blue-16" style="position: relative;">
+                                            <input class="itemAll" style="position: absolute; opacity: 0;" type="checkbox">
+                                            <ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                        </div><div class="fw">公司总部</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-inline collapse in itemList" id="itemList0">
+                                <div class="rowTest">
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="41">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox">
+                                                <ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div class="normal-orgName">公司领导</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="32">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox">
+                                                <ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div>
+                                            <div class="normal-orgName">办公室</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" title="发展与改革办公室" data-orgid="50">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>发展与改革办公室</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="259"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>资产经营部</div></div>
+                                    </div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="352"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>重点项目部</div></div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="48">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div>投资管理部</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" title="市场拓展部（投资银行部）" class="exceedlongtitle1" data-orgid="43">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox">
+                                                <ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div>市场拓展部（投资银行部）</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" title="机构部（专职董监事办公室）" class="exceedlongtitle1" data-orgid="950">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div>机构部（专职董监事办公室）</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="984">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>新增 1</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="44">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox">
+                                                <ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div>项目审核部</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="36"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>人力资源部</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="35"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>资金财务部</div></div></div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem"><div class="tags-label" data-orgid="49"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>法律事务部</div></div></div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="749">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox">
+                                                <ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div>
+                                            <div>评估业务部</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="40"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>合规风险部</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="37"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>监察审计部</div></div></div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem"><div class="tags-label" data-orgid="33"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>信息技术部</div></div></div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="38">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>党群工作部</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="336"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>平台项目组</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="351"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>其他</div></div></div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="335">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;">
+                                                </ins>
+                                            </div><div>外派高管</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="329">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox">
+                                                <ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div>退休人员</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="46"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>农银投</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" title="投资投行事业部" data-orgid="975"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>投资投行事业部</div></div></div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem"><div class="tags-label" title="gsgttrtr" data-orgid="988"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>gsgttrtr</div></div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <div class="list-inline exp-e">
+                                <div class="expander showList" data-itemlistid="itemList1"></div>
+                                <div class="orgItem">
+                                    <div class="tags-label" data-orgid="-1" data-collaboratetypename="分公司" data-collaboratetype="2">
+                                        <div class="icheckbox_square-blue-16" style="position: relative;">
+                                            <input class="itemAll" style="position: absolute; opacity: 0;" type="checkbox">
+                                            <ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                        </div><div class="fw">分公司</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-inline collapse in itemList" id="itemList1">
+                                <div class="rowTest">
+                                    <div class="orgItem"><div class="tags-label" data-orgid="2"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>北京分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="3"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>天津分公司</div></div></div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="4">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div>河北分公司</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="5"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>山西分公司</div></div></div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem"><div class="tags-label" title="内蒙古分公司" data-orgid="6"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>内蒙古分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="7"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>辽宁分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="8"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>吉林分公司</div></div></div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" title="黑龙江分公司" data-orgid="9">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>黑龙江分公司</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem"><div class="tags-label" data-orgid="11"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>上海分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="12"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>江苏分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="13"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>浙江分公司</div></div></div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="14">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox">
+                                                <ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div>安徽分公司</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem"><div class="tags-label" data-orgid="15"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>福建分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="16"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>江西分公司</div></div></div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="17">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;">
+                                                </ins>
+                                            </div><div>山东分公司</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="18"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>河南分公司</div></div></div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem"><div class="tags-label" data-orgid="19"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>湖北分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="20"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>湖南分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="21"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>广东分公司</div></div></div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="22">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div>广西分公司</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem"><div class="tags-label" data-orgid="23"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>海南分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="24"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>四川分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="25"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>重庆分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="31"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>贵州分公司</div></div></div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem"><div class="tags-label" data-orgid="26"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>云南分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="27"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>陕西分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="28"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>甘肃分公司</div></div></div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" data-orgid="29">
+                                            <div class="icheckbox_square-blue-16" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox">
+                                                <ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div>新疆分公司</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem"><div class="tags-label" data-orgid="10"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>大连分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="30"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>深圳分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" data-orgid="968"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>宁夏分公司</div></div></div>
+                                    <div class="orgItem"><div class="tags-label" title="上海自贸区分公司" data-orgid="971"><div class="icheckbox_square-blue-16" style="position: relative;"><input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins></div><div>上海自贸区分公司</div></div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <div class="list-inline exp-e">
+                                <div class="expander showList" data-itemlistid="itemList2"></div>
+                                <div class="orgItem">
+                                    <div class="tags-label" data-orgid="-2" data-collaboratetypename="子公司" data-collaboratetype="3">
+                                        <div class="icheckbox_square-blue-16 checked" style="position: relative;">
+                                            <input class="itemAll" style="position: absolute; opacity: 0;" type="checkbox">
+                                        </div><div class="bold-orgName">平台公司</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-inline collapse in itemList" id="itemList2">
+                                <div class="rowTest">
+                                    <div class="orgItem">
+                                        <div class="tags-label" title="德阳银行股份有限公司" class="exceedlongtitle1" data-orgid="973">
+                                            <div class="icheckbox_square-blue-16 checked" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox">
+                                                <ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div class="normal-orgName">德阳银行股份有限公司</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" title="深圳长城融资担保有限公司" class="exceedlongtitle1" data-orgid="588">
+                                            <div class="icheckbox_square-blue-16 checked" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div class="normal-orgName">深圳长城融资担保有限公司</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" title="长城国兴金融租赁有限公司" class="exceedlongtitle1" data-orgid="479">
+                                            <div class="icheckbox_square-blue-16 checked" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div class="normal-orgName">长城国兴金融租赁有限公司</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" title="长城国富置业有限公司" class="exceedlongtitle1" data-orgid="812">
+                                            <div class="icheckbox_square-blue-16 checked" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div class="normal-orgName">长城国富置业有限公司</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem">
+                                        <div class="tags-label" title="长城金桥金融咨询有限公司" class="exceedlongtitle1" data-orgid="946">
+                                            <div class="icheckbox_square-blue-16 checked" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div class="normal-orgName">长城金桥金融咨询有限公司</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" title="天津金融资产交易所" class="exceedlongtitle1" data-orgid="947">
+                                            <div class="icheckbox_square-blue-16 checked" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div class="normal-orgName">天津金融资产交易所天津金融资产交易所</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" title="广东长城资本管理有限公司" class="exceedlongtitle1" data-orgid="948">
+                                            <div class="icheckbox_square-blue-16 checked" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div class="normal-orgName">广东长城资本管理有限公司</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" title="长城投资筹备组" data-orgid="949">
+                                            <div class="icheckbox_square-blue-16 checked" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div class="normal-orgName">长城投资筹备组</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rowTest">
+                                    <div class="orgItem">
+                                        <div class="tags-label" title="长城﹙宁夏﹚资产经营有限公司" class="exceedlongtitle1" data-orgid="966">
+                                            <div class="icheckbox_square-blue-16 checked" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div class="normal-orgName">长城﹙宁夏﹚资产经营有限公司</div>
+                                        </div>
+                                    </div>
+                                    <div class="orgItem">
+                                        <div class="tags-label" title="长城﹙天津﹚股权投资基金管理有限公司" class="exceedlongtitle1" data-orgid="967">
+                                            <div class="icheckbox_square-blue-16 checked" style="position: relative;">
+                                                <input style="position: absolute; opacity: 0;" type="checkbox"><ins class="iCheck-helper" style="background: rgb(255, 255, 255); margin: 0px; padding: 0px; border: 0px currentColor; border-image: none; left: 0%; top: 0%; width: 100%; height: 100%; display: block; position: absolute; opacity: 0;"></ins>
+                                            </div><div class="normal-orgName">长城﹙天津﹚股权投资基金管理有限公司</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btnAffirmOrgToList btn btn-primary btn-right-align-first" id="btnAffirmOrgToList" type="button">确定</button><button class="btnClear btn btn-primary btn-right-align" id="btnClear" type="button">清空</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="../jquery/dist/jquery.min.js"></script>
+<script src="../../js/jquery-tools-min.js"></script>
+<script src="../../js/config.min.js?v=1.0.0"></script>
+<script src="../../js/auth.min.js?v=1.0.0"></script>
+<script src="../../js/common.min.js?v=1.0.0"></script>
+<script src="../../js/workFlow.min.js?v=1.0.0"></script>
+<script src="../bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
+<script src="../jquery-validation/src/localization/messages_zh.js"></script>
+<script src="gw-selectOrg.js?v=1.0.0"></script>
+<script src="../select2/dist/js/select2.full.min.js"></script>
+<script src="../smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="../iCheck/icheck.min.js"></script>
+<script src="../LoadingUI/jquery.loadingui.js"></script>
+<script src="../twbs-pagination/jquery.twbsPagination.js"></script>
+<script src="../gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+<script src="../gw-projectPeriodSelector/src/gw-projectPeriodSelector.js"></script>
+<script src="../xss/dist/xss.min.js"></script>
+<script src="../platform.js/platform.js" type="text/javascript"></script>
+<script src="../bootbox.js/bootbox.js"></script>
+<script type="text/javascript">
+    $('#selProjectPeriodYearBegin,#selProjectPeriodMonthBegin,#selProjectPeriodYearEnd,#selProjectPeriodMonthEnd,#selIsComplete').select2({ width: 'resolve', minimumResultsForSearch: Infinity });
+</script>
+<script type="text/javascript">
+    $(function () {
+        AuthUtility.Auth(function () {
+
+            $('#selPublishOrg').GWSelectOrg({
+                dataUrl: dataServiceBaseUrl + 'api/UserOrg/Org/GetOrgDeptList?sid=' + sid,
+                singleSelect: false
+            });
+
+        });
+    });
+
+</script>

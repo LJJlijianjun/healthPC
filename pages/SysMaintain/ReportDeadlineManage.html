@@ -1,0 +1,369 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>报表上报期限配置</title>
+    <link href="../../assets/css/base.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-selectOrg/dist/gw-selectOrg.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-selectSeason/src/gw-selectSeason.css" rel="stylesheet" />
+    <link href="../../assets/vendors/iCheck/skins/square/blue.css" rel="stylesheet" />
+    <link href="../../assets/vendors/LoadingUI/jquery.loadingui.css" rel="stylesheet" />
+    <link href="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="../../assets/css/common.min.css?v=1.0.2" rel="stylesheet" />
+    <link href="../../assets/css/page.min.css?v=1.0.2" rel="stylesheet" />
+</head>
+<body>
+    <div class="sysMaintain-ReportDeadlineManage">
+        <div class="dataList">
+        </div>
+        <div class="modal fade" id="reportDeadlineModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button id="btnCloseModal" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h5 class="modal-title">修改</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb10">
+                            <div class="col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        期间种类
+                                    </span>
+                                    <input class="form-control" type="text" id="txtReportType" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb10">
+                            <div class="col-xs-12">
+                                <div class="input-group w_percent100">
+                                    <span class="input-group-addon w81">
+                                        期次
+                                    </span>
+                                    <input class="form-control" type="text" id="txtPeriodName" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb10">
+                            <div class="col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        上报默认期限
+                                    </span>
+                                    <select class="form-control input-group-addon w90" id="selMonth">
+                                        <option value="01">1</option>
+                                        <option value="02">2</option>
+                                        <option value="03">3</option>
+                                        <option value="04">4</option>
+                                        <option value="05">5</option>
+                                        <option value="06">6</option>
+                                        <option value="07">7</option>
+                                        <option value="08">8</option>
+                                        <option value="09">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                    <span class="input-group-addon" id="spMonth">月</span>
+                                    <select class="form-control input-group-addon w90" id="selDay"></select>
+                                    <span class="input-group-addon" id="spDay">日</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon w109">是否下一年</span>
+                                    <input class="check-switch" data-size="normal" id="chkIsNextYear" value="1" type="checkbox" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="btnConfirm">确认</button>
+                        <button class="btn btn-default" id="btnClose" onclick="$('#btnCloseModal').click();">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--[if lt IE 9]>
+    <script src="../../assets/vendors/html5shiv/dist/html5shiv.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/respond/src/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="../../assets/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../../assets/js/jquery-tools-min.js"></script>
+    <script src="../../assets/js/config.min.js?v=1.0.0"></script>
+    <script src="../../assets/js/auth.min.js?v=1.0.0"></script>
+    <script src="../../assets/js/common.min.js?v=1.0.3"></script>
+    <script src="../../assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../../assets/vendors/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
+    <script src="../../assets/vendors/gw-selectOrg/dist/gw-selectOrg.min.js?v=1.0.1"></script>
+    <script src="../../assets/vendors/select2/dist/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/gw-selectSeason/src/gw-selectSeason.js"></script>
+    <script src="../../assets/vendors/iCheck/icheck.min.js"></script>
+    <script src="../../assets/vendors/LoadingUI/jquery.loadingui.js"></script>
+    <script src="../../assets/vendors/twbs-pagination/jquery.twbsPagination.js"></script>
+    <script src="../../assets/vendors/gw-dataTable/dist/gw-dataTable.min.js?v=1.0.1"></script>
+    <script src="../../assets/vendors/xss/dist/xss.min.js"></script>
+    <script src="../../assets/vendors/platform.js/platform.js" type="text/javascript"></script>
+    <script src="../../assets/vendors/bootbox.js/bootbox.js"></script>
+    <script type="text/javascript">
+        $('select').select2({ width: '100%', minimumResultsForSearch: Infinity });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            AuthUtility.Auth(function () {
+                loadReportDeadlineList();
+                initEvent();
+            });
+        });
+
+        function loadReportDeadlineList() {
+            $('.dataList').css('height', $('.sysMaintain-ReportDeadlineManage').height());
+
+            $('.dataList').GWDataTable({
+                dataUrl: dataServiceBaseUrl + 'api/ReportInfo/ReportInfo/GetDefaultDeadLineList?sid=' + sid,
+                tableTitle: '报表上报默认期限',
+                tableIcon: true,
+                checkbox: true,
+                multiCheck: false,
+                toolbar: { 'btn': [{ id: "btnModifyReportDeadline", faClass: "edit", text: "修改", onclick: "modifyReportDeadline();" }] },
+                dataType: 'json',
+                columns:
+                [
+                    {
+                        title: '类型', field: 'ReportTypeKV', align: 'center', width: '240',
+                        formatter: function (value, row) {
+                            if (value == 1) {
+                                return '月报';
+                            } else if (value == 2) {
+                                return '季报';
+                            } else if (value == 3) {
+                                return '年报';
+                            }
+                            return '';
+                        }
+                    },
+                    {
+                        title: '期次', field: 'Period', align: 'center', width: '240',
+                        formatter: function (value, row) {
+                            if (row.ReportTypeKV == 1) {
+                                return value + '月';
+                            } else if (row.ReportTypeKV == 2) {
+                                return '第' + value + '季度';
+                            } else if (row.ReportTypeKV == 3) {
+                                return '年度';
+                            }
+                            return '';
+                        }
+                    },
+                    {
+                        title: '默认期限', field: 'Deadline', align: 'center', width: '240',
+                        formatter: function (value, row) {
+                            var deadline;
+                            if (row.ReportTypeKV == 1) {
+                                return row.Period + '月' + value + '日';
+                            } else if (row.ReportTypeKV == 2) {
+                                deadline = value.split('-');
+                                return deadline[0] + '月' + deadline[1] + '日';
+                            } else if (row.ReportTypeKV == 3) {
+                                deadline = value.split('-');
+                                return deadline[0] + '月' + deadline[1] + '日';
+                            }
+                            return '';
+                        }
+                    },
+                    {
+                        title: '是否下一年', field: 'IsNextYear', align: 'center', width: '240',
+                        formatter: function (value, row) {
+                            if (value == 0) {
+                                return '否';
+                            } else {
+                                return '是';
+                            }
+                        }
+                    }
+                ]
+            });
+        }
+
+        function modifyReportDeadline() {
+            var row = $('.dataList').GWDataTable('getChecked');
+            if (row.length == 0) {
+                bootbox.alert({ message: '请选择要修改的默认期限！' });
+            } else {
+                $('#selDay').empty();
+                if (row[0].ReportTypeKV == 1) {
+                    switch (row[0].Period) {
+                        case 4: case 6: case 9: case 11:
+                            for (var i = 1; i <= 30; i++) {
+                                if (i < 10) {
+                                    $('#selDay').append('<option value="0' + i + '">' + i + '</option>');
+                                } else {
+                                    $('#selDay').append('<option value="' + i + '">' + i + '</option>');
+                                }
+                            }
+                            break;
+                        case 2:
+                            for (var i = 1; i <= 28; i++) {
+                                if (i < 10) {
+                                    $('#selDay').append('<option value="0' + i + '">' + i + '</option>');
+                                } else {
+                                    $('#selDay').append('<option value="' + i + '">' + i + '</option>');
+                                }
+                            }
+                            break;
+                        case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+                            for (var i = 1; i <= 31; i++) {
+                                if (i < 10) {
+                                    $('#selDay').append('<option value="0' + i + '">' + i + '</option>');
+                                } else {
+                                    $('#selDay').append('<option value="' + i + '">' + i + '</option>');
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+
+                    $('#selMonth').hide();
+                    $('#selMonth').next().hide();
+                    $('#spMonth').hide();
+
+                    $('#txtReportType').val('月报');
+                    $('#txtPeriodName').val(row[0].Period + '月');
+                    $('#selDay').val(row[0].Deadline);
+
+                } else {
+                    var deadline = row[0].Deadline.split('-');
+                    $('#selMonth').show();
+                    $('#selMonth').next().show();
+                    $('#spMonth').show();
+
+                    if (deadline[0] == '01' || deadline[0] == '03' || deadline[0] == '05' || deadline[0] == '07' || deadline[0] == '08' || deadline[0] == '10' || deadline[0] == '12') {
+                        for (var i = 1; i <= 31; i++) {
+                            if (i < 10) {
+                                $('#selDay').append('<option value="0' + i + '">' + i + '</option>');
+                            } else {
+                                $('#selDay').append('<option value="' + i + '">' + i + '</option>');
+                            }
+                        }
+                    } else if (deadline[0] == '04' || deadline[0] == '06' || deadline[0] == '09' || deadline[0] == '11') {
+                        for (var i = 1; i <= 30; i++) {
+                            if (i < 10) {
+                                $('#selDay').append('<option value="0' + i + '">' + i + '</option>');
+                            } else {
+                                $('#selDay').append('<option value="' + i + '">' + i + '</option>');
+                            }
+                        }
+                    } else if (deadline[0] == '02') {
+                        for (var i = 1; i <= 28; i++) {
+                            if (i < 10) {
+                                $('#selDay').append('<option value="0' + i + '">' + i + '</option>');
+                            } else {
+                                $('#selDay').append('<option value="' + i + '">' + i + '</option>');
+                            }
+                        }
+                    }
+
+                    if (row[0].ReportTypeKV == 2) {
+                        $('#txtReportType').val('季报');
+                        $('#txtPeriodName').val('第' + row[0].Period + '季度');
+                        $('#selMonth').val(deadline[0]);
+                        $('#selDay').val(deadline[1]);
+                    } else if (row[0].ReportTypeKV == 3) {
+                        $('#txtReportType').val('年报');
+                        $('#txtPeriodName').val('年度');
+                        $('#selMonth').val(deadline[0]);
+                        $('#selDay').val(deadline[1]);
+                    }
+                }
+                $("#chkIsNextYear").bootstrapSwitch('state', row[0].IsNextYear == 1 ? true : false);
+                $('select').trigger('change.select2');
+                $('#reportDeadlineModal').modal('show');
+            }
+        }
+
+        function initEvent() {
+            $('#chkIsNextYear').bootstrapSwitch({ "onText": '是', "offText": '否', "size": "normal" });
+            $('#btnConfirm').click(function () {
+                var row = $('.dataList').GWDataTable('getChecked')[0];
+                var deadline = '';
+                if (row.ReportTypeKV == 1) {
+                    deadline = $('#selDay').val();
+                } else if (row.ReportTypeKV == 2) {
+                    deadline = $('#selMonth').val() + '-' + $('#selDay').val();
+                } else if (row.ReportTypeKV == 3) {
+                    deadline = $('#selMonth').val() + '-' + $('#selDay').val();
+                }
+                var dataListModel = {
+                    ID: row.ID,
+                    ReportTypeKV: row.ReportTypeKV,
+                    Period: row.Period,
+                    Deadline: deadline,
+                    IsNextYear: $("#chkIsNextYear").bootstrapSwitch('state') ? 1 : 0
+                };
+
+                $.ajax({
+                    url: dataServiceBaseUrl + 'api/ReportInfo/ReportInfo/UpdateReportDefaultDeadLine?sid=' + sid,
+                    data: dataListModel,
+                    type: 'put',
+                    async: true,
+                    cache: false,
+                    success: function (result) {
+                        $('#btnConfirmPostpone').prop('disabled', false);
+                        if (result.Success) {
+                            $('#reportDeadlineModal').modal('hide');
+                            $('.dataList').GWDataTable('load');
+                        }
+                    }
+                });
+            });
+
+            $('#selMonth').on('select2:select', function (e) {
+                var row = $('.dataList').GWDataTable('getChecked')[0];
+                if (row.ReportTypeKV != 1) {
+                    $('#selDay').empty();
+                    var month = $('#selMonth').val();
+                    if (month == '01' || month == '03' || month == '05' || month == '07' || month == '08' || month == '10' || month == '12') {
+                        for (var i = 1; i <= 31; i++) {
+                            if (i < 10) {
+                                $('#selDay').append('<option value="0' + i + '">' + i + '</option>');
+                            } else {
+                                $('#selDay').append('<option value="' + i + '">' + i + '</option>');
+                            }
+                        }
+                    } else if (month == '04' || month == '06' || month == '09' || month == '11') {
+                        for (var i = 1; i <= 30; i++) {
+                            if (i < 10) {
+                                $('#selDay').append('<option value="0' + i + '">' + i + '</option>');
+                            } else {
+                                $('#selDay').append('<option value="' + i + '">' + i + '</option>');
+                            }
+                        }
+                    } else if (month == '02') {
+                        for (var i = 1; i <= 28; i++) {
+                            if (i < 10) {
+                                $('#selDay').append('<option value="0' + i + '">' + i + '</option>');
+                            } else {
+                                $('#selDay').append('<option value="' + i + '">' + i + '</option>');
+                            }
+                        }
+                    } else {
+
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
